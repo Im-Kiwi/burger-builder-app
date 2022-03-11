@@ -3,7 +3,8 @@ const Layout = () => {
     
     return (
         <div>
-            
+            <div>home</div>
+            <div>Inside home</div>
         </div>
     )
 }
