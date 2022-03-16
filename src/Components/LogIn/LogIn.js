@@ -1,16 +1,24 @@
 import { TextField, Container, Button } from "@mui/material";
 import { useForm } from "react-hook-form";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { yupResolver } from '@hookform/resolvers/yup'
+import { auth } from "../../firebase-setup";
 
 
 const LogIn = props => {
 
+    // this will help to handle validation in the form
     const { register, formState : {errors}, handleSubmit } = useForm({
         resolver : yupResolver(props.logInSchema)
     });
 
-    const submitForm = (data) => {
-        console.log(data);
+    // this method will make user to log in
+    const submitForm = async (data) => {
+        try {
+            const logInData = await signInWithEmailAndPassword(auth, data.emailAddress, data.password)
+        } catch(err) {
+            console.log('login failed!')
+        }
     }
 
     return (
@@ -18,7 +26,7 @@ const LogIn = props => {
             <form className = 'p-3' onSubmit = {handleSubmit(submitForm)}>
                 <TextField fullWidth 
                     error = {Boolean(errors.emailAddress)}
-                    helperText = {errors.emailAddress ?.message}
+                    helperText = {errors.emailAddress?.message}
                     className = 'mb-3 noInputBorder'
                     type = 'text'
                     label = 'Email Address'
@@ -28,7 +36,7 @@ const LogIn = props => {
                 />
                 <TextField fullWidth 
                     error = {Boolean(errors.password)}
-                    helperText = {errors.password ?.message}
+                    helperText = {errors.password?.message}
                     className = 'mb-3 noInputBorder'
                     type = 'password'
                     label = 'Password'

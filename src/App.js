@@ -1,14 +1,18 @@
 
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // ---------- importing from other files ----------------
 import Layout from './Containers/Layout/Layout';
 import './App.css';
 
 
+
 function App() {
   return (
-    <div className="App">
-      <Layout />
-    </div>
+    <Router>
+      <div className="App">
+        <Layout />
+      </div>
+    </Router>
   );
 }
 
