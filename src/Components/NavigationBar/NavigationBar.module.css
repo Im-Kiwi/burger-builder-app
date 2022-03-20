@@ -1,0 +1,23 @@
+.navbar {
+  background: none !important;
+  z-index: 11;
+}
+
+.navButton:hover {
+  background: none !important;
+}
+
+.linkContainer {
+  position: relative;
+  right: 0;
+}
+
+.link {
+  color: #f9b826 !important;
+  font-size: 1.1rem !important;
+  text-decoration: none;
+}
+
+.link:hover {
+  color: inherit;
+}

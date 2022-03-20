@@ -1,34 +1,36 @@
 import { Nav, Navbar } from 'react-bootstrap'
 import { Box, Container, Typography, Button, Stack } from '@mui/material'
 import { ClassNames } from '@emotion/react'
+import { Link, useLocation } from 'react-router-dom'
 
 // ------ importing from files -------------
-import navigationBarStyles from './NavigationBarStyles'
-
+import classes from './NavigationBar.module.css'
 
 const NavigationBar = () => {
 
-    const classes = navigationBarStyles()
-    
     return (
-        <Box>
-            <Navbar className = {classes.navbar}>
-                <Navbar.Brand>
-                    <Container>
-                        <Typography variant = 'h5'>LOGO</Typography>                    
-                    </Container>
-                </Navbar.Brand>
-                <Nav className = {classes.nav}>
-                    <Container>
-                        <Stack direction = 'row' justifyContent = 'flex-end'>
-                            <Button className = {[classes.navButton, 'me-4'].join(' ')} disableRipple>Home</Button>
-                            <Button className = {[classes.navButton, 'me-4'].join(' ')} disableRipple>BUILD</Button>
-                            <Button className = {classes.navButton} disableRipple>Sign In</Button>
+        <Navbar fixed = 'top' className = {classes.navbar} expand = 'lg'>
+            <Container maxWidth = 'xl'>
+                <Stack className = 'w-100' direction = 'row' alignItems = 'center'>
+                    <Navbar.Brand>
+                        <Typography variant = 'h5' className = 'text-dark'>LOGO</Typography>                    
+                    </Navbar.Brand>
+                    <Nav className = 'w-100'>
+                        <Stack className = 'w-100' direction = 'row' justifyContent = 'flex-end'>
+                            <Link to = '/' className = {[classes.link, 'me-3'].join(' ')}>
+                                Home
+                            </Link>                        
+                            <Link to = '/build-burger' className = {[classes.link, 'me-3'].join(' ')}>
+                                Build
+                            </Link>
+                            <Link to = '/' className = {classes.link}>
+                                Sign In
+                            </Link>                            
                         </Stack>
-                    </Container>
-                </Nav>
-            </Navbar>
-        </Box>
+                    </Nav>
+                </Stack>
+            </Container>
+        </Navbar>
     )
 }
 

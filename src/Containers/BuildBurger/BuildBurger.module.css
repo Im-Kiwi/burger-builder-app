@@ -1,0 +1,41 @@
+.main {
+  height: 100vh;
+}
+
+.firstItem {
+  background-color: #110f12;
+  overflow-y: hidden !important;
+  height: 100vh;
+}
+
+.burgerContainer {
+  height: 100%;
+  position: relative;
+}
+
+.burgerContainer::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #f9b826;
+  border-radius: 0 50% 50% 0/0 100% 100% 0;
+  transform: scaleY(1.5);
+}
+
+.burger {
+  z-index: 20;
+}
+
+.coke {
+  position: relative;
+  left: 155px;
+  z-index: 19;
+  bottom: 81px;
+}
+
+.secondItem {
+  background-color: #110f12;
+}

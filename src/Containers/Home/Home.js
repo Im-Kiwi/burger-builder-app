@@ -1,13 +1,11 @@
-import { Stack, Box, Grid, Paper, Container, Tabs, Tab, Typography, Button } from '@mui/material';
-import { Carousel } from 'react-bootstrap';
+import { Stack, Box, Grid, Typography, Button } from '@mui/material';
 
 // ------------- importing from files -------------------
 import CreateAccount from '../CreateAccount/CreateAccount';
-import homeStyles from './HomeStyles';
+import classes from './Home.module.css'
 
 const Home = () => {
 
-    const classes = homeStyles()
     return (
         <Box className = {classes.main}>
             <Grid container>
@@ -25,9 +23,8 @@ const Home = () => {
                     </Stack>
                 </Grid>
                 <Grid xs = {6} item className = {classes.secondItem}>
-                    <CreateAccount />
-                </Grid>
-                
+                    {/* <CreateAccount /> */}
+                </Grid>                
             </Grid>
         </Box>
     )

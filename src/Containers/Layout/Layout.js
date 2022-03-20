@@ -6,6 +6,7 @@ import { Abc } from '@mui/icons-material'
 // ----------------- importing from other files -----------------
 import Home from "../Home/Home"
 import NavigationBar from '../../Components/NavigationBar/NavigationBar'
+import BuildBurger from '../BuildBurger/BuildBurger'
 
 const Layout = () => {
 
@@ -17,7 +18,7 @@ const Layout = () => {
             <Routes>
                 <Route path = '/'>
                     <Route index element = {<Home />}/>
-                    <Route path = 'create-burger' />
+                    <Route path = 'build-burger' element = {<BuildBurger />}/>
                 </Route>
             </Routes>
             {/* <div>Inside home</div> */}

@@ -1,0 +1,45 @@
+.main {
+  height: 100%;
+}
+
+.firstItem {
+  height: 100vh;
+  background-color: #110f12;
+  overflow-y: hidden !important;
+}
+
+.headerContainer {
+  height: 100%;
+}
+
+.headerContainer::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: relative;
+  top: 0;
+  left: 0;
+  background-color: #f9b826;
+  border-radius: 0 50% 50% 0/0 100% 100% 0;
+  transform: scaleY(1.5);
+}
+
+.header {
+  z-index: 10;
+  position: absolute;
+  text-align: center;
+}
+
+.secondItem {
+  background-color: #110f12;
+}
+
+.register {
+  border-radius: 50px !important;
+  font-size: 1.5rem !important;
+  background-color: #110f12 !important;
+}
+
+.register:hover {
+  background-color: #110f12 !important;
+}
