@@ -30,17 +30,7 @@ const CreateAccount = () => {
         password : yup.string().required('password is required')
     });
 
-     // making sure user stayed logged in once it logs in
-    onAuthStateChanged(auth, (currentUser) => {
-        if (currentUser) {
-            const userData = { // data is stored in a seperate object to avoid storing non seriealizable data inside redux store
-                email : currentUser.email,
-                token : currentUser.accessToken,
-                userId : currentUser.uid
-            }            
-            dispatch(userFormActions.updateCurrentUser(userData));  
-        }
-    });
+    
 
 
 

@@ -23,7 +23,7 @@ const NavigationBar = () => {
                             <Link to = '/build-burger' className = {[classes.link, 'me-3'].join(' ')}>
                                 Build
                             </Link>
-                            <Link to = '/' className = {classes.link}>
+                            <Link to = '/log-in' className = {classes.link}>
                                 Sign In
                             </Link>                            
                         </Stack>

@@ -1,9 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
     isLogIn : false,
     currentUser : {}      
-};
+}
 
 const userFormReducer = createSlice({
     name : 'user form reducer',
@@ -17,8 +17,8 @@ const userFormReducer = createSlice({
         },
        
     }    
-});
+})
 
-export const userFormActions = userFormReducer.actions;
+export const userFormActions = userFormReducer.actions
 
-export default userFormReducer;
+export default userFormReducer
