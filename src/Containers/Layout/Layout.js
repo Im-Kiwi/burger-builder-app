@@ -35,10 +35,9 @@ const Layout = () => {
                 <Route path = '/'>
                     <Route index element = {<Home />}/>
                     <Route path = 'build-burger' element = {<BuildBurger />}/>
-                    <Route path = 'sign-up' element = {<FullDialogs signUp = {true} open = {true} />} />
-                    <Route path = 'log-in' element = {<FullDialogs logIn = {false} open = {true} />} />
                 </Route>
             </Routes>
+            <FullDialogs />
         </div>
     )
 }

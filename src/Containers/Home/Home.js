@@ -2,17 +2,16 @@ import { Stack, Box, Grid, Typography, Button } from '@mui/material';
 import { useDispatch } from 'react-redux'
 
 // ------------- importing from files -------------------
-import CreateAccount from '../CreateAccount/CreateAccount';
 import classes from './Home.module.css'
 import { dialogActions } from '../../Store/reducer/dialog';
-import { useNavigate } from 'react-router-dom';
+import { userFormActions } from '../../Store/reducer/userForm';
 
 const Home = () => {
     const dispatch = useDispatch()
-    const navigate = useNavigate()
 
     const dialogHandler = () => {
-        navigate('/sign-up')
+        dispatch(dialogActions.updateOpen(true))
+        dispatch(userFormActions.updateIsSignUpForm(true))
     }
 
     return (
@@ -38,7 +37,6 @@ const Home = () => {
                     </Stack>
                 </Grid>
                 <Grid xs = {6} item className = {classes.secondItem}>
-                    {/* <CreateAccount /> */}
                 </Grid>                
             </Grid>
         </Box>

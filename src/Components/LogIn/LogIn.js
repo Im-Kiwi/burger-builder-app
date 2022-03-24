@@ -1,3 +1,4 @@
+import { useDispatch } from 'react-redux'
 import { TextField, Container, Button, Paper, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -8,8 +9,10 @@ import { ThemeProvider } from '@mui/material/styles'
 
 //  ------------- importing from other files ----------------
 import { userFormTheme } from "../../mui-theme";
+import { userFormActions } from "../../Store/reducer/userForm";
 
 const LogIn = props => {
+    const dispatch = useDispatch()
 
     // creating schema for input validation
     const logInSchema = yup.object().shape({
@@ -25,9 +28,11 @@ const LogIn = props => {
     // this method will make user to log in
     const submitForm = async (data) => {
         try {
-            const logInData = await signInWithEmailAndPassword(auth, data.emailAddress, data.password)
+            await signInWithEmailAndPassword(auth, data.emailAddress, data.password)
+
         } catch(err) {
             console.log('login failed!')
+
         }
     }
 

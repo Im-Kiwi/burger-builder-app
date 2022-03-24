@@ -18,6 +18,13 @@
   text-decoration: none;
 }
 
+.signIn {
+  background-color: #f9b826 !important;
+  color: #110f12 !important;
+  border-radius: 0 !important;
+  font-size: 1rem !important;
+}
+
 .link:hover {
   color: inherit;
 }

@@ -34,7 +34,6 @@ const SignUp = props => {
     const submitForm = async data => {
         try {
             await createUserWithEmailAndPassword(auth, data.emailAddress, data.password)           
-            dispatch(userFormActions.updateIsLogIn(true))
         } catch (err) {
             console.log(err.message)
         }

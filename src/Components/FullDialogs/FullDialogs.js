@@ -17,10 +17,11 @@ const FullDialogs = (props) => {
     const navigate = useNavigate()
 
     const openDialog = useSelector(state => state.dialog.open)
+    const isSignUpForm = useSelector(state => state.userForm.isSignUpForm) 
 
     
     const closeDialogHandler = () => {
-        navigate('/')
+        dispatch(dialogActions.updateOpen(false))
     }
 
     // const Transition = forwardRef((props, ref) => {
@@ -28,7 +29,7 @@ const FullDialogs = (props) => {
     // })
 
     return (
-        <Dialog fullScreen open = {props.open} onClose = {closeDialogHandler}>
+        <Dialog fullScreen open = {openDialog} onClose = {closeDialogHandler}>
             <Box sx = {{width : '100vw', height : '100vh', backgroundColor : '#f9b826'}}>
                 <AppBar sx = {{backgroundColor : '#110f12'}}>
                     <Toolbar>
@@ -46,7 +47,7 @@ const FullDialogs = (props) => {
                     </Toolbar>
                 </AppBar>
                 <Box sx = {{mt:10}}>
-                    {props.signUp ?
+                    {isSignUpForm ? 
                         <SignUp />
                     :
                         <LogIn />   
