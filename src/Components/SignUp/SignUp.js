@@ -11,7 +11,7 @@ import { ThemeProvider } from '@mui/material/styles'
 
 //  ----------------- importing from other files ------------------
 import { userFormActions } from '../../Store/reducer/userForm';
-import { userFormTheme } from '../../mui-theme';
+import { userFormTheme } from '../../theme/mui-theme';
 
 const SignUp = props => {
 

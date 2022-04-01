@@ -19,24 +19,19 @@ const FullDialogs = (props) => {
     const openDialog = useSelector(state => state.dialog.open)
     const isSignUpForm = useSelector(state => state.userForm.isSignUpForm) 
 
-    
-    const closeDialogHandler = () => {
-        dispatch(dialogActions.updateOpen(false))
-    }
-
     // const Transition = forwardRef((props, ref) => {
     //     return <Slide direction = 'up'  ref = {ref} {...props} />
     // })
 
     return (
-        <Dialog fullScreen open = {openDialog} onClose = {closeDialogHandler}>
+        <Dialog fullScreen open = {openDialog} onClose = {() => props.closeDialogHandler(props.isOrderSummary)}>
             <Box sx = {{width : '100vw', height : '100vh', backgroundColor : '#f9b826'}}>
                 <AppBar sx = {{backgroundColor : '#110f12'}}>
                     <Toolbar>
                         <Stack className = 'w-100' direction = 'row' justifyContent = 'flex-end' >
                             <IconButton size = 'large' 
                                 className = 'text-light' 
-                                onClick = {closeDialogHandler}
+                                onClick = {() => props.closeDialogHandler(props.isOrderSummary)}
                                 position = 'relative'
                                 sx = {{float : 'right'}}
                                 aria-label = 'close'
@@ -46,13 +41,7 @@ const FullDialogs = (props) => {
                         </Stack>
                     </Toolbar>
                 </AppBar>
-                <Box sx = {{mt:10}}>
-                    {isSignUpForm ? 
-                        <SignUp />
-                    :
-                        <LogIn />   
-                    }
-                </Box>
+                {props.children}                
             </Box>   
         </Dialog>
     )

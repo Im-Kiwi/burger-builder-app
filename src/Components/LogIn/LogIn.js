@@ -8,7 +8,7 @@ import * as yup from 'yup';
 import { ThemeProvider } from '@mui/material/styles'
 
 //  ------------- importing from other files ----------------
-import { userFormTheme } from "../../mui-theme";
+import { userFormTheme } from "../../theme/mui-theme";
 import { userFormActions } from "../../Store/reducer/userForm";
 
 const LogIn = props => {

@@ -8,6 +8,7 @@ import Lettuce from '../Assets/lettuce.svg'
 import Meat from '../Assets/meat.svg'
 import Sauce from '../Assets/sauce.svg'
 import Tomato from '../Assets/tomato.svg'
+import Onion from '../Assets/onion.svg'
 
 
 export {
@@ -16,6 +17,7 @@ export {
     Lettuce,
     Cheese,
     Meat,
+    Onion,
     Tomato,
     Bacon,
     Coke,

@@ -1,49 +1,32 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
-<rect x="123.605" y="334.279" style="fill:#FF2E48;" width="264.792" height="167.522"/>
-<rect x="123.605" y="170.765" style="fill:#BDCED4;" width="264.792" height="163.514"/>
-<polygon style="fill:#FF2E48;" points="148.955,65.067 123.606,170.767 388.395,170.767 363.046,65.067 "/>
-<rect x="123.605" y="10.199" style="fill:#BDCED4;" width="264.792" height="54.868"/>
-<path d="M113.406,501.801c0,5.632,4.567,10.199,10.199,10.199h264.789c5.632,0,10.199-4.567,10.199-10.199V170.768
-	c0-0.006-0.003-0.011-0.003-0.016c-0.001-0.788-0.091-1.58-0.277-2.362l-22.332-93.124h12.413c5.632,0,10.199-4.567,10.199-10.199
-	V10.199C398.594,4.567,394.026,0,388.394,0H123.606c-5.632,0-10.199,4.567-10.199,10.199v54.868c0,5.632,4.567,10.199,10.199,10.199
-	h12.414l-22.332,93.124c-0.187,0.779-0.276,1.57-0.277,2.356c0,0.008-0.003,0.014-0.003,0.022v331.032H113.406z M133.805,180.968
-	h244.39v143.114h-244.39V180.968z M378.196,491.602H133.805V344.48h244.39v147.121H378.196z M375.461,160.569H136.54l20.458-85.303
-	h198.006L375.461,160.569z M133.805,54.868V20.398h244.39v34.469H133.805z"/>
-<path d="M264.16,293.737H154.008c-5.632,0-10.199,4.567-10.199,10.199c0,5.632,4.567,10.199,10.199,10.199H264.16
-	c5.632,0,10.199-4.567,10.199-10.199C274.359,298.304,269.792,293.737,264.16,293.737z"/>
-<path d="M309.036,293.737h-8.159c-5.632,0-10.199,4.567-10.199,10.199c0,5.632,4.567,10.199,10.199,10.199h8.159
-	c5.632,0,10.199-4.567,10.199-10.199C319.236,298.304,314.668,293.737,309.036,293.737z"/>
-<g>
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="285" height="511" viewBox="0 0 285 511" xml:space="preserve">
+<desc>Created with Fabric.js 3.6.3</desc>
+<defs>
+</defs>
+<g transform="matrix(1 0 0 1 143 256)"  >
+<g style=""   >
+		<g transform="matrix(1 0 0 1 0 162.04)" id="Layer_1"  >
+<rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,46,72); fill-rule: nonzero; opacity: 1;"  x="-132.396" y="-83.761" rx="0" ry="0" width="264.792" height="167.522" />
 </g>
-<g>
+		<g transform="matrix(1 0 0 1 0 -3.48)" id="Layer_1"  >
+<rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(189,206,212); fill-rule: nonzero; opacity: 1;"  x="-132.396" y="-81.757" rx="0" ry="0" width="264.792" height="163.514" />
 </g>
-<g>
+		<g transform="matrix(1 0 0 1 0 -138.08)" id="Layer_1"  >
+<polygon style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,46,72); fill-rule: nonzero; opacity: 1;"  points="-107.05,-52.85 -132.39,52.85 132.39,52.85 107.05,-52.85 " />
 </g>
-<g>
+		<g transform="matrix(1 0 0 1 0 -218.37)" id="Layer_1"  >
+<rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(189,206,212); fill-rule: nonzero; opacity: 1;"  x="-132.396" y="-27.434" rx="0" ry="0" width="264.792" height="54.868" />
 </g>
-<g>
+		<g transform="matrix(1 0 0 1 0 0)" id="Layer_1"  >
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  transform=" translate(-256, -256)" d="M 113.406 501.801 c 0 5.632 4.567 10.199 10.199 10.199 h 264.789 c 5.632 0 10.199 -4.567 10.199 -10.199 V 170.768 c 0 -0.006 -0.003 -0.011 -0.003 -0.016 c -0.001 -0.788 -0.091 -1.58 -0.277 -2.362 l -22.332 -93.124 h 12.413 c 5.632 0 10.199 -4.567 10.199 -10.199 V 10.199 C 398.594 4.567 394.026 0 388.394 0 H 123.606 c -5.632 0 -10.199 4.567 -10.199 10.199 v 54.868 c 0 5.632 4.567 10.199 10.199 10.199 h 12.414 l -22.332 93.124 c -0.187 0.779 -0.276 1.57 -0.277 2.356 c 0 0.008 -0.003 0.014 -0.003 0.022 v 331.032 H 113.406 z M 133.805 180.968 h 244.39 v 143.114 h -244.39 V 180.968 z M 378.196 491.602 H 133.805 V 344.48 h 244.39 v 147.121 H 378.196 z M 375.461 160.569 H 136.54 l 20.458 -85.303 h 198.006 L 375.461 160.569 z M 133.805 54.868 V 20.398 h 244.39 v 34.469 H 133.805 z" stroke-linecap="round" />
 </g>
-<g>
+		<g transform="matrix(1 0 0 1 -46.92 47.94)" id="Layer_1"  >
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  transform=" translate(-209.08, -303.94)" d="M 264.16 293.737 H 154.008 c -5.632 0 -10.199 4.567 -10.199 10.199 c 0 5.632 4.567 10.199 10.199 10.199 H 264.16 c 5.632 0 10.199 -4.567 10.199 -10.199 C 274.359 298.304 269.792 293.737 264.16 293.737 z" stroke-linecap="round" />
 </g>
-<g>
+		<g transform="matrix(1 0 0 1 48.96 47.94)" id="Layer_1"  >
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  transform=" translate(-304.96, -303.94)" d="M 309.036 293.737 h -8.159 c -5.632 0 -10.199 4.567 -10.199 10.199 c 0 5.632 4.567 10.199 10.199 10.199 h 8.159 c 5.632 0 10.199 -4.567 10.199 -10.199 C 319.236 298.304 314.668 293.737 309.036 293.737 z" stroke-linecap="round" />
 </g>
-<g>
 </g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
 </g>
 </svg>

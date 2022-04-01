@@ -8,18 +8,17 @@ import DisplayBurger from '../../Components/DisplayBurger/DisplayBurger'
 
 const BuildBurger = () => {
 
-
     return (
         <Box className = {classes.main}>
             <Grid container>
-                <Grid xs = {7} item className = {[classes.firstItem, ''].join(' ')} >
+                <Grid xs = {7} item className = {[classes.firstItem].join(' ')}>
                     <Box display = 'flex' justifyContent = 'center' className = {classes.burgerContainer}>
                         <DisplayBurger />
                     </Box>
                 </Grid>
                 <Grid xs = {5} item className = {classes.secondItem}>
                     <BurgerController />
-                </Grid>                
+                </Grid>
             </Grid>
         </Box>        
     )

@@ -16,3 +16,23 @@ code {
 .noInputBorder .MuiOutlinedInput-root {
   border-radius: 0px;
 }
+
+.MuiSvgIcon-root,
+.MuiStepIcon-root {
+}
+
+/* .slider .MuiSvgIcon-root {
+  color: #110f12;
+} */
+
+.slider .Mui-active {
+  color: #110f12 !important;
+}
+
+.slider .Mui-completed {
+  color: #110f12 !important;
+}
+
+.slider .MuiStepConnector-root .MuiStepConnector-line {
+  border-color: #110f12 !important;
+}
