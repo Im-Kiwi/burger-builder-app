@@ -16,6 +16,8 @@ import SignUp from '../../Components/SignUp/SignUp'
 import LogIn from '../../Components/LogIn/LogIn'
 import { dialogActions } from '../../Store/reducer/dialog'
 import BuyBurger from '../BuyBurger/BuyBurger'
+import DeliveryAddress from '../../Components/DeliveryAddress/DeliveryAddress'
+import Payment from '../../Components/Payment/Payment'
 
 const Layout = () => {
     const dispatch = useDispatch()
@@ -52,19 +54,21 @@ const Layout = () => {
         <div>
             <NavigationBar />
             <Routes>
-                <Route path = '/'>
-                    <Route index element = {<Home />}/>
-                    <Route path = 'build-burger' element = {<BuildBurger />}/>
-                    <Route path = 'order-summary' element = {<BuildBurger />} />
-                    
+                <Route path = '/' element = {<Home />} />                        
+                <Route path = 'build-burger' element = {<BuildBurger closeDialogHandler = {closeDialogHandler} />}>
+                    <Route path = 'buy' element = {<BuyBurger />}>
+                        <Route path = 'order-summary' element = {<OrderSummary />} />
+                        <Route path = 'delivery-address' element = {<DeliveryAddress />} />
+                        <Route path = 'payment' element = {<Payment />} />
+                    </Route>
                 </Route>
             </Routes>
-            {pathname === '/order-summary' || pathname === '/delivery-address' ? 
+            {/* {pathname === '/build-burger/order-summary' || pathname === '/build-burger/delivery-address' || pathname === '/build-burger/payment' ? 
                 <FullDialogs isOrderSummary = {true} closeDialogHandler = {closeDialogHandler}>
                     <BuyBurger />
                 </FullDialogs>
             : null
-            }
+            } */}
             {pathname === '/' ?
                 <FullDialogs closeDialogHandler = {closeDialogHandler}>
                     <Box sx = {{mt:10}}>

@@ -17,13 +17,9 @@ code {
   border-radius: 0px;
 }
 
-.MuiSvgIcon-root,
-.MuiStepIcon-root {
+.noInputBorder .MuiInputBase-colorPrimary {
+  border-color: red !important;
 }
-
-/* .slider .MuiSvgIcon-root {
-  color: #110f12;
-} */
 
 .slider .Mui-active {
   color: #110f12 !important;

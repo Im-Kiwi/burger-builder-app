@@ -1,57 +1,82 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate, useLocation, Outlet } from 'react-router-dom'
 import { Container, Stepper, Step, StepLabel, Box, Button, AppBar, Fab } from '@mui/material'
 import { Routes, Route } from 'react-router-dom'
 
 // --------- importing from other files ----------------
 import OrderSummary from "../OrderSummary/OrderSummary"
 import DeliveryAddress from '../../Components/DeliveryAddress/DeliveryAddress'
+import Payment from '../../Components/Payment/Payment'
+import { stepperActions } from '../../Store/reducer/stepper'
 
 const BuyBurger = () => {
 
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
-    const [activeStep, setActiveStep] = useState(0)
+    const activeStep = useSelector(state => state.stepper.activeStep)
+
+    useEffect(() => {
+        switch (activeStep) {
+            case 0:
+                navigate('/build-burger/buy/order-summary')
+                break;
+            case 1:
+                navigate('/build-burger/buy/delivery-address')
+                break;
+            case 2:
+                navigate('/build-burger/buy/payment')
+                break;
+            default:
+                return null
+        }        
+    }, [activeStep])
 
     // to handle the progress of stepper 
-    const stepHandler = (isNext) => {
-        if (isNext && activeStep <= 2) {
-            setActiveStep(prev => prev + 1)
-        } else if (!isNext &&   activeStep >= 1) {
-            setActiveStep(prev => prev - 1)
+    const backHandler = () => {
+        if (activeStep >= 1) {
+            dispatch(stepperActions.updateActiveStep(-1))            
         }
     }
-
-    const confirmBurgerHandler = () => {
-        navigate('/delivery-address')
+    
+    const nextHandler = () => {        
+        if (activeStep <= 2) {
+            dispatch(stepperActions.updateActiveStep(1))            
+        }
+        
     }
 
     return (
         <Container sx = {{mt : 10}}>
             <Stepper className='slider' activeStep = {activeStep}>
                 <Step className = 'text-danger '>
-                    <StepLabel>Confirm Your Burger</StepLabel>
+                    <StepLabel>Order Summary</StepLabel>
                 </Step>
                 <Step>
-                    <StepLabel>Delivery Address</StepLabel>
+                    <StepLabel>Mention delivery address</StepLabel>
                 </Step>
                 <Step>
                     <StepLabel>Payment</StepLabel>
                 </Step>
             </Stepper>
-            <Routes>
-                <Route path = '/order-summary' element = {<OrderSummary confirmBurgerHandler = {confirmBurgerHandler} />} />
-                <Route path = '/delivery-address' element = {<DeliveryAddress />} />
-            </Routes>
-           
+            <Outlet />
             <Fab 
                 variant = 'extended' size = 'small'
                 color = 'secondary' 
                 sx = {{position : 'fixed', bottom : 50, left : '15%', padding : 2}} 
-                onClick = {() => stepHandler()}
+                onClick = {backHandler}
             >
                 Back
-            </Fab>
+            </Fab> 
+            <Fab 
+                variant = 'extended' size = 'small'
+                color = 'secondary' 
+                sx = {{position : 'fixed', bottom : 50, right : '15%', padding : 2}} 
+                onClick = {nextHandler}
+            >
+                Next
+            </Fab>           
         </Container>
     )
 }

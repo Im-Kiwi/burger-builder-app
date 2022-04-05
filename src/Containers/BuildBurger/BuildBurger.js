@@ -1,12 +1,20 @@
+import { useEffect } from 'react'
 import { Box, Button, Grid, Stack, Typography } from '@mui/material'
 import { Image } from 'react-bootstrap'
+import { Outlet, useNavigate } from 'react-router-dom'
 
 // ------- importing from files -------------
 import classes from './BuildBurger.module.css'
 import BurgerController from '../../Components/BurgerController/BurgerController'
 import DisplayBurger from '../../Components/DisplayBurger/DisplayBurger'
+import FullDialogs from '../../Components/FullDialogs/FullDialogs'
 
-const BuildBurger = () => {
+const BuildBurger = (props) => {
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        navigate('/build-burger')
+    }, [])
 
     return (
         <Box className = {classes.main}>
@@ -20,6 +28,9 @@ const BuildBurger = () => {
                     <BurgerController />
                 </Grid>
             </Grid>
+            <FullDialogs isOrderSummary = {true} closeDialogHandler = {props.closeDialogHandler} >
+                <Outlet />
+            </FullDialogs>
         </Box>        
     )
 }
