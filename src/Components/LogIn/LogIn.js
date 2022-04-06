@@ -6,13 +6,16 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { auth } from "../../firebase-setup";
 import * as yup from 'yup';
 import { ThemeProvider } from '@mui/material/styles'
+import { useNavigate } from 'react-router-dom'
 
 //  ------------- importing from other files ----------------
 import { userFormTheme } from "../../theme/mui-theme";
 import { userFormActions } from "../../Store/reducer/userForm";
+import { dialogActions } from '../../Store/reducer/dialog';
 
 const LogIn = props => {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     // creating schema for input validation
     const logInSchema = yup.object().shape({
@@ -29,10 +32,11 @@ const LogIn = props => {
     const submitForm = async (data) => {
         try {
             await signInWithEmailAndPassword(auth, data.emailAddress, data.password)
+            dispatch(dialogActions.updateOpen(false))
+            navigate('/build-burger')
 
         } catch(err) {
             console.log('login failed!')
-
         }
     }
 

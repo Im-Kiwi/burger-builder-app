@@ -1,20 +1,26 @@
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Nav, Navbar } from 'react-bootstrap'
-import { Box, Container, Typography, Button, Stack } from '@mui/material'
-import { ClassNames } from '@emotion/react'
-import { Link, useLocation } from 'react-router-dom'
+import { Box, Container, Typography, Button, Stack, Avatar, IconButton } from '@mui/material'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+
 
 // ------ importing from files -------------
 import classes from './NavigationBar.module.css'
 import { userFormActions } from '../../Store/reducer/userForm'
 import { dialogActions } from '../../Store/reducer/dialog'
+import UserProfile from '../UserProfile/UserProfile'
 
 const NavigationBar = () => {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const token = useSelector(state => state.userForm.currentUser.token)
 
     const openDialogHandler = () => {
-        dispatch(userFormActions.updateIsSignUpForm(false))
-        dispatch(dialogActions.updateOpen(true))
+        if (!token) { // login form will appear if unauthenticated user try to click on 'Build' navigation button
+            dispatch(userFormActions.updateIsSignUpForm(false))
+            dispatch(dialogActions.updateOpen(true))
+        }
     }
 
     return (
@@ -29,12 +35,16 @@ const NavigationBar = () => {
                             <Link to = '/' className = {[classes.link, 'me-3'].join(' ')}>
                                 Home
                             </Link>                        
-                            <Link to = '/build-burger' className = {[classes.link, 'me-3'].join(' ')}>
+                            <Link to = {token ? '/build-burger' : '/'} onClick = {openDialogHandler} className = {[classes.link, 'me-3'].join(' ')}>
                                 Build
                             </Link>
-                            <Button variant = 'contained' size = 'small' onClick = {openDialogHandler} className = {classes.signIn}>
-                                Sign In
-                            </Button>                            
+                            {token ? 
+                                <UserProfile />
+                            :
+                                <Button variant = 'contained' size = 'small' onClick = {openDialogHandler} className = {classes.signIn}>
+                                    Sign In
+                                </Button>                            
+                            }
                         </Stack>
                     </Nav>
                 </Stack>

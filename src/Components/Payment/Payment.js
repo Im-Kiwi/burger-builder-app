@@ -1,5 +1,4 @@
-import { Box, Button, Divider, FormControl, FormControlLabel, FormLabel, Grid, Paper, Radio, RadioGroup, Stack, Typography } from '@mui/material'
-import { styled } from '@mui/styles'
+import { Box, Button, Divider, FormControl, FormControlLabel, Grid, Paper, RadioGroup, Stack, Typography } from '@mui/material'
 
 // ---------- importing from other files -----------
 import { CustomRadio, CustomFormLabel } from './style.js'

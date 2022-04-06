@@ -20,10 +20,10 @@ const BuyBurger = () => {
     useEffect(() => {
         switch (activeStep) {
             case 0:
-                navigate('/build-burger/buy/order-summary')
+                navigate('/build-burger/buy/delivery-address')
                 break;
             case 1:
-                navigate('/build-burger/buy/delivery-address')
+                navigate('/build-burger/buy/order-summary')
                 break;
             case 2:
                 navigate('/build-burger/buy/payment')
@@ -51,10 +51,10 @@ const BuyBurger = () => {
         <Container sx = {{mt : 10}}>
             <Stepper className='slider' activeStep = {activeStep}>
                 <Step className = 'text-danger '>
-                    <StepLabel>Order Summary</StepLabel>
+                    <StepLabel>Mention delivery address</StepLabel>
                 </Step>
                 <Step>
-                    <StepLabel>Mention delivery address</StepLabel>
+                    <StepLabel>Order Summary</StepLabel>
                 </Step>
                 <Step>
                     <StepLabel>Payment</StepLabel>

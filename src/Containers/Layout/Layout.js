@@ -24,7 +24,7 @@ const Layout = () => {
     const navigate = useNavigate()
     const { pathname } = useLocation()
 
-    const token = useSelector(state => state.userForm.currentUser.token)  
+    const token = useSelector(state => state.userForm.currentUser.token)
     const openDialog = useSelector(state => state.dialog.open)
     const isSignUpForm = useSelector(state => state.userForm.isSignUpForm)
 
@@ -54,11 +54,11 @@ const Layout = () => {
         <div>
             <NavigationBar />
             <Routes>
-                <Route path = '/' element = {<Home />} />                        
+                <Route path = '/' element = {<Home />} />                       
                 <Route path = 'build-burger' element = {<BuildBurger closeDialogHandler = {closeDialogHandler} />}>
                     <Route path = 'buy' element = {<BuyBurger />}>
-                        <Route path = 'order-summary' element = {<OrderSummary />} />
                         <Route path = 'delivery-address' element = {<DeliveryAddress />} />
+                        <Route path = 'order-summary' element = {<OrderSummary />} />
                         <Route path = 'payment' element = {<Payment />} />
                     </Route>
                 </Route>

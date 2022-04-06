@@ -14,12 +14,14 @@ import { userFormTheme } from '../../theme/mui-theme'
 import { dialogActions } from '../../Store/reducer/dialog'
 
 const PRICE = {
-    Lettuce : 0.30,
-    Meat : 1.80,
-    Cheese : 0.80,
-    Bacon : 1.30,
-    Tomato : 0.20,
-    Onion : 0.20
+    Lettuce : 0.20,
+    Meat : 1.20,
+    Cheese : 0.40,
+    Bacon : 0.70,
+    Tomato : 0.30,
+    Onion : 0.30,
+    coke : 0.7,
+    fries : 1
 }
 
 const BurgerController = () => {
