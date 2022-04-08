@@ -16,11 +16,15 @@ const NavigationBar = () => {
 
     const token = useSelector(state => state.userForm.currentUser.token)
 
-    const openDialogHandler = () => {
+    const openLogInHandler = () => {
         if (!token) { // login form will appear if unauthenticated user try to click on 'Build' navigation button
             dispatch(userFormActions.updateIsSignUpForm(false))
             dispatch(dialogActions.updateOpen(true))
         }
+    }
+
+    const openCartHandler = () => {
+        dispatch(dialogActions.updateOpen(true))
     }
 
     return (
@@ -32,16 +36,28 @@ const NavigationBar = () => {
                     </Navbar.Brand>
                     <Nav className = 'w-100'>
                         <Stack className = 'w-100' direction = 'row' justifyContent = 'flex-end' alignItems = 'center'>
-                            <Link to = '/' className = {[classes.link, 'me-3'].join(' ')}>
+                            <Link to = '/' className = {[classes.link, 'me-4'].join(' ')}>
                                 Home
                             </Link>                        
-                            <Link to = {token ? '/build-burger' : '/'} onClick = {openDialogHandler} className = {[classes.link, 'me-3'].join(' ')}>
+                            <Link to = {token ? `/build-burger` : '/'} onClick = {openLogInHandler} className = {[classes.link, 'me-4'].join(' ')}>
                                 Build
+                            </Link>
+                            {token ? 
+                                <Link to = '/cart' onClick = {openCartHandler} className = {[classes.link, 'me-4'].join(' ')}>
+                                    Cart
+                                </Link>
+                            : null
+                            }
+                            <Link to = '#' className = {[classes.link, 'me-4'].join(' ')}>
+                                Pricing
+                            </Link>
+                            <Link to = '#' className = {[classes.link, 'me-4'].join(' ')}>
+                                About Us
                             </Link>
                             {token ? 
                                 <UserProfile />
                             :
-                                <Button variant = 'contained' size = 'small' onClick = {openDialogHandler} className = {classes.signIn}>
+                                <Button variant = 'contained' size = 'small' onClick = {openLogInHandler} className = {classes.signIn}>
                                     Sign In
                                 </Button>                            
                             }

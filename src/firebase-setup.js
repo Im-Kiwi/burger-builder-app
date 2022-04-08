@@ -2,6 +2,7 @@
 
 import { initializeApp } from "firebase/app";
 import { getAuth } from 'firebase/auth'
+import { getFirestore } from '@firebase/firestore'
 
 const firebaseConfig = {
     apiKey: "AIzaSyBCmHDgP1tDKlbArd8pw6eAnSJTAAf1UbQ",
@@ -15,5 +16,8 @@ const firebaseConfig = {
 
 // initializing the connection to firebase
 const app = initializeApp(firebaseConfig);
+
+// connecting firebase database to the react app
+export const db = getFirestore()
 
 export const auth = getAuth(app);

@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { Box, Button, Grid, Stack, Typography } from '@mui/material'
 import { Image } from 'react-bootstrap'
 import { Outlet, useNavigate } from 'react-router-dom'
@@ -12,8 +13,10 @@ import FullDialogs from '../../Components/FullDialogs/FullDialogs'
 const BuildBurger = (props) => {
     const navigate = useNavigate()
 
+    const token = useSelector(state => state.userForm.currentUser.token)
+
     useEffect(() => {
-        navigate('/build-burger')
+        navigate(`/build-burger`)
     }, [])
 
     return (

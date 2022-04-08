@@ -19,8 +19,8 @@ const FullDialogs = (props) => {
     const openDialog = useSelector(state => state.dialog.open)
     const isSignUpForm = useSelector(state => state.userForm.isSignUpForm) 
 
-    // const Transition = forwardRef((props, ref) => {
-    //     return <Slide direction = 'up'  ref = {ref} {...props} />
+    // const Transition = forwardRef(function Transition(props, ref) {
+    //     return <Slide direction = 'up' ref = {ref} {...props} />
     // })
 
     return (

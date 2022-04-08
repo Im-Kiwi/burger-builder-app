@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
     isSignUpForm : false,
+    isUserNameExist : false,
     currentUser : {}      
 }
 
@@ -15,6 +16,9 @@ const userFormReducer = createSlice({
         updateCurrentUser (state, action) {
             state.currentUser = action.payload;
         },
+        updateIsUserNameExist (state, action) {
+            state.isUserNameExist = action.payload
+        }
     }    
 })
 

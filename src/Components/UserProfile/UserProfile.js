@@ -9,6 +9,7 @@ import { auth } from '../../firebase-setup'
 
 // -------- importing from other files ---------------
 import { userFormActions } from '../../Store/reducer/userForm'
+import { CustomMenuItem } from './style.js'
 
 const UserProfile = () => {
     const navigate = useNavigate()
@@ -51,14 +52,9 @@ const UserProfile = () => {
                     vertical : 'top'
                 }}
             >
-                <MenuItem sx = {{backgroundColor : '#f9b826', '&:hover' : {backgroundColor : '#110f12', color : '#f9b826'}}}>Settings</MenuItem>
-                <MenuItem sx = {{backgroundColor : '#f9b826', '&:hover' : {backgroundColor : '#110f12', color : '#f9b826'}}}>Manage Addresses</MenuItem>
-                <MenuItem 
-                    sx = {{backgroundColor : '#f9b826', '&:hover' : {backgroundColor : '#110f12', color : '#f9b826'}}}
-                    onClick = {logoutHandler}
-                >
-                    Sign Out
-                </MenuItem>
+                <CustomMenuItem>Settings</CustomMenuItem>
+                <CustomMenuItem>Manage Addresses</CustomMenuItem>
+                <CustomMenuItem onClick = {logoutHandler}>Sign Out</CustomMenuItem>
             </Popover>
         </div>
     )

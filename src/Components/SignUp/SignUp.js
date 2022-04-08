@@ -1,21 +1,26 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom'
 import { Container, Box, TextField, InputBase, Button, Paper, Typography } from '@mui/material';
-import { Form } from 'react-bootstrap';
 import { useForm  } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup'; 
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase-setup';
 import * as yup from 'yup';
 import { ThemeProvider } from '@mui/material/styles'
+import { db } from '../../firebase-setup'
+import { doc, addDoc, collection, query, where, getDocs } from 'firebase/firestore'
 
 //  ----------------- importing from other files ------------------
 import { userFormActions } from '../../Store/reducer/userForm';
 import { userFormTheme } from '../../theme/mui-theme';
+import { dialogActions } from '../../Store/reducer/dialog';
 
 const SignUp = props => {
-
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const isUserNameExist = useSelector(state => state.userForm.isUserNameExist)
 
      // creating schema for sign up validation
     const signUpSchema = yup.object().shape({
@@ -32,8 +37,44 @@ const SignUp = props => {
 
     // sending the sign up form info to the firebase server
     const submitForm = async data => {
+
+        // checking whether the user name already exist in the database
+        const readUsers = collection(db, 'users')
+        const findUser = query(readUsers, where('userName', '==', data.userName))
+        const fetchData = await getDocs(findUser)
+        let userNameExist = false
+        fetchData.forEach((doc) => {
+            if (doc.data()) {
+                userNameExist = true
+            }
+        })
+        if (userNameExist) {
+            dispatch(userFormActions.updateIsUserNameExist(true))
+        }
+
         try {
-            await createUserWithEmailAndPassword(auth, data.emailAddress, data.password)           
+            const response = await createUserWithEmailAndPassword(auth, data.emailAddress, data.password)
+            try {
+                const userData = {
+                    userName : data.userName,
+                    email : response._tokenResponse.email,
+                    userId : response._tokenResponse.localId
+                }
+
+                const cartData = {
+                    userName : data.userName,
+                    userId : response._tokenResponse.localId,
+                    cartItems : []
+                } 
+
+                // adding document in users and cart collection in database after successfully sign up
+                await addDoc(collection(db, 'users'), userData)
+                await addDoc(collection(db, 'cart'), cartData)
+            } catch(err) {
+                console.log('error in creating account')
+            }   
+            dispatch(dialogActions.updateOpen(false))
+            navigate('/build-burger')
         } catch (err) {
             console.log(err.message)
         }
@@ -46,8 +87,8 @@ const SignUp = props => {
                 <form className = 'p-3' onSubmit = {handleSubmit(submitForm)}>
                     <ThemeProvider theme = {userFormTheme}>
                         <TextField 
-                            error = {Boolean(errors.userName)}
-                            helperText = {errors.userName?.message}
+                            error = {Boolean(errors.userName) || isUserNameExist}
+                            helperText = {isUserNameExist ? 'user name taken' : errors.userName?.message}
                             fullWidth
                             label = 'User Name'
                             variant = 'standard'

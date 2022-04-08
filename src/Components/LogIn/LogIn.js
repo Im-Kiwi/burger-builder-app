@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { TextField, Container, Button, Paper, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -33,7 +33,7 @@ const LogIn = props => {
         try {
             await signInWithEmailAndPassword(auth, data.emailAddress, data.password)
             dispatch(dialogActions.updateOpen(false))
-            navigate('/build-burger')
+            navigate(`/build-burger`)
 
         } catch(err) {
             console.log('login failed!')

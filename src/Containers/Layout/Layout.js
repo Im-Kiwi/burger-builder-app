@@ -18,6 +18,7 @@ import { dialogActions } from '../../Store/reducer/dialog'
 import BuyBurger from '../BuyBurger/BuyBurger'
 import DeliveryAddress from '../../Components/DeliveryAddress/DeliveryAddress'
 import Payment from '../../Components/Payment/Payment'
+import Cart from '../../Components/Cart/Cart'
 
 const Layout = () => {
     const dispatch = useDispatch()
@@ -43,10 +44,10 @@ const Layout = () => {
     // to close the fullscreen dialog box
     const closeDialogHandler = (flag) => {
         dispatch(dialogActions.updateOpen(false))
-        if (flag) {
-            navigate('/build-burger')
+        if (flag && token) {
+            navigate(`/build-burger`)
         } else {
-            navigate('/')
+            navigate(-1)
         }
     }
 
@@ -54,7 +55,7 @@ const Layout = () => {
         <div>
             <NavigationBar />
             <Routes>
-                <Route path = '/' element = {<Home />} />                       
+                <Route path = '/' element = {<Home />} /> 
                 <Route path = 'build-burger' element = {<BuildBurger closeDialogHandler = {closeDialogHandler} />}>
                     <Route path = 'buy' element = {<BuyBurger />}>
                         <Route path = 'delivery-address' element = {<DeliveryAddress />} />
@@ -62,13 +63,11 @@ const Layout = () => {
                         <Route path = 'payment' element = {<Payment />} />
                     </Route>
                 </Route>
+                <Route path = 'cart' element = {<BuildBurger closeDialogHandler = {closeDialogHandler}/>}>
+                    <Route index element = {<Cart />} />
+                </Route>
             </Routes>
-            {/* {pathname === '/build-burger/order-summary' || pathname === '/build-burger/delivery-address' || pathname === '/build-burger/payment' ? 
-                <FullDialogs isOrderSummary = {true} closeDialogHandler = {closeDialogHandler}>
-                    <BuyBurger />
-                </FullDialogs>
-            : null
-            } */}
+
             {pathname === '/' ?
                 <FullDialogs closeDialogHandler = {closeDialogHandler}>
                     <Box sx = {{mt:10}}>
