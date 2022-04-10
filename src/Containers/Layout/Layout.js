@@ -47,16 +47,15 @@ const Layout = () => {
         if (flag && token) {
             navigate(`/build-burger`)
         } else {
-            navigate(-1)
+            navigate(pathname)
         }
     }
 
     return (
         <div>
-            <NavigationBar />
             <Routes>
                 <Route path = '/' element = {<Home />} /> 
-                <Route path = 'build-burger' element = {<BuildBurger closeDialogHandler = {closeDialogHandler} />}>
+                <Route path = 'build-burger' element = {token ? <BuildBurger closeDialogHandler = {closeDialogHandler} /> : null}>
                     <Route path = 'buy' element = {<BuyBurger />}>
                         <Route path = 'delivery-address' element = {<DeliveryAddress />} />
                         <Route path = 'order-summary' element = {<OrderSummary />} />

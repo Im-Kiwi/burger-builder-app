@@ -38,10 +38,13 @@ const NavigationBar = () => {
                         <Stack className = 'w-100' direction = 'row' justifyContent = 'flex-end' alignItems = 'center'>
                             <Link to = '/' className = {[classes.link, 'me-4'].join(' ')}>
                                 Home
-                            </Link>                        
-                            <Link to = {token ? `/build-burger` : '/'} onClick = {openLogInHandler} className = {[classes.link, 'me-4'].join(' ')}>
-                                Build
-                            </Link>
+                            </Link> 
+                            {token ? 
+                                <Link to = '/build-burger' className = {[classes.link, 'me-4'].join(' ')}>
+                                    Build
+                                </Link>
+                            : null
+                            }                       
                             {token ? 
                                 <Link to = '/cart' onClick = {openCartHandler} className = {[classes.link, 'me-4'].join(' ')}>
                                     Cart

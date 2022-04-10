@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 import classes from './Home.module.css'
 import { dialogActions } from '../../Store/reducer/dialog';
 import { userFormActions } from '../../Store/reducer/userForm';
+import NavigationBar from '../../Components/NavigationBar/NavigationBar';
 
 const Home = () => {
     const dispatch = useDispatch()
@@ -16,6 +17,7 @@ const Home = () => {
 
     return (
         <Box className = {classes.main}>
+            <NavigationBar />
             <Grid container>
                 <Grid xs = {6} item className = {[classes.firstItem, ''].join(' ')} >
                     <Stack 

@@ -1,17 +1,18 @@
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Box, Button, Grid, Stack, Typography } from '@mui/material'
-import { Image } from 'react-bootstrap'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 
 // ------- importing from files -------------
 import classes from './BuildBurger.module.css'
 import BurgerController from '../../Components/BurgerController/BurgerController'
 import DisplayBurger from '../../Components/DisplayBurger/DisplayBurger'
 import FullDialogs from '../../Components/FullDialogs/FullDialogs'
+import NavigationBar from '../../Components/NavigationBar/NavigationBar'
 
 const BuildBurger = (props) => {
     const navigate = useNavigate()
+    const { pathname } = useLocation()
 
     const token = useSelector(state => state.userForm.currentUser.token)
 
@@ -21,6 +22,7 @@ const BuildBurger = (props) => {
 
     return (
         <Box className = {classes.main}>
+            <NavigationBar />
             <Grid container>
                 <Grid xs = {7} item className = {[classes.firstItem].join(' ')}>
                     <Box display = 'flex' justifyContent = 'center' className = {classes.burgerContainer}>

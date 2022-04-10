@@ -9,11 +9,13 @@ import OrderSummary from "../OrderSummary/OrderSummary"
 import DeliveryAddress from '../../Components/DeliveryAddress/DeliveryAddress'
 import Payment from '../../Components/Payment/Payment'
 import { stepperActions } from '../../Store/reducer/stepper'
+import useStyle from './style'
 
 const BuyBurger = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const classes = useStyle()
 
     const activeStep = useSelector(state => state.stepper.activeStep)
 
@@ -64,16 +66,16 @@ const BuyBurger = () => {
             <Fab 
                 variant = 'extended' size = 'small'
                 color = 'secondary' 
-                sx = {{position : 'fixed', bottom : 50, left : '15%', padding : 2}} 
                 onClick = {backHandler}
+                className = {[classes.both, classes.back].join(' ')}
             >
                 Back
             </Fab> 
             <Fab 
                 variant = 'extended' size = 'small'
                 color = 'secondary' 
-                sx = {{position : 'fixed', bottom : 50, right : '15%', padding : 2}} 
                 onClick = {nextHandler}
+                className = {[classes.both, classes.next].join(' ')}
             >
                 Next
             </Fab>           
