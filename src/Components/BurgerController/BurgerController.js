@@ -1,49 +1,48 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Grid, Typography, IconButton, Stack, Box, Checkbox, TextField, Button } from '@mui/material'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCirclePlus } from '@fortawesome/free-solid-svg-icons'
 import { ThemeProvider } from '@mui/material'
+import { getDoc, doc, addDoc, collection } from 'firebase/firestore'
 
 // ------------ importing from files -----------------
+import { db } from '../../firebase-setup'
 import Controls from './Controls/Controls'
 import { ingredientsActions } from '../../Store/reducer/ingredients'
 import * as global from '../../identifiers/identifiers'
 import { userFormTheme } from '../../theme/mui-theme'
 import { dialogActions } from '../../Store/reducer/dialog'
 
-const PRICE = {
-    Lettuce : 0.20,
-    Meat : 1.20,
-    Cheese : 0.40,
-    Bacon : 0.70,
-    Tomato : 0.30,
-    Onion : 0.30,
-    coke : 0.7,
-    fries : 1
-}
-
 const BurgerController = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { pathname } = useLocation()
+
+    const [basePrice, setBasePrice] = useState({}) // It contains the base prices of the ingredients
 
     const ingredientsQty = useSelector(state => state.ingredients) // contains the ingredients object
-    const openDialog = useSelector(state => state.dialog.open)
     const burgerName = useSelector(state => state.ingredients.burgerName)
+    const userId = useSelector(state => state.userForm.currentUser.userId)
+
+    // fetching the base prices of ingredients from the database
+    useEffect(() => {
+        (async () => {
+            const basePriceRef = doc(db, 'basePrice', 'ZvNaPbzoxkh6dwxJfzJR')
+            const getBasePrice = await getDoc(basePriceRef)
+            setBasePrice({...getBasePrice.data()})
+        })();
+    }, [])
 
     // method to add slices on the burger
     const addIngredient = (ingName) => {
         if (ingredientsQty[ingName] < 5) {
-            dispatch(ingredientsActions.updateIngredient({ingName : ingName, qty : 1, price : PRICE[ingName] }))
+            dispatch(ingredientsActions.updateIngredient({ingName : ingName, qty : 1, price : basePrice[ingName] }))
         }
     }
 
     // method to remove slices from the burger
     const removeIngredient = (ingName) => {
         if (ingredientsQty[ingName] > 0) {
-            dispatch(ingredientsActions.updateIngredient({ingName : ingName, qty : -1, price : -PRICE[ingName]}))
+            dispatch(ingredientsActions.updateIngredient({ingName : ingName, qty : -1, price : -basePrice[ingName]}))
         }
     }
 
@@ -62,9 +61,23 @@ const BurgerController = () => {
     }
 
     // this method will navigate to the order summary page
-    const toOrderSummary = () => {
+    const buyHandler = () => {
         dispatch(dialogActions.updateOpen(true))        
         navigate('/build-burger/buy/order-summary')
+    }
+
+    const addToCartHandler = async () => {
+        const cartItem = {
+            ...ingredientsQty,
+            userId
+        }
+
+        try {
+            await addDoc(collection(db, 'cart'), cartItem)
+            resetHandler()
+        } catch (err) {
+            console.log('cant add to the cart')
+        }
     }
 
 
@@ -144,13 +157,22 @@ const BurgerController = () => {
                     Reset
                 </Button>
                 <Button 
+                    sx = {{borderRadius : 0, mr : 2}} 
+                    variant = 'contained' 
+                    size = 'large' 
+                    color = 'warning'
+                    onClick = {buyHandler}
+                >
+                    Buy Now
+                </Button>
+                <Button 
                     sx = {{borderRadius : 0}} 
                     variant = 'contained' 
                     size = 'large' 
                     color = 'warning'
-                    onClick = {toOrderSummary}
+                    onClick = {addToCartHandler}
                 >
-                    Buy
+                    Add to Cart
                 </Button>
             </Box>
         </Stack>

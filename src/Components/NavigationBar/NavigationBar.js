@@ -45,12 +45,6 @@ const NavigationBar = () => {
                                 </Link>
                             : null
                             }                       
-                            {token ? 
-                                <Link to = '/cart' onClick = {openCartHandler} className = {[classes.link, 'me-4'].join(' ')}>
-                                    Cart
-                                </Link>
-                            : null
-                            }
                             <Link to = '#' className = {[classes.link, 'me-4'].join(' ')}>
                                 Pricing
                             </Link>
@@ -59,10 +53,16 @@ const NavigationBar = () => {
                             </Link>
                             {token ? 
                                 <UserProfile />
-                            :
+                                :
                                 <Button variant = 'contained' size = 'small' onClick = {openLogInHandler} className = {classes.signIn}>
                                     Sign In
                                 </Button>                            
+                            }
+                            {token ? 
+                                <Link to = '/cart' onClick = {openCartHandler} className = {[classes.link, 'me-4'].join(' ')}>
+                                    Cart
+                                </Link>
+                            : null
                             }
                         </Stack>
                     </Nav>
