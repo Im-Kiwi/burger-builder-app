@@ -22,13 +22,13 @@ const BuyBurger = () => {
     useEffect(() => {
         switch (activeStep) {
             case 0:
-                navigate('/build-burger/buy/delivery-address')
+                navigate('/buy/delivery-address')
                 break;
             case 1:
-                navigate('/build-burger/buy/order-summary')
+                navigate('/buy/order-summary')
                 break;
             case 2:
-                navigate('/build-burger/buy/payment')
+                navigate('/buy/payment')
                 break;
             default:
                 return null

@@ -33,7 +33,7 @@ const Layout = () => {
     const openDialog = useSelector(state => state.dialog.open)
     const isSignUpForm = useSelector(state => state.userForm.isSignUpForm)
     const cartItems = useSelector(state => state.cart.cartItems)
-
+    console.log(cartItems)
     // making sure user stays logged in once it logs in
     onAuthStateChanged(auth, (currentUser) => {
         if (currentUser) {
@@ -56,24 +56,48 @@ const Layout = () => {
         }
     }
 
+    const totalPrice = () => {
+        const priceArr = cartItems.map(item => {
+            return item.totalPrice
+        })
+
+        if (cartItems.length !== 0) {
+            return priceArr.reduce((total, price) => total + price)
+        } else {
+            return 0
+        }
+    }
+
+    const cartInfo = {
+        totalCartItems : cartItems.length,
+        totalPrice : totalPrice
+    }
+
     return (
         <div>
             <Routes>
                 <Route path = '/' element = {<Home />} /> 
-                <Route path = 'build-burger' element = {token ? <BuildBurger closeDialogHandler = {closeDialogHandler} /> : null}>
-                    <Route path = 'buy' element = {<BuyBurger />}>
-                        <Route path = 'delivery-address' element = {<DeliveryAddress />} />
-                        <Route path = 'order-summary' element = {<OrderSummary />} />
-                        <Route path = 'payment' element = {<Payment />} />
+                <Route path = 'build-burger' element = {token ? <BuildBurger closeDialogHandler = {closeDialogHandler} /> : null} />
+                <Route path = 'buy' element = {<BuildBurger closeDialogHandler = {closeDialogHandler} />} >
+                    <Route index element = {<BuyBurger />} />
+                    <Route path = 'delivery-address' element = {<BuyBurger />}>
+                        <Route index element = {<DeliveryAddress />} />
+                    </Route>
+                    <Route path = 'order-summary' element = {<BuyBurger />}>
+                        <Route index element = {<OrderSummary />} />
+                    </Route>
+                    <Route path = 'payment' element = {<BuyBurger />}>
+                        <Route index element = {<Payment />} />
                     </Route>
                 </Route>
-                <Route path = 'cart' element = {<BuildBurger closeDialogHandler = {closeDialogHandler}/>}>
+                <Route path = 'cart' element = {
+                    <BuildBurger 
+                        title = 'My Cart' 
+                        priceInfo = {cartInfo.totalPrice() ? `Total Price (${cartInfo.totalCartItems} items) : $ ${cartInfo.totalPrice().toFixed(2)}` : null} 
+                        closeDialogHandler = {closeDialogHandler}
+                    />
+                }>
                     <Route index element = {<Cart />} />
-                    <Route path = 'buy' element = {<BuyBurger />}>
-                        <Route path = 'delivery-address' element = {<DeliveryAddress />} />
-                        <Route path = 'order-summary' element = {<OrderSummary />} />
-                        <Route path = 'payment' element = {<Payment />} />
-                    </Route>
                 </Route>
             </Routes>
 

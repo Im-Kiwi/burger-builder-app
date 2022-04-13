@@ -5,7 +5,6 @@ import { v4 as uniqueId } from 'uuid'
 
 // -------- importing from other files ----------------
 import { burgerBase, burgerTop, Cheese, Coke, Lettuce, Meat, Bacon,Tomato, Sauce, Fries, Onion } from '../../path-to-assets/pathToImages'
-import * as global from '../../identifiers/identifiers'
 
 const Burger = (props) => {
 

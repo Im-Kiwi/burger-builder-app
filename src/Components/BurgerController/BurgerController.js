@@ -63,7 +63,7 @@ const BurgerController = () => {
     // this method will navigate to the order summary page
     const buyHandler = () => {
         dispatch(dialogActions.updateOpen(true))        
-        navigate('/build-burger/buy/order-summary')
+        navigate('/buy')
     }
 
     const addToCartHandler = async () => {

@@ -29,7 +29,7 @@ const BuildBurger = (props) => {
                     <BurgerController />
                 </Grid>
             </Grid>
-            <FullDialogs isOrderSummary = {true} closeDialogHandler = {props.closeDialogHandler} >
+            <FullDialogs title = {props.title} priceInfo = {props.priceInfo} isOrderSummary = {true} closeDialogHandler = {props.closeDialogHandler} >
                 <Outlet />
             </FullDialogs>
         </Box>        
