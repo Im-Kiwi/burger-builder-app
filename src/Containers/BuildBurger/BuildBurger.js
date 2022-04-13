@@ -16,10 +16,6 @@ const BuildBurger = (props) => {
 
     const token = useSelector(state => state.userForm.currentUser.token)
 
-    useEffect(() => {
-        navigate(`/build-burger`)
-    }, [])
-
     return (
         <Box className = {classes.main}>
             <NavigationBar />

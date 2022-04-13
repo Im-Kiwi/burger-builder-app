@@ -2,15 +2,15 @@ import { createSlice } from '@reduxjs/toolkit'
 import * as global from '../../identifiers/identifiers'
 
 const initialState = {
-    Lettuce : 0,
-    Cheese : 0,
-    Onion : 0,
-    Tomato : 0,
-    Meat : 0,    
-    Bacon : 0,
-    Coke : false,
-    Sauce : false,
-    FrenchFries : false,
+    Lettuce : {name : 'Lettuce', qty : 0},
+    Cheese : {name : 'Cheese', qty : 0},
+    Onion : {name : 'Onion', qty : 0},
+    Tomato : {name : 'Tomato', qty : 0},
+    Meat : {name : 'Meat', qty : 0},    
+    Bacon : {name : 'Bacon', qty : 0},
+    Coke : {name : 'Coke', status : false},
+    Sauce : {name : 'Sauce', status : false},
+    FrenchFries : {name : 'FrenchFries', status : false},
     totalPrice : 0.20,
     burgerName : ''
 }
@@ -21,28 +21,28 @@ const ingredientsReducer = createSlice({
     reducers : {
         updateIngredient (state, action) {
             switch (action.payload.ingName) {
-                case global.lettuce:
-                    state.Lettuce = state.Lettuce + action.payload.qty
+                case state.Lettuce.name:
+                    state.Lettuce.qty = state.Lettuce.qty + action.payload.qty
                     state.totalPrice = state.totalPrice + action.payload.price
                     break;  
-                case global.cheese:
-                    state.Cheese = state.Cheese + action.payload.qty
+                case state.Cheese.name:
+                    state.Cheese.qty = state.Cheese.qty + action.payload.qty
                     state.totalPrice = state.totalPrice + action.payload.price
                     break;
-                case global.meat:
-                    state.Meat = state.Meat + action.payload.qty
+                case state.Meat.name:
+                    state.Meat.qty = state.Meat.qty + action.payload.qty
                     state.totalPrice = state.totalPrice + action.payload.price
                     break;
-                case global.onion:
-                    state.Onion = state.Onion + action.payload.qty
+                case state.Onion.name:
+                    state.Onion.qty = state.Onion.qty + action.payload.qty
                     state.totalPrice = state.totalPrice + action.payload.price
                     break;
-                case global.tomato:
-                    state.Tomato = state.Tomato + action.payload.qty
+                case state.Tomato.name:
+                    state.Tomato.qty = state.Tomato.qty + action.payload.qty
                     state.totalPrice = state.totalPrice + action.payload.price
                     break;
-                case global.bacon:
-                    state.Bacon = state.Bacon + action.payload.qty
+                case state.Bacon.name:
+                    state.Bacon.qty = state.Bacon.qty + action.payload.qty
                     state.totalPrice = state.totalPrice + action.payload.price
                     break;            
                 default:
@@ -51,29 +51,29 @@ const ingredientsReducer = createSlice({
         },
         updateAddExtras (state, action) {
             switch (action.payload.name) {
-                case global.coke:
-                    state.Coke = action.payload.value
+                case state.Coke.name:
+                    state.Coke.status = action.payload.value
                     break;
-                case global.sauce:
-                    state.Sauce = action.payload.value
+                case state.Sauce.name:
+                    state.Sauce.status = action.payload.value
                     break;
-                case global.frenchFries:
-                    state.FrenchFries = action.payload.value
+                case state.FrenchFries.name:
+                    state.FrenchFries.status = action.payload.value
                     break;
                 default:
                     break;
             }
         },
         updateReset (state) {
-            state.Lettuce = 0
-            state.Cheese = 0
-            state.Meat = 0
-            state.Tomato = 0
-            state.Bacon = 0
-            state.Onion = 0
-            state.Coke = false
-            state.Sauce = false
-            state.FrenchFries = false
+            state.Lettuce.qty = 0
+            state.Cheese.qty = 0
+            state.Meat.qty = 0
+            state.Tomato.qty = 0
+            state.Bacon.qty = 0
+            state.Onion.qty = 0
+            state.Coke.status = false
+            state.Sauce.status = false
+            state.FrenchFries.status = false
             state.totalPrice = 0.20
         },
         updateBurgerName (state, action) {

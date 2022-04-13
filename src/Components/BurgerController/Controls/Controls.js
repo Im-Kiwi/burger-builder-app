@@ -11,18 +11,18 @@ const Controls = (props) => {
         <Container>
             <Grid container justifyContent = 'center' alignItems = 'center'>
                 <Grid xs = {6} item>
-                    <Typography className = 'text-light'>{props.ingredient}</Typography>
+                    <Typography className = 'text-light'>{props.ingredient.name}</Typography>
                 </Grid>
                 <Grid display = 'flex' justifyContent= 'center' xs = {2} item>
-                    <IconButton className = 'text-light' onClick = {() => props.removeIngredient(props.ingredient)}>
+                    <IconButton className = 'text-light' onClick = {() => props.removeIngredient(props.ingredient.name)}>
                         <FontAwesomeIcon icon={faCircleMinus} />
                     </IconButton>
                 </Grid>
                 <Grid xs = {1} item>
-                    <Typography className = 'text-light text-center'>{props.qty[props.ingredient]}</Typography>
+                    <Typography className = 'text-light text-center'>{props.ingredient.qty}</Typography>
                 </Grid>
                 <Grid display = 'flex' justifyContent = 'center' xs = {2} item>
-                    <IconButton onClick = {() => props.addIngredient(props.ingredient)} className = 'text-light'>
+                    <IconButton onClick = {() => props.addIngredient(props.ingredient.name)} className = 'text-light'>
                         <FontAwesomeIcon icon={faCirclePlus} />
                     </IconButton>
                 </Grid>

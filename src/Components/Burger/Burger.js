@@ -9,50 +9,23 @@ import * as global from '../../identifiers/identifiers'
 
 const Burger = (props) => {
 
-    const ingredientsQty = useSelector(state => state.ingredients)
-    const checkCoke = useSelector(state => state.ingredients.Coke)
-    const checkSauce = useSelector(state => state.ingredients.Sauce)
-    const checkFries = useSelector(state => state.ingredients.FrenchFries)
+    const checkCoke = useSelector(state => state.ingredients.Coke.status)
+    const checkSauce = useSelector(state => state.ingredients.Sauce.status)
+    const checkFries = useSelector(state => state.ingredients.FrenchFries.status)
     
-    const keyIngredient = Object.keys(ingredientsQty).slice(0,6) // collecting first six keys of object as first 6 keys are the ingredients with value quantity 
-
-    let slicesArr = [] 
-    // by using the keys of ingredientsQty, object is pushed inside slicesArr 
-    // each object consist the info of each slices like name, qty and image of that slice
-    for (let ing of keyIngredient) {
-        let img
-        switch (ing) { // switch statement is used to dynamically assign image to the specific slice
-            case global.lettuce:
-                img = Lettuce
-                break;
-            case global.cheese:
-                img = Cheese
-                break;
-            case global.meat:
-                img = Meat
-                break;
-            case global.bacon:
-                img = Bacon
-                break;
-            case global.tomato:
-                img = Tomato
-                break;
-            case global.onion:
-                img = Onion
-                break;
-            default:
-                img = null
-        }
-        slicesArr.push({name : ing, qty : ingredientsQty[ing], img : img})
+    let ingredients = {
+        Lettuce : {...props.ingredients.Lettuce, img : Lettuce},
+        Cheese : {...props.ingredients.Cheese, img : Cheese},
+        Onion : {...props.ingredients.Onion, img : Onion},
+        Tomato : {...props.ingredients.Tomato, img : Tomato},
+        Meat : {...props.ingredients.Meat, img : Meat},
+        Bacon : {...props.ingredients.Bacon, img : Bacon}
     }
 
-    // here all slices are shown depending upon the quantity
     let allSlices = []
-    for (let slice of slicesArr) {
-        if (slice.qty) {
-            for (let i=0; i<slice.qty; i++) {
-                allSlices.push(slice)
-            }
+    for (let ing in ingredients) {
+        for (let i=0; i <= ingredients[ing].qty - 1; i++) {
+            allSlices.push({name : ingredients[ing].name, img : ingredients[ing].img})
         }
     }
 

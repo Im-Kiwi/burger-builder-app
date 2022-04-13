@@ -7,6 +7,7 @@ import Burger from '../Burger/Burger'
 const DisplayBurger = (props) => {
 
     const totalPrice = useSelector(state => state.ingredients.totalPrice)
+    const ingredients = useSelector(state => state.ingredients)
 
     return (
         <Grid 
@@ -22,7 +23,7 @@ const DisplayBurger = (props) => {
                     direction = 'row'  
                     alignItems = 'flex-end'
                 >
-                    <Burger width = '250px' />                
+                    <Burger ingredients = {ingredients} width = '250px' />                
                 </Stack>
             </Grid>
             <Grid item xs = {12}>

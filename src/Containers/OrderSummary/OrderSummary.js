@@ -22,8 +22,9 @@ const OrderSummary = (props) => {
 
     // taking ingredients properties and pushing it into an array
     let ingredientsArr = []
+
     for (let key of ingredientsKey) {
-        ingredientsArr.push({name : key, qty : ingredients[key]})
+        ingredientsArr.push({name : ingredients[key].name, qty : ingredients[key].qty})
     }
 
     const confirmBurgerHandler = () => {
@@ -41,7 +42,7 @@ const OrderSummary = (props) => {
                 direction = 'row'  
                 alignItems = 'flex-end'
             >
-                <Burger width = '50px' />
+                <Burger ingredients = {ingredients} width = '50px' />
             </Stack>
             <Box sx = {{mt : 5}}>            
                 <Stack direction = 'row' justifyContent = 'center' alignItems = 'center' spacing = {10}>
@@ -68,7 +69,7 @@ const OrderSummary = (props) => {
                     <List>
                         <ListItem>
                             <Stack direction = 'row' alignItems = 'center' spacing = {2}>
-                                {ingredients.Coke ?
+                                {ingredients.Coke.status ?
                                     <CheckRounded />
                                 :
                                     <CloseRounded />
@@ -78,7 +79,7 @@ const OrderSummary = (props) => {
                         </ListItem>
                         <ListItem>
                             <Stack direction = 'row' alignItems = 'center' spacing = {2}>
-                                {ingredients.Sauce ?
+                                {ingredients.Sauce.status ?
                                     <CheckRounded />
                                 :
                                     <CloseRounded />
@@ -88,7 +89,7 @@ const OrderSummary = (props) => {
                         </ListItem>
                         <ListItem>
                             <Stack direction = 'row' alignItems = 'center' spacing = {2}>
-                                {ingredients.FrenchFries ?
+                                {ingredients.FrenchFries.status ?
                                     <CheckRounded />
                                 :
                                     <CloseRounded />

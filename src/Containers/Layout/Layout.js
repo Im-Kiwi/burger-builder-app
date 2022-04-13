@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Box } from '@mui/material'
 import { Routes, Route, Outlet, Redirect, useNavigate, useLocation } from 'react-router'
 import { onAuthStateChanged } from 'firebase/auth'
-import { auth } from '../../firebase-setup'
+import { auth, db } from '../../firebase-setup'
+import { query, where, getDocs, collection, doc, getDoc } from 'firebase/firestore'
 
 // ----------------- importing from other files -----------------
 import Home from "../Home/Home"
@@ -19,6 +20,8 @@ import BuyBurger from '../BuyBurger/BuyBurger'
 import DeliveryAddress from '../../Components/DeliveryAddress/DeliveryAddress'
 import Payment from '../../Components/Payment/Payment'
 import Cart from '../../Components/Cart/Cart'
+import { cartActions } from '../../Store/reducer/cart'
+import { basePriceActions } from '../../Store/reducer/basePrice'
 
 const Layout = () => {
     const dispatch = useDispatch()
@@ -26,8 +29,10 @@ const Layout = () => {
     const { pathname } = useLocation()
 
     const token = useSelector(state => state.userForm.currentUser.token)
+    const userId = useSelector(state => state.userForm.currentUser.userId)
     const openDialog = useSelector(state => state.dialog.open)
     const isSignUpForm = useSelector(state => state.userForm.isSignUpForm)
+    const cartItems = useSelector(state => state.cart.cartItems)
 
     // making sure user stays logged in once it logs in
     onAuthStateChanged(auth, (currentUser) => {
@@ -64,6 +69,11 @@ const Layout = () => {
                 </Route>
                 <Route path = 'cart' element = {<BuildBurger closeDialogHandler = {closeDialogHandler}/>}>
                     <Route index element = {<Cart />} />
+                    <Route path = 'buy' element = {<BuyBurger />}>
+                        <Route path = 'delivery-address' element = {<DeliveryAddress />} />
+                        <Route path = 'order-summary' element = {<OrderSummary />} />
+                        <Route path = 'payment' element = {<Payment />} />
+                    </Route>
                 </Route>
             </Routes>
 

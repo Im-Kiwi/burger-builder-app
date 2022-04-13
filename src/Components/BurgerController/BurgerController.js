@@ -19,7 +19,7 @@ const BurgerController = () => {
 
     const [basePrice, setBasePrice] = useState({}) // It contains the base prices of the ingredients
 
-    const ingredientsQty = useSelector(state => state.ingredients) // contains the ingredients object
+    const ingredients = useSelector(state => state.ingredients) // contains the ingredients object
     const burgerName = useSelector(state => state.ingredients.burgerName)
     const userId = useSelector(state => state.userForm.currentUser.userId)
 
@@ -34,23 +34,23 @@ const BurgerController = () => {
 
     // method to add slices on the burger
     const addIngredient = (ingName) => {
-        if (ingredientsQty[ingName] < 5) {
+        if (ingredients[ingName].qty < 5) {
             dispatch(ingredientsActions.updateIngredient({ingName : ingName, qty : 1, price : basePrice[ingName] }))
         }
     }
 
     // method to remove slices from the burger
     const removeIngredient = (ingName) => {
-        if (ingredientsQty[ingName] > 0) {
+        if (ingredients[ingName].qty > 0) {
             dispatch(ingredientsActions.updateIngredient({ingName : ingName, qty : -1, price : -basePrice[ingName]}))
         }
     }
 
     // method to control checkboxes
     const checkBoxHandler = (name) => {
-        if (ingredientsQty[name]) {
+        if (ingredients[name].status) {
             dispatch(ingredientsActions.updateAddExtras({name : name, value : false}))    
-        } else if (!ingredientsQty[name]) {
+        } else if (!ingredients[name].status) {
             dispatch(ingredientsActions.updateAddExtras({name : name, value : true}))    
         }
     }
@@ -68,10 +68,10 @@ const BurgerController = () => {
 
     const addToCartHandler = async () => {
         const cartItem = {
-            ...ingredientsQty,
+            ...ingredients,
             userId
         }
-
+        console.log(cartItem)
         try {
             await addDoc(collection(db, 'cart'), cartItem)
             resetHandler()
@@ -93,56 +93,50 @@ const BurgerController = () => {
                 />
             </ThemeProvider>
             <Controls 
-                qty = {ingredientsQty} 
-                ingredient = {global.lettuce} 
+                ingredient = {ingredients.Lettuce} 
                 addIngredient = {addIngredient} 
                 removeIngredient = {removeIngredient} />
             <Controls 
-                qty = {ingredientsQty} 
-                ingredient = {global.cheese} 
+                ingredient = {ingredients.Cheese} 
                 addIngredient = {addIngredient} 
                 removeIngredient = {removeIngredient} />
             <Controls 
-                qty = {ingredientsQty} 
-                ingredient = {global.onion} 
+                ingredient = {ingredients.Onion} 
                 addIngredient = {addIngredient} 
                 removeIngredient = {removeIngredient} />
             <Controls 
-                qty = {ingredientsQty} 
-                ingredient = {global.tomato} 
+                ingredient = {ingredients.Tomato} 
                 addIngredient = {addIngredient} 
                 removeIngredient = {removeIngredient} />
             <Controls 
-                qty = {ingredientsQty} 
-                ingredient = {global.meat} 
+                ingredient = {ingredients.Meat} 
                 addIngredient = {addIngredient} 
                 removeIngredient = {removeIngredient} />
             <Controls 
-                qty = {ingredientsQty} 
-                ingredient = {global.bacon} 
+                ingredient = {ingredients.Bacon} 
                 addIngredient = {addIngredient} 
                 removeIngredient = {removeIngredient} /> 
             <Box className = 'text-light'>
                 <Typography>Include Extras</Typography>                                                             
                 <Stack direction = 'row' alignItems = 'center'>
                     <Checkbox 
-                        checked = {ingredientsQty.Coke} 
-                        onChange = {() => checkBoxHandler(global.coke)} 
+                        checked = {ingredients.Coke.status} 
+                        onChange = {() => checkBoxHandler(ingredients.Coke.name)} 
                         className = 'text-light' />
                     <Typography>Coke</Typography>                                                             
                 </Stack>
                 <Stack direction = 'row' alignItems = 'center'>
                     <Checkbox 
-                        checked = {ingredientsQty.Sauce} 
+                        checked = {ingredients.Sauce.status} 
                         className = 'text-light' 
-                        onChange = {() => checkBoxHandler(global.sauce)} />
+                        onChange = {() => checkBoxHandler(ingredients.Sauce.name)} />
                     <Typography>Sauce</Typography>                                                             
                 </Stack>
                 <Stack direction = 'row' alignItems = 'center'>
                     <Checkbox 
-                        checked = {ingredientsQty.FrenchFries} 
+                        checked = {ingredients.FrenchFries.status} 
                         className = 'text-light' 
-                        onChange = {() => checkBoxHandler(global.frenchFries)} />
+                        onChange = {() => checkBoxHandler(ingredients.FrenchFries.name)} />
                     <Typography>French Fries</Typography>                                                             
                 </Stack>
             </Box>
