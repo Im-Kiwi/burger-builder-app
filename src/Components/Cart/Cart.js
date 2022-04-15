@@ -76,7 +76,7 @@ const Cart = () => {
                                             </Stack>
                                             <Stack direction = 'column' sx = {{ml : 2}}>
                                                 <Stack className = 'text-light' direction = 'row' justifyContent = 'center' sx = {{mb : 2}}>
-                                                    <Typography variant = 'h6'>Burger Name {item.BurgerName}</Typography>
+                                                    <Typography variant = 'h6'>Burger Name - {item.burgerName}</Typography>
                                                     <Typography sx = {{ml : 5}} variant = 'h6'>${item.totalPrice.toFixed(2)}</Typography>
                                                 </Stack>
                                                 <Stack direction = 'row'>

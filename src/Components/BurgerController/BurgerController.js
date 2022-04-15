@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from  'react-router-dom'
 import { Grid, Typography, IconButton, Stack, Box, Checkbox, TextField, Button } from '@mui/material'
 import { ThemeProvider } from '@mui/material'
 import { getDoc, doc, addDoc, collection } from 'firebase/firestore'
@@ -9,9 +9,10 @@ import { getDoc, doc, addDoc, collection } from 'firebase/firestore'
 import { db } from '../../firebase-setup'
 import Controls from './Controls/Controls'
 import { ingredientsActions } from '../../Store/reducer/ingredients'
-import * as global from '../../identifiers/identifiers'
 import { userFormTheme } from '../../theme/mui-theme'
 import { dialogActions } from '../../Store/reducer/dialog'
+import { cartActions } from '../../Store/reducer/cart'
+import { stepperActions } from '../../Store/reducer/stepper'
 
 const BurgerController = () => {
     const dispatch = useDispatch()
@@ -62,8 +63,11 @@ const BurgerController = () => {
 
     // this method will navigate to the order summary page
     const buyHandler = () => {
-        dispatch(dialogActions.updateOpen(true))        
-        navigate('/buy')
+        dispatch(dialogActions.updateOpen(true)) // to open the full screen dialog(modal)  
+        dispatch(cartActions.updateCurrentItem(ingredients))      
+        dispatch(cartActions.updateInstantBuy(true)) // to update the instantBuy value to true means user buying directly not adding the item to the cart
+        dispatch(stepperActions.resetStepper(0)) // to reset the stepper
+        navigate('/buy/delivery-address')
     }
 
     const addToCartHandler = async () => {

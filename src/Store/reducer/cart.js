@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    cartItems : []      
+    cartItems : [],
+    currentItem : [],
+    instantBuy : false    
 }
 
 const cartReducer = createSlice({
@@ -10,6 +12,12 @@ const cartReducer = createSlice({
     reducers : {
         updateCartItems (state, action) {
             state.cartItems = action.payload
+        },
+        updateCurrentItem (state, action) {
+            state.currentItem = [action.payload]
+        },
+        updateInstantBuy (state, action) {
+            state.instantBuy = action.payload
         }
     }
 })

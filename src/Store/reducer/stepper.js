@@ -10,6 +10,9 @@ const stepperReducer = createSlice({
     reducers : {
         updateActiveStep (state, action) {
             state.activeStep = state.activeStep + action.payload
+        },
+        resetStepper (state, action) {
+            state.activeStep = action.payload
         }
     }
 })

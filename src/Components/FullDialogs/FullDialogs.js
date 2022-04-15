@@ -11,6 +11,7 @@ import { dialogActions } from '../../Store/reducer/dialog'
 //  ------------------- importing from files ------------------
 import SignUp from '../SignUp/SignUp'
 import LogIn from '../LogIn/LogIn'
+import { cartActions } from '../../Store/reducer/cart'
 
 const FullDialogs = (props) => {
     const dispatch = useDispatch()
@@ -25,7 +26,8 @@ const FullDialogs = (props) => {
     // })
 
     const placeOrderHandler = () => {
-        navigate('/cart/delivery-address')
+        dispatch(cartActions.updateInstantBuy(false))
+        navigate('/buy/delivery-address')
     }
 
     return (
