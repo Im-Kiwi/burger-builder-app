@@ -1,16 +1,11 @@
-import { useState, forwardRef } from 'react'
+import { forwardRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { Dialog, Box, AppBar, Toolbar, IconButton, Typography, Stack, Slide } from '@mui/material'
-import { Button, List, ListItem, ListItemText, Divider } from '@mui/material'
+import { Button } from '@mui/material'
 import { CloseRounded } from '@mui/icons-material'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
-import { dialogActions } from '../../Store/reducer/dialog'
 
 //  ------------------- importing from files ------------------
-import SignUp from '../SignUp/SignUp'
-import LogIn from '../LogIn/LogIn'
 import { cartActions } from '../../Store/reducer/cart'
 
 const FullDialogs = (props) => {
@@ -19,11 +14,10 @@ const FullDialogs = (props) => {
     const { pathname } = useLocation()
 
     const openDialog = useSelector(state => state.dialog.open)
-    const isSignUpForm = useSelector(state => state.userForm.isSignUpForm) 
 
-    // const Transition = forwardRef(function Transition(props, ref) {
-    //     return <Slide direction = 'up' ref = {ref} {...props} />
-    // })
+    const Transition = forwardRef(function Transition(props, ref) {
+        return <Slide direction = 'up' ref = {ref} {...props} />
+    })
 
     const placeOrderHandler = () => {
         dispatch(cartActions.updateInstantBuy(false))

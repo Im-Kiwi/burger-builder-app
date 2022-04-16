@@ -5,6 +5,7 @@ import ingredientsReducer from "./reducer/ingredients";
 import stepperReducer from "./reducer/stepper";
 import basePriceReducer from "./reducer/basePrice";
 import cartReducer from "./reducer/cart";
+import ordersReducer from "./reducer/orders";
 
 const store = configureStore({
     reducer : {
@@ -13,9 +14,9 @@ const store = configureStore({
         ingredients : ingredientsReducer.reducer,
         stepper : stepperReducer.reducer,
         basePrice : basePriceReducer.reducer,
-        cart : cartReducer.reducer
+        cart : cartReducer.reducer,
+        orders : ordersReducer.reducer
     }
-    
 });
 
 export default store;

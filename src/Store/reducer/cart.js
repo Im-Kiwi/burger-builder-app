@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
     cartItems : [],
     currentItem : [],
-    instantBuy : false    
+    instantBuy : false, // if user buying a burger directly without adding it into cart
 }
 
 const cartReducer = createSlice({

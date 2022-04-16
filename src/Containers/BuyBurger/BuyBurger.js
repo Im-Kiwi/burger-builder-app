@@ -5,9 +5,6 @@ import { Container, Stepper, Step, StepLabel, Box, Button, AppBar, Fab } from '@
 import { Routes, Route } from 'react-router-dom'
 
 // --------- importing from other files ----------------
-import OrderSummary from "../OrderSummary/OrderSummary"
-import DeliveryAddress from '../../Components/DeliveryAddress/DeliveryAddress'
-import Payment from '../../Components/Payment/Payment'
 import { stepperActions } from '../../Store/reducer/stepper'
 import useStyle from './style'
 
