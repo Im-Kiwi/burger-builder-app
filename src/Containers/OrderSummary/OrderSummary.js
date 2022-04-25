@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux'
-import { Typography, Card, Grid, Box, Stack,  } from '@mui/material'
+import { Typography, Card, Grid, Box, Stack, Paper, Divider  } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { v4 as uniqueId } from 'uuid'
-import { faUser, faMobileRetro, faHouse, faCity } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faMobileRetro, faHouse, faCity, faCheck } from '@fortawesome/free-solid-svg-icons'
 
 // -------------- importing from other files ------------
 import Burger from '../../Components/Burger/Burger'
@@ -12,8 +12,7 @@ const OrderSummary = (props) => {
     const instantBuy = useSelector(state => state.cart.instantBuy)
     const items = useSelector(state => !instantBuy ? state.cart.cartItems : state.cart.currentItem)
     const address = useSelector(state => state.orders.deliveryAddress)
-    console.log(address)
-
+    
     const ingredientsArr = items.map(item => {
         return {
             Lettuce : item.Lettuce,
@@ -27,104 +26,124 @@ const OrderSummary = (props) => {
             FrenchFries : item.FrenchFries
         }
     })
-
+    
     return (                
-        <Grid container sx = {{mt : 5, overflowY : 'auto', maxHeight : 590}} display = 'flex' justifyContent = 'center' spacing = {2} alignItems = 'center'>
-            <Grid xs = {12} item display = 'flex' container flexWrap = 'wrap' justifyContent = 'center' spacing = {1}>
+        <Grid container sx = {{mt : 5, maxHeight : 590}} display = 'flex' justifyContent = 'center' alignItems = 'center'>
+            <Grid xs = {12} md = {8} item  display = 'flex'  flexWrap = 'wrap' justifyContent = 'center' gap = {2}>
                 {ingredientsArr.map(ing => {
                     return (
-                        <Grid item key = {uniqueId()}>
-                            <Card  sx = {{p:2, width : 300, borderRadius : 0}}>
-                                <Grid container alignItems = 'center'>
-                                    <Grid item xs = {8} display = 'flex' justifyContent = 'center'>
-                                        <Burger ingredients = {ing} width = '80px' />
+                            <Paper key = {uniqueId()}  sx = {{width : 300, height: 250, borderRadius : 0, backgroundColor : '#403d39'}}>                                    
+                                <Grid container sx = {{width : 300, height : 250}} columnSpacing = {1}>
+                                    <Grid item xs = {8} display = 'flex' alignItems = 'center' justifyContent = 'center' position = 'relative'>  
+                                    <Box sx = {{                                                                                        
+                                            position : 'absolute',
+                                            backgroundColor : "#f9b826",
+                                            width : '100%',
+                                            height : 250,
+                                            border : 'solid 3px #110f12',
+                                            transform : 'scaleY(1.09) !important',
+                                            left : 0,
+                                            zIndex : 1
+                                    }}></Box>
+                                            <Box sx = {{zIndex : 10}}>
+                                                <Burger ingredients = {ing} width = '80px' />
+                                            </Box>
                                     </Grid>
-                                    <Grid item xs = {4} display = 'flex' flexDirection = 'column' justifyContent = 'center'>
+                                    <Grid item 
+                                        xs = {4} 
+                                        display = 'flex' 
+                                        flexDirection = 'column' 
+                                        justifyContent = 'center' 
+                                        sx = {{color : '#f9b826', fontSize : '0.8rem'}}
+                                    >
                                         <Grid container display = 'flex' flexDirection = 'row'>
                                             <Grid item xs = {10}>
-                                                <Typography>{ing.Lettuce.name}</Typography>
+                                                <Typography sx = {{fontSize : '0.9rem'}}>{ing.Lettuce.name}</Typography>
                                             </Grid>
                                             <Grid item xs = {2}>
-                                                <Typography>{ing.Lettuce.qty}</Typography>
+                                                <Typography sx = {{fontSize : '0.9rem'}}>{ing.Lettuce.qty}</Typography>
                                             </Grid>
                                         </Grid>
                                         <Grid container display = 'flex' flexDirection = 'row'>
                                             <Grid item xs = {10}>
-                                                <Typography>{ing.Cheese.name}</Typography>
+                                                <Typography sx = {{fontSize : '0.9rem'}}>{ing.Cheese.name}</Typography>
                                             </Grid>
                                             <Grid item xs = {2}>
-                                                <Typography>{ing.Cheese.qty}</Typography>
+                                                <Typography sx = {{fontSize : '0.9rem'}}>{ing.Cheese.qty}</Typography>
                                             </Grid>
                                         </Grid>
                                         <Grid container display = 'flex' flexDirection = 'row'>
                                             <Grid item xs = {10}>
-                                                <Typography>{ing.Onion.name}</Typography>
+                                                <Typography sx = {{fontSize : '0.9rem'}}>{ing.Onion.name}</Typography>
                                             </Grid>
                                             <Grid item xs = {2}>
-                                                <Typography>{ing.Onion.qty}</Typography>
+                                                <Typography sx = {{fontSize : '0.9rem'}}>{ing.Onion.qty}</Typography>
                                             </Grid>
                                         </Grid>
                                         <Grid container display = 'flex' flexDirection = 'row'>
                                             <Grid item xs = {10}>
-                                                <Typography>{ing.Tomato.name}</Typography>
+                                                <Typography sx = {{fontSize : '0.9rem'}}>{ing.Tomato.name}</Typography>
                                             </Grid>
                                             <Grid item xs = {2}>
-                                                <Typography>{ing.Tomato.qty}</Typography>
+                                                <Typography sx = {{fontSize : '0.9rem'}}>{ing.Tomato.qty}</Typography>
                                             </Grid>
                                         </Grid>
                                         <Grid container display = 'flex' flexDirection = 'row'>
                                             <Grid item xs = {10}>
-                                                <Typography>{ing.Meat.name}</Typography>
+                                                <Typography sx = {{fontSize : '0.9rem'}}>{ing.Meat.name}</Typography>
                                             </Grid>
                                             <Grid item xs = {2}>
-                                                <Typography>{ing.Meat.qty}</Typography>
+                                                <Typography sx = {{fontSize : '0.9rem'}}>{ing.Meat.qty}</Typography>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid container>
+                                            <Grid item xs = {10}>
+                                                <Typography sx = {{fontSize : '0.9rem'}}>{ing.Bacon.name}</Typography>
+                                            </Grid>
+                                            <Grid item xs = {2}>
+                                                <Typography sx = {{fontSize : '0.9rem'}}>{ing.Bacon.qty}</Typography>
+                                            </Grid>
+                                        </Grid>
+                                        <Divider sx = {{mt: 1, mb:1}} />
+                                        <Grid container>
+                                            <Grid item xs = {3}>
+                                                <FontAwesomeIcon icon = {faCheck} />
+                                            </Grid>
+                                            <Grid item xs = {8}>
+                                                <Typography sx = {{fontSize : '0.9rem'}}>{ing.Coke.name}</Typography>
                                             </Grid>
                                         </Grid>
                                         <Grid container display = 'flex' flexDirection = 'row'>
-                                            <Grid item xs = {10}>
-                                                <Typography>{ing.Bacon.name}</Typography>
+                                            <Grid item xs = {3}>
+                                                <FontAwesomeIcon icon = {faCheck} />
                                             </Grid>
-                                            <Grid item xs = {2}>
-                                                <Typography>{ing.Bacon.qty}</Typography>
+                                            <Grid item xs = {8}>
+                                                <Typography sx = {{fontSize : '0.9rem'}}>French Fries</Typography>
                                             </Grid>
-                                        </Grid>
-                                        <Grid container display = 'flex' flexDirection = 'row'>
-                                            <Grid item xs = {10}>
-                                                <Typography>{ing.Bacon.name}</Typography>
-                                            </Grid>
-                                            <Grid item xs = {2}>
-                                                <Typography>{ing.Bacon.qty}</Typography>
-                                            </Grid>
-                                        </Grid>
-                                        <Grid container display = 'flex' flexDirection = 'row'>
-                                            <Grid item xs = {10}>
-                                                <Typography>{ing.Bacon.name}</Typography>
-                                            </Grid>
-                                            <Grid item xs = {2}>
-                                                <Typography>{ing.Bacon.qty}</Typography>
-                                            </Grid>
-                                        </Grid>
-                                        <Grid container display = 'flex' flexDirection = 'row'>
-                                            <Grid item xs = {10}>
-                                                <Typography>{ing.Bacon.name}</Typography>
-                                            </Grid>
-                                            <Grid item xs = {2}>
-                                                <Typography>{ing.Bacon.qty}</Typography>
-                                            </Grid>
-                                        </Grid>                                                                       
+                                        </Grid>                                                                                                              
                                     </Grid>
                                 </Grid>
-                            </Card>
-                        </Grid>
+                            </Paper>
                     )
                 })}
             </Grid>
-            <Grid item xs = {12} className = 'text-center' container>
-                <Grid item xs = {12} sx = {{mb:2}}>
+            <Grid item container 
+                xs = {12} md = {4} 
+                className = 'text-center'  
+                display = 'flex' 
+                flexDirection = 'column' 
+                justifyContent = 'flex-start'
+            >
+                <Grid item  sx = {{mb:2}}>
                     <Typography>display address</Typography>
                 </Grid>
-                <Grid item xs = {12} display = 'flex' justifyContent = 'center' >
-                    <Box sx = {{width : '60%'}} display = 'flex' flexDirection = 'column' alignItems = 'center'>
+                <Grid item  display = 'flex' justifyContent = 'center' >
+                    <Box 
+                        sx = {{width : '60%'}} 
+                        display = 'flex' 
+                        flexDirection = 'column' 
+                        alignItems = 'center'
+                    >
                         <Stack direction = 'row' spacing = {5} justifyContent = 'flex-start' sx = {{width : 300}}>
                             <Stack direction = 'row' justifyContent= 'center' spacing = {1}  alignItems = 'center'>
                                 <FontAwesomeIcon icon = {faUser} style = {{fontSize : '1.5rem', color : '#110f12'}} />
@@ -135,7 +154,13 @@ const OrderSummary = (props) => {
                                 <Typography sx = {{color : '#110f12'}}>{address.phoneNumber}</Typography>
                             </Stack>
                         </Stack>
-                        <Stack direction = 'row' spacing = {2} sx = {{mt:2, width : 300}} justifyContent= 'flex-start' alignItems = 'center'>
+                        <Stack 
+                            direction = 'row' 
+                            spacing = {2} 
+                            sx = {{mt:2, width : 300}} 
+                            justifyContent= 'flex-start' 
+                            alignItems = 'center'
+                        >
                             <FontAwesomeIcon icon = {faHouse} style = {{fontSize : '1.5rem', color : '#110f12'}} />
                             <Typography sx = {{color : '#110f12'}}>{address.address}</Typography>
                         </Stack>

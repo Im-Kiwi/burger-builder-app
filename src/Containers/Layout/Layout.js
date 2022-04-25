@@ -1,39 +1,61 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Box } from '@mui/material'
-import { Routes, Route, Outlet, Redirect, useNavigate, useLocation } from 'react-router'
+import { Routes, Route, useNavigate, useLocation, useMatch } from 'react-router'
 import { onAuthStateChanged } from 'firebase/auth'
-import { auth, db } from '../../firebase-setup'
-import { query, where, getDocs, collection, doc, getDoc } from 'firebase/firestore'
+import { query, where, getDocs, collection } from 'firebase/firestore'
 
-// ----------------- importing from other files -----------------
+// ----------------- importing other components -----------------
 import Home from "../Home/Home"
-import NavigationBar from '../../Components/NavigationBar/NavigationBar'
 import BuildBurger from '../BuildBurger/BuildBurger'
 import FullDialogs from '../../Components/FullDialogs/FullDialogs'
-import { userFormActions } from '../../Store/reducer/userForm'
 import OrderSummary from '../OrderSummary/OrderSummary'
 import SignUp from '../../Components/SignUp/SignUp'
 import LogIn from '../../Components/LogIn/LogIn'
-import { dialogActions } from '../../Store/reducer/dialog'
 import BuyBurger from '../BuyBurger/BuyBurger'
 import DeliveryAddress from '../../Components/DeliveryAddress/DeliveryAddress'
 import Payment from '../../Components/Payment/Payment'
 import Cart from '../../Components/Cart/Cart'
-import { cartActions } from '../../Store/reducer/cart'
-import { basePriceActions } from '../../Store/reducer/basePrice'
+
+// --------- importing redux actions ------------
+import { userFormActions } from '../../Store/reducer/userForm'
+import { ordersActions } from '../../Store/reducer/orders'
+import { dialogActions } from '../../Store/reducer/dialog'
+import { deliveryAddressActions } from '../../Store/reducer/deliveryAddress'
+
+// ----------- importing others ------------
+import { auth, db } from '../../firebase-setup'
 
 const Layout = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { pathname } = useLocation()
-
+    const { pathname, state } = useLocation()
+    
     const token = useSelector(state => state.userForm.currentUser.token)
     const userId = useSelector(state => state.userForm.currentUser.userId)
-    const openDialog = useSelector(state => state.dialog.open)
     const isSignUpForm = useSelector(state => state.userForm.isSignUpForm)
     const cartItems = useSelector(state => state.cart.cartItems)
-    console.log(cartItems)
+
+    useEffect(() => {
+        // fetching addresses from the database
+        (async () => {
+            try {
+                const findAddresses = query(collection(db, 'addresses'), where('userId', '==', userId))
+
+                const getAddresses = await getDocs(findAddresses)
+                let AddressesArr = []
+                
+                getAddresses.forEach(doc => {
+                    AddressesArr.push(doc.data())
+                })
+                dispatch(deliveryAddressActions.updateAddressStore(AddressesArr))
+            } catch (err) {
+                console.log('unable to fetch data')
+            }
+        })();
+
+    }, [userId])
+
     // making sure user stays logged in once it logs in
     onAuthStateChanged(auth, (currentUser) => {
         if (currentUser) {
@@ -49,11 +71,9 @@ const Layout = () => {
     // to close the fullscreen dialog box
     const closeDialogHandler = (flag) => {
         dispatch(dialogActions.updateOpen(false))
-        if (flag && token) {
-            navigate(`/build-burger`)
-        } else {
-            navigate(pathname)
-        }
+        dispatch(ordersActions.updateDeliveryAddress({}))
+        localStorage.removeItem('id')
+        navigate(state)        
     }
 
     const totalPrice = () => {
@@ -73,12 +93,30 @@ const Layout = () => {
         totalPrice : totalPrice
     }
 
+    let dynamicElement
+
+    switch (state) {
+        case '/build-burger':
+            dynamicElement = (
+                <BuildBurger 
+                    title = 'My Cart' 
+                    priceInfo = {cartInfo.totalPrice() ? `Total Price (${cartInfo.totalCartItems} items) : $ ${cartInfo.totalPrice().toFixed(2)}` : null} 
+                    closeDialogHandler = {closeDialogHandler}
+                />
+            )
+            break;
+        case '/':
+            dynamicElement = <Home closeDialogHandler = {closeDialogHandler} />
+            break;        
+    }
+
+
     return (
         <div>
             <Routes>
                 <Route path = '/' element = {<Home />} /> 
                 <Route path = 'build-burger' element = {token ? <BuildBurger closeDialogHandler = {closeDialogHandler} /> : null} />
-                <Route path = 'buy' element = {<BuildBurger closeDialogHandler = {closeDialogHandler} />} >
+                <Route path = 'buy' element = {<BuildBurger closeDialogHandler = {closeDialogHandler} />}>
                     <Route index element = {<BuyBurger />} />
                     <Route path = 'delivery-address' element = {<BuyBurger />}>
                         <Route index element = {<DeliveryAddress />} />
@@ -90,13 +128,7 @@ const Layout = () => {
                         <Route index element = {<Payment />} />
                     </Route>
                 </Route>
-                <Route path = 'cart' element = {
-                    <BuildBurger 
-                        title = 'My Cart' 
-                        priceInfo = {cartInfo.totalPrice() ? `Total Price (${cartInfo.totalCartItems} items) : $ ${cartInfo.totalPrice().toFixed(2)}` : null} 
-                        closeDialogHandler = {closeDialogHandler}
-                    />
-                }>
+                <Route path = 'cart' element = {dynamicElement}>
                     <Route index element = {<Cart />} />
                 </Route>
             </Routes>

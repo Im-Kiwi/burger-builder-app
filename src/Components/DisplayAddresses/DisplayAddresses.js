@@ -10,41 +10,25 @@ import { faUser, faMobileRetro, faHouse, faCity } from '@fortawesome/free-solid-
 import { db } from '../../firebase-setup'
 import { CustomPaper, addressBox } from './styles'
 import { ordersActions } from '../../Store/reducer/orders'
+import { deliveryAddressActions } from '../../Store/reducer/deliveryAddress'
 
 
 const DisplayAddresses = () => {
     const dispatch = useDispatch()
     const classes = addressBox()
 
-    const [addressStore, setAddressesStore] = useState([])
-    const [toggle, setToggle] = useState(false)
-    const idForStyling = Number(localStorage.getItem('id')) // the value by default stores as a string in local storage
-
+    const addressStore = useSelector(state => state.deliveryAddresses.addressStore)
+    console.log(addressStore)
+    const [toggle, setToggle] = useState(false) // helps to re-render the component after value get stores in local storage
+    const idForStyling = parseInt(localStorage.getItem('id')) // the value by default stores as a string in local storage
     const userId = useSelector(state => state.userForm.currentUser.userId)
-
-
-
-    useEffect(() => {
-        // fetching addresses from the database
-        (async () => {
-            const findAddresses = query(collection(db, 'addresses'), where('userId', '==', userId))
-            const getAddresses = await getDocs(findAddresses)
-            let AddressesArr = []
-            
-            getAddresses.forEach(doc => {
-                AddressesArr.push(doc.data())
-            })
-            setAddressesStore([...AddressesArr])
-        })();
-
-    }, [])
 
     // method to select an address from bunch of addresses
     const selectAddressHandler = (address, id) => {
+        localStorage.setItem('id', id)
         setToggle(v => !v)
         if (addressStore[id] === address) {
             dispatch(ordersActions.updateDeliveryAddress(address))
-            localStorage.setItem('id', id)
         }
     }
 
@@ -54,7 +38,7 @@ const DisplayAddresses = () => {
             display = 'flex' 
             flexWrap = 'wrap' 
             justifyContent = 'center' 
-            gap = {2} 
+            gap = {1} 
             sx = {{backgroundColor : '#110f12'}}
         >
             {addressStore.map((address, index) => {

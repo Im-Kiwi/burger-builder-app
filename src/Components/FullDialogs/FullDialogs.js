@@ -22,6 +22,7 @@ const FullDialogs = (props) => {
     const placeOrderHandler = () => {
         dispatch(cartActions.updateInstantBuy(false))
         navigate('/buy/delivery-address')
+        localStorage.removeItem('id')
     }
 
     return (

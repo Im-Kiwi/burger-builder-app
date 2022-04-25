@@ -2,14 +2,17 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    
+    addressStore : [],
+    addAddressToggle : false 
 }
 
 const deliveryAddress = createSlice({
-    name : 'delivery address validation',
+    name : 'addresses',
     initialState,
     reducers : {
-        
+        updateAddressStore (state, action) {
+            state.addressStore = [...action.payload] 
+        }
     }
 })
 

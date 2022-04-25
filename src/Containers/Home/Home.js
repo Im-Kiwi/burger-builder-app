@@ -1,14 +1,16 @@
 import { Stack, Box, Grid, Typography, Button } from '@mui/material';
 import { useDispatch } from 'react-redux'
+import { Outlet } from 'react-router-dom';
 
 // ------------- importing from files -------------------
 import classes from './Home.module.css'
 import { dialogActions } from '../../Store/reducer/dialog';
 import { userFormActions } from '../../Store/reducer/userForm';
 import NavigationBar from '../../Components/NavigationBar/NavigationBar';
+import FullDialogs from '../../Components/FullDialogs/FullDialogs';
 
 
-const Home = () => {
+const Home = (props) => {
     const dispatch = useDispatch()
 
     const dialogHandler = () => {
@@ -42,6 +44,9 @@ const Home = () => {
                 <Grid xs = {6} item className = {classes.secondItem}>
                 </Grid>                
             </Grid>
+            <FullDialogs closeDialogHandler = {props.closeDialogHandler}>
+                <Outlet />
+            </FullDialogs>
         </Box>
     )
 }

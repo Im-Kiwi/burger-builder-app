@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { Box, Container, Grid, Paper, Stack, Typography, Chip, Button } from '@mui/material'
 import { getDocs, query, where, doc, collection, deleteDoc } from 'firebase/firestore'
 import { useSelector, useDispatch } from 'react-redux'
@@ -11,14 +12,14 @@ import Burger from '../Burger/Burger'
 
 const Cart = () => {
     const dispatch = useDispatch()
-
+    
     // to make sure useEffect execute everytime user clicks on delete button to delete cart item
     const [isDelete, setIsDelete] = useState(false) 
 
     // getting values from the redux store
     const userId = useSelector(state => state.userForm.currentUser.userId)
     const cartItems = useSelector(state => state.cart.cartItems)
-    
+
     useEffect (() => {
         // fetching cart items from database
         (async () => {

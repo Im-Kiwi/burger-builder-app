@@ -13,6 +13,7 @@ import UserProfile from '../UserProfile/UserProfile'
 const NavigationBar = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const { pathname } = useLocation()
 
     const token = useSelector(state => state.userForm.currentUser.token)
 
@@ -59,7 +60,7 @@ const NavigationBar = () => {
                                 </Button>                            
                             }
                             {token ? 
-                                <Link to = '/cart' onClick = {openCartHandler} className = {[classes.link, 'me-4'].join(' ')}>
+                                <Link to = '/cart' state = {pathname} onClick = {openCartHandler} className = {[classes.link, 'me-4'].join(' ')}>
                                     Cart
                                 </Link>
                             : null

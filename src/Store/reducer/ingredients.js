@@ -11,7 +11,7 @@ const initialState = {
     Coke : {name : 'Coke', status : false},
     Sauce : {name : 'Sauce', status : false},
     FrenchFries : {name : 'FrenchFries', status : false},
-    totalPrice : 0.20,
+    totalPrice : 0,
     burgerName : ''
 }
 

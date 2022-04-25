@@ -3,8 +3,8 @@ import { useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { addDoc, collection } from 'firebase/firestore'
-import { Stack, Box, Typography, Button, Paper, TextField, MenuItem, IconButton, FormControl, FormLabel, Radio, RadioGroup, FormControlLabel  } from '@mui/material'
+import { addDoc, collection, onSnapshot, query, where, doc } from 'firebase/firestore'
+import { Stack, Box, Paper, TextField, MenuItem, IconButton, FormControl, FormLabel, Radio, RadioGroup, FormControlLabel  } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
 import { CloseRounded } from '@mui/icons-material'
 import { v4 as uniqueId } from 'uuid'
@@ -57,7 +57,13 @@ const AddAddress = (props) => {
         }
 
         try {
-            await addDoc(collection(db, 'addresses'), addressData)        
+            await addDoc(collection(db, 'addresses'), addressData) 
+            const toListen = query(collection(db, 'addresses'))
+            const addressesUpdate = onSnapshot(toListen, (result) => {
+
+                console.log(result.data())
+            })
+
         } catch(err) {
             console.log('Some error! Please try again later')
         }
@@ -163,7 +169,7 @@ const AddAddress = (props) => {
                                         SelectProps = {{
                                             MenuProps : {
                                                 sx : {
-                                                    height : 200
+                                                    maxHeight : 200
                                                 }
                                             }                                                    
                                         }}                                                                                             
@@ -220,7 +226,6 @@ const AddAddress = (props) => {
                                 </RadioGroup>
                             </FormControl>
                         </Stack>                        
-
                     </ThemeProvider>
                     <CustomButton 
                         sx = {{mt : 2}} 

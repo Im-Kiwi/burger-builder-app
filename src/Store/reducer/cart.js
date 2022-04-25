@@ -19,7 +19,7 @@ const cartReducer = createSlice({
         updateInstantBuy (state, action) {
             state.instantBuy = action.payload
         }
-    }
+    },
 })
 
 export const cartActions = cartReducer.actions
