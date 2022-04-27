@@ -11,6 +11,7 @@ import { db } from '../../firebase-setup'
 import { cartActions } from '../../Store/reducer/cart'
 import Burger from '../Burger/Burger'
 import { dialogActions } from '../../Store/reducer/dialog'
+import { CustomPaper, CustomGrid, CustomStack } from './styles'
 
 const Cart = () => {
     const dispatch = useDispatch()
@@ -59,51 +60,80 @@ const Cart = () => {
                     <Box>
                         {cartItems.map(item => {                    
                             return (
-                                <Paper key = {uniqueId()} sx = {{mt : 1, mb : 3, borderRadius : 50, backgroundColor: '#110f12'}}>
-                                    <Grid container alignItems = 'center' justifyContent = 'space-around' sx = {{position : 'relative', borderRadius: 50, width : 'inherit', height: 'inherit'}}>
-                                        <Grid item display = 'flex' flexDirection = 'row' flexWrap = 'wrap' alignItems = 'center' sx = {{width : 'inherit', height : 'inherit'}}>
-                                            <Stack 
+                                <CustomPaper key = {uniqueId()}>
+                                    <CustomGrid container                                          
+                                        justifyContent = 'space-around'                             
+                                    >
+                                        <Grid item display = 'flex' flexDirection = 'row' alignItems = 'center' sx = {{mb:5}}>
+                                            <CustomStack
                                                 direction = 'row'  
-                                                alignItems = 'flex-end' 
-                                                sx = {{
-                                                    minHeight : 110,
-                                                    backgroundColor : '#f9b826',
-                                                    borderRadius : 50, 
-                                                    border : 'solid 2px #805b10',
-                                                    pl:4, pr:4, pt:0.5, pb:0.8,
-                                                    transform : 'scale(1.13,1.13)'
-                                                    }}   
+                                                alignItems = 'flex-end'                                                 
                                                 className = 'shadow-sm'
                                             >
-                                                <Burger ingredients = {item} width = {50} />
+                                                <Burger ingredients = {item} width = {45} />
+                                            </CustomStack>
+                                        </Grid>
+                                        <Grid item display = 'flex' flexDirection = 'column' alignItems = 'center'>
+                                            <Stack 
+                                                className = 'text-light' 
+                                                direction = 'row' 
+                                                justifyContent = 'center' 
+                                                sx = {{mb : 2, mt: 1}}
+                                            >
+                                                <Typography variant = 'h6'>Burger Name - {item.burgerName}</Typography>
+                                                <Typography sx = {{ml : 5}} variant = 'h6'>${item.totalPrice.toFixed(2)}</Typography>
                                             </Stack>
-                                            <Stack direction = 'column' sx = {{ml : 2}}>
-                                                <Stack className = 'text-light' direction = 'row' justifyContent = 'center' sx = {{mb : 2}}>
-                                                    <Typography variant = 'h6'>Burger Name - {item.burgerName}</Typography>
-                                                    <Typography sx = {{ml : 5}} variant = 'h6'>${item.totalPrice.toFixed(2)}</Typography>
-                                                </Stack>
-                                                <Stack direction = 'row'>
-                                                    <Typography className = 'text-light'>Ingredients</Typography>                                                                                        
-                                                    <Chip sx = {{ml : 2, mb : 1}} label = {`${item.Lettuce.name} ${item.Lettuce.qty}`} color = 'warning' size = 'small' />
-                                                    <Chip sx = {{ml : 2, mb : 1}} label = {`${item.Cheese.name} ${item.Cheese.qty}`} color = 'warning' size = 'small' />
-                                                    <Chip sx = {{ml : 2, mb : 1}} label = {`${item.Onion.name} ${item.Onion.qty}`} color = 'warning' size = 'small' />
-                                                    <Chip sx = {{ml : 2, mb : 1}} label = {`${item.Tomato.name} ${item.Tomato.qty}`} color = 'warning' size = 'small' />
-                                                    <Chip sx = {{ml : 2, mb : 1}} label = {`${item.Meat.name} ${item.Meat.qty}`} color = 'warning' size = 'small' />
-                                                    <Chip sx = {{ml : 2, mb : 1}} label = {`${item.Bacon.name} ${item.Bacon.qty}`} color = 'warning' size = 'small' />
-                                                </Stack>
+                                            <Stack direction = 'row'>
+                                                <Typography className = 'text-light'>Ingredients</Typography>                                                                                        
+                                                <Chip 
+                                                    sx = {{ml : 2, mb : 1}} 
+                                                    label = {`${item.Lettuce.name} ${item.Lettuce.qty}`} 
+                                                    color = 'warning' 
+                                                    size = 'small' 
+                                                />
+                                                <Chip 
+                                                    sx = {{ml : 2, mb : 1}} 
+                                                    label = {`${item.Cheese.name} ${item.Cheese.qty}`} 
+                                                    color = 'warning' 
+                                                    size = 'small'
+                                                />
+                                                <Chip 
+                                                    sx = {{ml : 2, mb : 1}} 
+                                                    label = {`${item.Onion.name} ${item.Onion.qty}`} 
+                                                    color = 'warning' 
+                                                    size = 'small'
+                                                />
+                                                <Chip 
+                                                    sx = {{ml : 2, mb : 1}} 
+                                                    label = {`${item.Tomato.name} ${item.Tomato.qty}`} 
+                                                    color = 'warning' 
+                                                    size = 'small' 
+                                                />
+                                                <Chip 
+                                                    sx = {{ml : 2, mb : 1}} 
+                                                    label = {`${item.Meat.name} ${item.Meat.qty}`} 
+                                                    color = 'warning' 
+                                                    size = 'small' 
+                                                />
+                                                <Chip 
+                                                    sx = {{ml : 2, mb : 1}} 
+                                                    label = {`${item.Bacon.name} ${item.Bacon.qty}`} 
+                                                    color = 'warning' 
+                                                    size = 'small' 
+                                                />
                                             </Stack>
                                         </Grid>
-                                        <Grid item >
+                                        <Grid item>
                                             <IconButton 
                                                 onClick = {() => deleteCartItemHandler(item.dataId)} 
-                                                sx = {{border : 'solid 1px #f9b826'}}
+                                                sx = {{border : 'solid 1px #f9b826', mt:2.5}}
                                                 size = 'large'
                                             >
                                                 <DeleteForever sx = {{color : '#f9b826', fontSize : 30}} />                
                                             </IconButton>
-                                        </Grid>
-                                    </Grid>
-                                </Paper>
+                                        </Grid>                                      
+                                    </CustomGrid>
+                                </CustomPaper>
                             )
                         })}
                     </Box>

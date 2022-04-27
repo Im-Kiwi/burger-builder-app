@@ -35,15 +35,16 @@ const Burger = (props) => {
             : null
             }                
             <Stack direction = 'column'>
-                <Image src = {burgerTop} width = {props.width}/>
+                <Image src = {burgerTop} style = {{maxWidth : props.width}} />
                 {allSlices.map((slice) => {                           
                     return (
                         <Image                        
                             key = {uniqueId()}
                             src = {slice.img} 
                             alt = {`${slice.name} slice`} 
-                            width = {props.width}
-                            />
+                            style = {{maxWidth : props.width}}
+                            
+                        />
                     )
                     })
                 }
