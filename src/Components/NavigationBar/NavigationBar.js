@@ -37,11 +37,11 @@ const NavigationBar = () => {
                     </Navbar.Brand>
                     <Nav className = 'w-100'>
                         <Stack className = 'w-100' direction = 'row' justifyContent = 'flex-end' alignItems = 'center'>
-                            <Link to = '/' className = {[classes.link, 'me-4'].join(' ')}>
+                            <Link to = '/' state = {pathname} className = {[classes.link, 'me-4'].join(' ')}>
                                 Home
                             </Link> 
                             {token ? 
-                                <Link to = '/build-burger' className = {[classes.link, 'me-4'].join(' ')}>
+                                <Link to = '/build-burger' state = {pathname} className = {[classes.link, 'me-4'].join(' ')}>
                                     Build
                                 </Link>
                             : null

@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     addressStore : [],
-    addAddressToggle : false 
+    addAddressToggle : false, // when user add address, this value will change which is use as a dependency in useEffect
 }
 
 const deliveryAddress = createSlice({
@@ -13,7 +13,7 @@ const deliveryAddress = createSlice({
         updateAddressStore (state, action) {
             state.addressStore = [...action.payload] 
         }
-    }
+    }        
 })
 
 export const deliveryAddressActions = deliveryAddress.actions

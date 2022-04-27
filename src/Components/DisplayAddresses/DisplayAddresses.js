@@ -21,7 +21,6 @@ const DisplayAddresses = () => {
     console.log(addressStore)
     const [toggle, setToggle] = useState(false) // helps to re-render the component after value get stores in local storage
     const idForStyling = parseInt(localStorage.getItem('id')) // the value by default stores as a string in local storage
-    const userId = useSelector(state => state.userForm.currentUser.userId)
 
     // method to select an address from bunch of addresses
     const selectAddressHandler = (address, id) => {

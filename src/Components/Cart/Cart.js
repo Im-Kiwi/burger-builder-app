@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Box, Container, Grid, Paper, Stack, Typography, Chip, Button } from '@mui/material'
+import { Box, Container, Grid, Paper, Stack, Typography, Chip, Button, IconButton } from '@mui/material'
+import { DeleteForever } from '@mui/icons-material'
 import { getDocs, query, where, doc, collection, deleteDoc } from 'firebase/firestore'
 import { useSelector, useDispatch } from 'react-redux'
 import { v4 as uniqueId } from 'uuid'
@@ -9,6 +10,7 @@ import { v4 as uniqueId } from 'uuid'
 import { db } from '../../firebase-setup'
 import { cartActions } from '../../Store/reducer/cart'
 import Burger from '../Burger/Burger'
+import { dialogActions } from '../../Store/reducer/dialog'
 
 const Cart = () => {
     const dispatch = useDispatch()
@@ -92,7 +94,13 @@ const Cart = () => {
                                             </Stack>
                                         </Grid>
                                         <Grid item >
-                                            <Button onClick = {() => deleteCartItemHandler(item.dataId)} variant = 'outlined' color = 'success'>Delete</Button>
+                                            <IconButton 
+                                                onClick = {() => deleteCartItemHandler(item.dataId)} 
+                                                sx = {{border : 'solid 1px #f9b826'}}
+                                                size = 'large'
+                                            >
+                                                <DeleteForever sx = {{color : '#f9b826', fontSize : 30}} />                
+                                            </IconButton>
                                         </Grid>
                                     </Grid>
                                 </Paper>

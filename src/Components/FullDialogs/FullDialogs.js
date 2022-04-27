@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Dialog, Box, AppBar, Toolbar, IconButton, Typography, Stack, Slide } from '@mui/material'
 import { Button } from '@mui/material'
 import { CloseRounded } from '@mui/icons-material'
+import { motion } from 'framer-motion'
 
 //  ------------------- importing from files ------------------
 import { cartActions } from '../../Store/reducer/cart'
@@ -15,9 +16,9 @@ const FullDialogs = (props) => {
 
     const openDialog = useSelector(state => state.dialog.open)
 
-    const Transition = forwardRef(function Transition(props, ref) {
-        return <Slide direction = 'up' ref = {ref} {...props} />
-    })
+    // const Transition = forwardRef(function Transition(props, ref) {
+    //     return <Slide direction="up" ref={ref} {...props} />;
+    // })
 
     const placeOrderHandler = () => {
         dispatch(cartActions.updateInstantBuy(false))
@@ -26,7 +27,7 @@ const FullDialogs = (props) => {
     }
 
     return (
-        <Dialog fullScreen open = {openDialog} onClose = {() => props.closeDialogHandler(props.isOrderSummary)}>
+        <Dialog fullScreen open = {openDialog}>
             <Box sx = {{width : '100vw', height : '100vh', backgroundColor : '#f9b826'}}>
                 <AppBar sx = {{backgroundColor : '#110f12'}}>
                     <Toolbar>
@@ -39,21 +40,25 @@ const FullDialogs = (props) => {
                                 </>
                                 : null
                             }
-                            <IconButton size = 'large' 
-                                className = 'text-light' 
-                                onClick = {() => props.closeDialogHandler(props.isOrderSummary)}
-                                position = 'relative'
-                                sx = {{float : 'right'}}
-                                aria-label = 'close'
-                            >
-                                <CloseRounded />
-                            </IconButton>
+                            <motion.div whileHover = {{rotate : 90}} >
+                                <IconButton size = 'large' 
+                                    className = 'text-light' 
+                                    onClick = {() => props.closeDialogHandler(props.isOrderSummary)}
+                                    position = 'relative'
+                                    sx = {{float : 'right'}}
+                                    aria-label = 'close'
+                                    disableRipple
+                                    >
+                                    <CloseRounded style = {{color: '#f9b826'}} />
+                                </IconButton>
+                            </motion.div>
                         </Stack>
                     </Toolbar>
                 </AppBar>
                 {props.children}                
             </Box>   
         </Dialog>
+            
     )
 }
 

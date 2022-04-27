@@ -74,7 +74,7 @@ const ingredientsReducer = createSlice({
             state.Coke.status = false
             state.Sauce.status = false
             state.FrenchFries.status = false
-            state.totalPrice = 0.20
+            state.totalPrice = 0
         },
         updateBurgerName (state, action) {
             state.burgerName = action.payload

@@ -17,6 +17,7 @@ import { stepperActions } from '../../Store/reducer/stepper'
 const BurgerController = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const { pathname } = useLocation()
 
     const [basePrice, setBasePrice] = useState({}) // It contains the base prices of the ingredients
 
@@ -56,7 +57,7 @@ const BurgerController = () => {
         }
     }
 
-    // it will reset the ingredients, total price
+    // it will reset the ingredients and total price
     const resetHandler = () => {
         dispatch(ingredientsActions.updateReset())
     }
@@ -67,9 +68,11 @@ const BurgerController = () => {
         dispatch(cartActions.updateCurrentItem(ingredients))      
         dispatch(cartActions.updateInstantBuy(true)) // to update the instantBuy value to true means user buying directly not adding the item to the cart
         dispatch(stepperActions.resetStepper(0)) // to reset the stepper
-        navigate('/buy/delivery-address')
+        console.log(pathname)
+        navigate('/buy/delivery-address', {state : pathname})
     }
 
+    // method to add item into cart
     const addToCartHandler = async () => {
         const cartItem = {
             ...ingredients,
@@ -128,14 +131,7 @@ const BurgerController = () => {
                         onChange = {() => checkBoxHandler(ingredients.Coke.name)} 
                         className = 'text-light' />
                     <Typography>Coke</Typography>                                                             
-                </Stack>
-                <Stack direction = 'row' alignItems = 'center'>
-                    <Checkbox 
-                        checked = {ingredients.Sauce.status} 
-                        className = 'text-light' 
-                        onChange = {() => checkBoxHandler(ingredients.Sauce.name)} />
-                    <Typography>Sauce</Typography>                                                             
-                </Stack>
+                </Stack>               
                 <Stack direction = 'row' alignItems = 'center'>
                     <Checkbox 
                         checked = {ingredients.FrenchFries.status} 

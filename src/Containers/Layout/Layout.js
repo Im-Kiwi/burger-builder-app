@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Box } from '@mui/material'
-import { Routes, Route, useNavigate, useLocation, useMatch } from 'react-router'
+import { Routes, Route, useNavigate, useLocation } from 'react-router'
 import { onAuthStateChanged } from 'firebase/auth'
 import { query, where, getDocs, collection } from 'firebase/firestore'
 
@@ -29,7 +29,7 @@ import { auth, db } from '../../firebase-setup'
 const Layout = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { pathname, state } = useLocation()
+    const { pathname, state } = useLocation() // here the state will store the path from where the user opened full dialog component
     
     const token = useSelector(state => state.userForm.currentUser.token)
     const userId = useSelector(state => state.userForm.currentUser.userId)
@@ -56,6 +56,19 @@ const Layout = () => {
 
     }, [userId])
 
+    useEffect(() => {
+        // this will make sure that full dialog wont close when user try to reload the page
+        let cartPath = '/cart'
+        let buyPath = '/buy'
+
+        const checkCartPath = pathname.match(cartPath)
+        const checkBuyPath = pathname.match(buyPath)    
+        
+        if (Boolean(checkCartPath) || Boolean(checkBuyPath)) {
+            dispatch(dialogActions.updateOpen(true))
+        }        
+    }, [])
+
     // making sure user stays logged in once it logs in
     onAuthStateChanged(auth, (currentUser) => {
         if (currentUser) {
@@ -73,7 +86,11 @@ const Layout = () => {
         dispatch(dialogActions.updateOpen(false))
         dispatch(ordersActions.updateDeliveryAddress({}))
         localStorage.removeItem('id')
-        navigate(state)        
+        if (flag && token) { // if user clicked on buy now button then closing the full dialog will navigate to /build-burger
+            navigate('/build-burger')
+        } else { // else it will navigate the user to the page from where it opened the full dialog
+            navigate(state)        
+        }
     }
 
     const totalPrice = () => {
@@ -95,6 +112,8 @@ const Layout = () => {
 
     let dynamicElement
 
+    // dynamically displaying components depending upon the pathname
+    // below 'state' contains the previous path from where user navigate from, this will help in rendering the component assign to 'dynamicElement'
     switch (state) {
         case '/build-burger':
             dynamicElement = (
@@ -109,7 +128,6 @@ const Layout = () => {
             dynamicElement = <Home closeDialogHandler = {closeDialogHandler} />
             break;        
     }
-
 
     return (
         <div>

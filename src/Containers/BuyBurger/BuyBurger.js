@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate, useLocation, Outlet } from 'react-router-dom'
-import { Container, Stepper, Step, StepLabel, Box, Button, AppBar, Fab } from '@mui/material'
+import { useNavigate, Outlet } from 'react-router-dom'
+import { Container, Stepper, Step, StepLabel, Fab } from '@mui/material'
 import { Routes, Route } from 'react-router-dom'
 
 // --------- importing from other files ----------------
@@ -15,6 +15,11 @@ const BuyBurger = () => {
     const classes = useStyle()
 
     const activeStep = useSelector(state => state.stepper.activeStep)
+    const selectedAddress = useSelector(state => state.orders.deliveryAddress)
+
+    // fetching the keys of selectedAddress
+    // will use to disable or enable the 'NEXT' button depending upon
+    const selectedAddressKey = Object.keys(selectedAddress)
 
     useEffect(() => {
         switch (activeStep) {
@@ -68,14 +73,18 @@ const BuyBurger = () => {
             >
                 Back
             </Fab> 
-            <Fab 
-                variant = 'extended' size = 'small'
-                color = 'secondary' 
-                onClick = {nextHandler}
-                className = {[classes.both, classes.next].join(' ')}
-            >
-                Next
-            </Fab>           
+            {true ?
+                <Fab 
+                    variant = 'extended' size = 'small'
+                    color = 'secondary' 
+                    onClick = {nextHandler}
+                    className = {[classes.both, classes.next].join(' ')}
+                    disabled = {selectedAddressKey.length === 0}
+                >
+                    Next
+                </Fab>           
+            : null
+            }
         </Container>
     )
 }

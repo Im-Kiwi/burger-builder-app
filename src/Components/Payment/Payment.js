@@ -12,13 +12,13 @@ const Payment = () => {
     
     let totalPrice
 
-    // total price depends upon whether user buying one item or more then 1 items
+    // total price depends upon whether user buying one item or more then 1 items and instandBuy tells us that (if true means buying 1 item)
+    // user buying more then 1 items means he/she added those items in cart first, thus using cart items to extract price from each and summed up
     if (instantBuy) {
         totalPrice = currentItem[0].totalPrice.toFixed(1)
     } else {
-        totalPrice = cartItems.reduce((total, price) => {
-            return total + price
-        }).toFixed(1)
+        const tempData = cartItems.map(item => item.totalPrice)
+        totalPrice = tempData.reduce((total, price) => total + price).toFixed(1)
     }
 
     return (
@@ -77,7 +77,7 @@ const Payment = () => {
                         <Grid sx = {{mt : 2, mb : 2}} container justifyContent = 'space-evenly'>
                             <Grid item xs = {8}>
                                 <Typography sx = {{color : '#f9b826', ml : 6}}>
-                                    {instantBuy ? `${currentItem.length} item` : `${cartItems.length} items`}
+                                    {instantBuy ? `${currentItem.length} Item` : `${cartItems.length} Items`}
                                 </Typography>
                             </Grid>
                             <Grid item xs = {4}>
