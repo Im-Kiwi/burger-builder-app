@@ -36,7 +36,7 @@ const BurgerController = () => {
 
     // method to add slices on the burger
     const addIngredient = (ingName) => {
-        if (ingredients[ingName].qty < 5) {
+        if (ingredients[ingName].qty < 3) {
             dispatch(ingredientsActions.updateIngredient({ingName : ingName, qty : 1, price : basePrice[ingName] }))
         }
     }
