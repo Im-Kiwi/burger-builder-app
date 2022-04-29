@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
-import { Container, Box, TextField, InputBase, Button, Paper, Typography } from '@mui/material';
+import { Container, Stack, TextField, Button, Paper, Typography, MenuItem } from '@mui/material'
+import { Image } from 'react-bootstrap'
 import { useForm  } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup'; 
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -9,16 +10,19 @@ import { auth } from '../../firebase-setup';
 import * as yup from 'yup';
 import { ThemeProvider } from '@mui/material/styles'
 import { db } from '../../firebase-setup'
-import { doc, addDoc, collection, query, where, getDocs } from 'firebase/firestore'
+import { addDoc, collection, query, where, getDocs } from 'firebase/firestore'
 
 //  ----------------- importing from other files ------------------
 import { userFormActions } from '../../Store/reducer/userForm';
 import { userFormTheme } from '../../theme/mui-theme';
 import { dialogActions } from '../../Store/reducer/dialog';
+import { Phili, Ind } from '../../path-to-assets/pathToImages'
 
 const SignUp = props => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    const [selectNation, setSelectNation] = useState('')
 
     const isUserNameExist = useSelector(state => state.userForm.isUserNameExist)
 
@@ -26,6 +30,7 @@ const SignUp = props => {
     const signUpSchema = yup.object().shape({
         userName : yup.string().required('please add user name').max(8, 'user name should not exceed 8 characters'),
         emailAddress : yup.string().required('please add email address').matches(/^[a-z]+[.a-z]+[a-z]+@[a-z]+[.]+[a-z]+[a-z]$/, 'invalid email'),
+        nationality : yup.string().required('Mention the nationality'),        
         password : yup.string().required('mention password').min(6, 'password must be 6 character long').max(12, 'password must be less then 12 characters'),
         confirmPassword : yup.string().required().oneOf([yup.ref('password')], 'password does not match')        
     });
@@ -57,6 +62,7 @@ const SignUp = props => {
             try {
                 const userData = {
                     userName : data.userName,
+                    nationality : data.nationality,
                     email : response._tokenResponse.email,
                     userId : response._tokenResponse.localId
                 }
@@ -108,6 +114,30 @@ const SignUp = props => {
                             type = 'text'
                             {...register('emailAddress')}
                         />
+                        <TextField select
+                            error = {Boolean(errors.nationality)}
+                            helperText = {errors.nationality?.message}
+                            label = 'Nationality'
+                            size = 'small'
+                            variant = 'standard'
+                            className = 'mb-4 noInputBorder w-100'
+                            {...register('nationality')}
+                            onChange = {(event) => setSelectNation(event.target.value)}
+                            value = {selectNation}
+                        >
+                            <MenuItem value = {0}>
+                                <Stack direction = 'row' spacing = {1}>
+                                    <Image src = {Phili} alt = 'philippine flag' width = {30} />
+                                    <Typography>Philippine</Typography>
+                                </Stack>
+                            </MenuItem>
+                            <MenuItem value = {1}>
+                                <Stack direction = 'row' spacing = {1}>
+                                    <Image fluid src = {Ind} alt = 'indian flag' width= {30} />
+                                    <Typography>India</Typography>
+                                </Stack>    
+                            </MenuItem>
+                        </TextField>
                         <TextField 
                             error = {Boolean(errors.password)}
                             helperText = {errors.password?.message}
@@ -130,6 +160,7 @@ const SignUp = props => {
                             type = 'password'
                             {...register('confirmPassword')}
                         />
+                        
                     </ThemeProvider>
                     <Button className = 'mx-auto' type = 'submit' variant = 'contained' color = 'success'>
                         Sign Up

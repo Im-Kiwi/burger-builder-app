@@ -1,7 +1,9 @@
 import { useSelector } from 'react-redux'
-import { Stack } from '@mui/material'
+import { Stack, Box } from '@mui/material'
 import { Image } from 'react-bootstrap'
 import { v4 as uniqueId } from 'uuid'
+import { motion } from 'framer-motion'
+import { TransitionGroup } from 'react-transition-group'
 
 // -------- importing from other files ----------------
 import { burgerBase, burgerTop, Cheese, Coke, Lettuce, Meat, Bacon,Tomato, Sauce, Fries, Onion } from '../../path-to-assets/pathToImages'
@@ -36,18 +38,18 @@ const Burger = (props) => {
             }                
             <Stack direction = 'column'>
                 <Image src = {burgerTop} style = {{maxWidth : props.width}} />
-                {allSlices.map((slice) => {                           
-                    return (
-                        <Image                        
-                            key = {uniqueId()}
-                            src = {slice.img} 
-                            alt = {`${slice.name} slice`} 
-                            style = {{maxWidth : props.width}}
-                            
-                        />
-                    )
-                    })
-                }
+                    <Stack direction = 'column'>
+                        {allSlices.map((slice) => {                           
+                            return (
+                                <Image                                                                 
+                                    key = {uniqueId()}
+                                    src = {slice.img} 
+                                    alt = {`${slice.name} slice`} 
+                                    style = {{width : props.width}}
+                                />
+                            )
+                        })}
+                    </Stack>
                 <Image src = {burgerBase} width = {props.width} />
             </Stack>
             {checkSauce ?

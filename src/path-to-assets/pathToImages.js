@@ -9,7 +9,8 @@ import Meat from '../Assets/meat.svg'
 import Sauce from '../Assets/sauce.svg'
 import Tomato from '../Assets/tomato.svg'
 import Onion from '../Assets/onion.svg'
-
+import Phili from '../Assets/phili.svg'
+import Ind from '../Assets/ind.svg'
 
 export {
     burgerBase,
@@ -22,5 +23,7 @@ export {
     Bacon,
     Coke,
     Fries,
-    Sauce
+    Sauce,
+    Phili,
+    Ind
 }

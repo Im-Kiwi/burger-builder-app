@@ -44,7 +44,7 @@ const Home = (props) => {
                 <Grid xs = {6} item className = {classes.secondItem}>
                 </Grid>                
             </Grid>
-            <FullDialogs closeDialogHandler = {props.closeDialogHandler}>
+            <FullDialogs title = 'My Cart' closeDialogHandler = {props.closeDialogHandler} priceInfo = {props.priceInfo}>
                 <Outlet />
             </FullDialogs>
         </Box>

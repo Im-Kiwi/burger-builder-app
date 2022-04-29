@@ -7,6 +7,7 @@ import basePriceReducer from "./reducer/basePrice";
 import cartReducer from "./reducer/cart";
 import ordersReducer from "./reducer/orders";
 import deliveryAddress from "./reducer/deliveryAddress";
+import previousPath from "./reducer/previousPath";
 
 const store = configureStore({
     reducer : {
@@ -17,7 +18,8 @@ const store = configureStore({
         basePrice : basePriceReducer.reducer,
         cart : cartReducer.reducer,
         orders : ordersReducer.reducer,
-        deliveryAddresses : deliveryAddress.reducer
+        deliveryAddresses : deliveryAddress.reducer,
+        previousPath : previousPath.reducer
     }
 })
 

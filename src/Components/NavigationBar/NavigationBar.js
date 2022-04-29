@@ -26,6 +26,7 @@ const NavigationBar = () => {
 
     const openCartHandler = () => {
         dispatch(dialogActions.updateOpen(true))
+        localStorage.setItem('prevPath', pathname)
     }
 
     return (
@@ -60,7 +61,7 @@ const NavigationBar = () => {
                                 </Button>                            
                             }
                             {token ? 
-                                <Link to = '/cart' state = {pathname} onClick = {openCartHandler} className = {[classes.link, 'me-4'].join(' ')}>
+                                <Link to = '/cart' onClick = {openCartHandler} className = {[classes.link, 'me-4'].join(' ')}>
                                     Cart
                                 </Link>
                             : null

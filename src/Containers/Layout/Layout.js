@@ -29,7 +29,7 @@ import { auth, db } from '../../firebase-setup'
 const Layout = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { pathname, state } = useLocation() // here the state will store the path from where the user opened full dialog component
+    const { pathname } = useLocation() 
     
     const token = useSelector(state => state.userForm.currentUser.token)
     const userId = useSelector(state => state.userForm.currentUser.userId)
@@ -62,11 +62,17 @@ const Layout = () => {
         let buyPath = '/buy'
 
         const checkCartPath = pathname.match(cartPath)
-        const checkBuyPath = pathname.match(buyPath)    
-        
-        if (Boolean(checkCartPath) || Boolean(checkBuyPath)) {
+        const checkBuyPath = pathname.match(buyPath) 
+
+        if (Boolean(checkCartPath)) {
             dispatch(dialogActions.updateOpen(true))
-        }        
+        } else if (checkBuyPath && localStorage.getItem('nextPath') === '/cart') {
+            dispatch(dialogActions.updateOpen(true))
+            navigate('/cart')
+        } else if (checkBuyPath) {
+            navigate('build-burger')
+            dispatch(dialogActions.updateOpen(false))
+        }
     }, [])
 
     // making sure user stays logged in once it logs in
@@ -89,10 +95,11 @@ const Layout = () => {
         if (flag && token) { // if user clicked on buy now button then closing the full dialog will navigate to /build-burger
             navigate('/build-burger')
         } else { // else it will navigate the user to the page from where it opened the full dialog
-            navigate(state)        
+            navigate(localStorage.getItem('prevPath'))        
         }
     }
 
+    // calculating the total price of cart items
     const totalPrice = () => {
         const priceArr = cartItems.map(item => {
             return item.totalPrice
@@ -105,16 +112,16 @@ const Layout = () => {
         }
     }
 
+    // storing the total price of cart items in a variable
     const cartInfo = {
         totalCartItems : cartItems.length,
         totalPrice : totalPrice
     }
 
     let dynamicElement
-
     // dynamically displaying components depending upon the pathname
-    // below 'state' contains the previous path from where user navigate from, this will help in rendering the component assign to 'dynamicElement'
-    switch (state) {
+    // below localStorage contains the previous path from where user navigate from, this will help in rendering the component assign to 'dynamicElement'
+    switch (localStorage.getItem('prevPath')) {
         case '/build-burger':
             dynamicElement = (
                 <BuildBurger 
@@ -125,8 +132,15 @@ const Layout = () => {
             )
             break;
         case '/':
-            dynamicElement = <Home closeDialogHandler = {closeDialogHandler} />
-            break;        
+            dynamicElement = (
+                <Home 
+                    closeDialogHandler = {closeDialogHandler} 
+                    priceInfo = {cartInfo.totalPrice() ? `Total Price (${cartInfo.totalCartItems} items) : $ ${cartInfo.totalPrice().toFixed(2)}` : null}
+                />
+            )
+            break; 
+        default:
+            break;     
     }
 
     return (
