@@ -29,7 +29,7 @@ const OrderSummary = (props) => {
     
     return (                
         <Grid container sx = {{mt : 5, maxHeight : 590}} display = 'flex' justifyContent = 'center' alignItems = 'center'>
-            <Grid xs = {12} md = {8} item  display = 'flex'  flexWrap = 'wrap' justifyContent = 'center' gap = {2}>
+            <Grid xs = {12} md = {8} item  display = 'flex'  flexWrap = 'wrap' justifyContent = 'center' gap = {3.5}>
                 {ingredientsArr.map(ing => {
                     return (
                             <Paper key = {uniqueId()}  sx = {{width : 300, height: 250, borderRadius : 0, backgroundColor : '#403d39'}}>                                    

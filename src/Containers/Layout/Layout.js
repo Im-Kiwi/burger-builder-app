@@ -46,7 +46,7 @@ const Layout = () => {
                 let AddressesArr = []
                 
                 getAddresses.forEach(doc => {
-                    AddressesArr.push(doc.data())
+                    AddressesArr.push({...doc.data(), id : doc.id})
                 })
                 dispatch(deliveryAddressActions.updateAddressStore(AddressesArr))
             } catch (err) {
@@ -70,7 +70,7 @@ const Layout = () => {
             dispatch(dialogActions.updateOpen(true))
             navigate('/cart')
         } else if (checkBuyPath) {
-            navigate('build-burger')
+            navigate('/build-burger')
             dispatch(dialogActions.updateOpen(false))
         }
     }, [])
@@ -95,8 +95,10 @@ const Layout = () => {
         if (flag && token) { // if user clicked on buy now button then closing the full dialog will navigate to /build-burger
             navigate('/build-burger')
         } else { // else it will navigate the user to the page from where it opened the full dialog
-            navigate(localStorage.getItem('prevPath'))        
+            navigate(localStorage.getItem('prevPath'))
         }
+        localStorage.removeItem('prevPath')        
+        localStorage.removeItem('nextPath')
     }
 
     // calculating the total price of cart items

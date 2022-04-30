@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     open : false,
+    openModal : false
 }
 
 const dialogReducer = createSlice({
@@ -10,6 +11,9 @@ const dialogReducer = createSlice({
     reducers : {
         updateOpen (state, action) {
             state.open = action.payload
+        },
+        updateOpenModal (state, action) {
+            state.openModal = action.payload
         }
     }
 })

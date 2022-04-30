@@ -60,6 +60,7 @@ const BurgerController = () => {
     // it will reset the ingredients and total price
     const resetHandler = () => {
         dispatch(ingredientsActions.updateReset())
+        dispatch(dialogActions.updateOpenModal(true))
     }
 
     // this method will navigate to the order summary page
@@ -67,7 +68,7 @@ const BurgerController = () => {
         dispatch(dialogActions.updateOpen(true)) // to open the full screen dialog(modal)  
         dispatch(cartActions.updateCurrentItem(ingredients))      
         dispatch(cartActions.updateInstantBuy(true)) // to update the instantBuy value to true means user buying directly not adding the item to the cart
-        dispatch(stepperActions.resetStepper(0)) // to reset the stepper
+        dispatch(stepperActions.resetStepper()) // to reset the stepper
         console.log(pathname)
         navigate('/buy/delivery-address', {state : pathname})
     }

@@ -15,7 +15,7 @@ import { CustomPaper, CustomGrid, CustomStack } from './styles'
 
 const Cart = () => {
     const dispatch = useDispatch()
-    
+    console.log(uniqueId())
     // to make sure useEffect execute everytime user clicks on delete button to delete cart item
     const [isDelete, setIsDelete] = useState(false) 
 

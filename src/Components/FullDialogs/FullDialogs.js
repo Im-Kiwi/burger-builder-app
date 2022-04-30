@@ -1,4 +1,3 @@
-import React, { forwardRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { Box, AppBar, Toolbar, IconButton, Typography, Stack } from '@mui/material'
@@ -9,6 +8,7 @@ import { motion } from 'framer-motion'
 
 //  ------------------- importing from files ------------------
 import { cartActions } from '../../Store/reducer/cart'
+import { stepperActions } from '../../Store/reducer/stepper'
 
 const FullDialogs = (props) => {
     const dispatch = useDispatch()
@@ -19,13 +19,13 @@ const FullDialogs = (props) => {
 
     const placeOrderHandler = () => {
         dispatch(cartActions.updateInstantBuy(false))
+        dispatch(stepperActions.resetStepper())
         navigate('/buy/delivery-address')
         localStorage.setItem('nextPath', pathname)
         localStorage.removeItem('id') // removing the id of address from address store 
     }
 
     return (
-
         <Modal fullscreen = {true} show = {openDialog}>
             <Box sx = {{width : '100vw', height : '100vh', backgroundColor : '#f9b826'}}>
                 <AppBar sx = {{backgroundColor : '#110f12'}}>
