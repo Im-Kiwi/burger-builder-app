@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { Box, AppBar, Toolbar, IconButton, Typography, Stack } from '@mui/material'
+import { Box, AppBar, Toolbar, IconButton, Typography, Stack, ThemeProvider } from '@mui/material'
 import { Modal } from 'react-bootstrap'
 import { Button } from '@mui/material'
 import { CloseRounded } from '@mui/icons-material'
@@ -9,6 +9,7 @@ import { motion } from 'framer-motion'
 //  ------------------- importing from files ------------------
 import { cartActions } from '../../Store/reducer/cart'
 import { stepperActions } from '../../Store/reducer/stepper'
+import { mainColors } from '../../theme/mui-theme'
 
 const FullDialogs = (props) => {
     const dispatch = useDispatch()
@@ -40,16 +41,18 @@ const FullDialogs = (props) => {
                                 : null
                             }
                             <motion.div whileHover = {{rotate : 90}} >
-                                <IconButton size = 'large' 
-                                    className = 'text-light' 
-                                    onClick = {() => props.closeDialogHandler(props.isOrderSummary)}
-                                    position = 'relative'
-                                    sx = {{float : 'right'}}
-                                    aria-label = 'close'
-                                    disableRipple
-                                    >
-                                    <CloseRounded style = {{color: '#f9b826'}} />
-                                </IconButton>
+                                <ThemeProvider theme = {mainColors}>
+                                    <IconButton size = 'large' 
+                                        className = 'text-light' 
+                                        onClick = {() => props.closeDialogHandler(props.isOrderSummary)}
+                                        position = 'relative'
+                                        sx = {{float : 'right'}}
+                                        color = 'yellowish'
+                                        aria-label = 'close'
+                                        >
+                                        <CloseRounded style = {{color: '#f9b826'}} />
+                                    </IconButton>
+                                </ThemeProvider>
                             </motion.div>
                         </Stack>
                     </Toolbar>

@@ -13,6 +13,7 @@ import { userFormTheme } from '../../theme/mui-theme'
 import { dialogActions } from '../../Store/reducer/dialog'
 import { cartActions } from '../../Store/reducer/cart'
 import { stepperActions } from '../../Store/reducer/stepper'
+import { toggleActions } from '../../Store/reducer/toggle'
 
 const BurgerController = () => {
     const dispatch = useDispatch()
@@ -24,6 +25,7 @@ const BurgerController = () => {
     const ingredients = useSelector(state => state.ingredients) // contains the ingredients object
     const burgerName = useSelector(state => state.ingredients.burgerName)
     const userId = useSelector(state => state.userForm.currentUser.userId)
+    const toggle = useSelector(state => state.toggle.isDelete)
 
     // fetching the base prices of ingredients from the database
     useEffect(() => {
@@ -60,7 +62,7 @@ const BurgerController = () => {
     // it will reset the ingredients and total price
     const resetHandler = () => {
         dispatch(ingredientsActions.updateReset())
-        dispatch(dialogActions.updateOpenModal(true))
+        dispatch(dialogActions.updateOpenModal(false))
     }
 
     // this method will navigate to the order summary page
@@ -76,12 +78,21 @@ const BurgerController = () => {
     // method to add item into cart
     const addToCartHandler = async () => {
         const cartItem = {
-            ...ingredients,
+            Lettuce : ingredients.Lettuce.qty,
+            Cheese : ingredients.Cheese.qty,
+            Onion : ingredients.Onion.qty,
+            Tomato : ingredients.Tomato.qty,
+            Meat : ingredients.Meat.qty,
+            Bacon : ingredients.Bacon.qty,
+            Coke : ingredients.Coke.status,
+            FrenchFries : ingredients.FrenchFries.status,
+            totalPrice : ingredients.totalPrice,
+            burgerName : ingredients.burgerName,
             userId
         }
-        console.log(cartItem)
+
         try {
-            await addDoc(collection(db, 'cart'), cartItem)
+            await addDoc(collection(db, 'cart'), cartItem)  
             resetHandler()
         } catch (err) {
             console.log('cant add to the cart')

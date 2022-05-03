@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Box } from '@mui/material'
 import { Routes, Route, useNavigate, useLocation } from 'react-router'
 import { onAuthStateChanged } from 'firebase/auth'
-import { query, where, getDocs, collection } from 'firebase/firestore'
+import { query, where, getDocs, collection, onSnapshot } from 'firebase/firestore'
 
 // ----------------- importing other components -----------------
 import Home from "../Home/Home"
@@ -22,6 +22,7 @@ import { userFormActions } from '../../Store/reducer/userForm'
 import { ordersActions } from '../../Store/reducer/orders'
 import { dialogActions } from '../../Store/reducer/dialog'
 import { deliveryAddressActions } from '../../Store/reducer/deliveryAddress'
+import { cartActions } from '../../Store/reducer/cart'
 
 // ----------- importing others ------------
 import { auth, db } from '../../firebase-setup'
@@ -36,24 +37,75 @@ const Layout = () => {
     const isSignUpForm = useSelector(state => state.userForm.isSignUpForm)
     const cartItems = useSelector(state => state.cart.cartItems)
 
+    let addressesArr = []
+    let itemsInCart = []
+    let ordersArr = []
+
+    const manageCartItems = (data) => {
+        return {
+            Lettuce : {name : 'Lettuce', qty : data.doc.data().Lettuce},
+            Cheese : {name : 'Cheese', qty : data.doc.data().Cheese},
+            Onion : {name : 'Onion', qty : data.doc.data().Onion},
+            Tomato : {name : 'Tomato', qty : data.doc.data().Tomato},
+            Meat : {name : 'Meat', qty : data.doc.data().Meat},    
+            Bacon : {name : 'Bacon', qty : data.doc.data().Bacon},
+            Coke : {name : 'Coke', status : data.doc.data().Coke},
+            FrenchFries : {name : 'FrenchFries', status : data.doc.data().FrenchFries},
+            totalPrice : data.doc.data().totalPrice,
+            burgerName : data.doc.data().burgerName,
+            id : data.doc.id
+        }
+    }
+    
+    // listening to addresses collection of firestore database 
     useEffect(() => {
-        // fetching addresses from the database
-        (async () => {
-            try {
-                const findAddresses = query(collection(db, 'addresses'), where('userId', '==', userId))
+        if (userId) {            
+            const addressToListen = query(collection(db, 'addresses'), where('userId', '==', userId))
+            const cartToListen = query(collection(db, 'cart'), where('userId', '==', userId))
+            const ordersToListen = query(collection(db, 'orders'))
 
-                const getAddresses = await getDocs(findAddresses)
-                let AddressesArr = []
-                
-                getAddresses.forEach(doc => {
-                    AddressesArr.push({...doc.data(), id : doc.id})
+            onSnapshot(addressToListen, (address) => {
+                address.docChanges().forEach((change) => {
+                    if (change.type === 'added') {
+                        addressesArr.push({...change.doc.data(), id : change.doc.id})
+                    } 
+                    if (change.type === 'removed') {
+                        const addressId = addressesArr.findIndex(adr => adr.id === change.doc.id)
+                        addressesArr.splice(addressId, 1)
+                    } 
+                    if (change.type === 'modified') {
+
+                        const addressId = addressesArr.findIndex(adr => adr.id === change.doc.id)
+                        addressesArr.splice(addressId, 1, {...change.doc.data(), id : change.doc.id})
+                    }
                 })
-                dispatch(deliveryAddressActions.updateAddressStore(AddressesArr))
-            } catch (err) {
-                console.log('unable to fetch data')
-            }
-        })();
+                dispatch(deliveryAddressActions.updateAddressStore(addressesArr))            
+            })
 
+            onSnapshot(cartToListen, (cartItem) => {
+                cartItem.docChanges().forEach(change => {
+                    if (change.type === 'added') {
+                        const data = manageCartItems(change)
+                        itemsInCart.push(data)
+                    }
+                    if (change.type === 'removed') {
+                        const cartItemId = itemsInCart.findIndex(item => item.id === change.doc.id)
+                        itemsInCart.splice(cartItemId, 1)
+                    }
+                })
+                dispatch(cartActions.updateCartItems([...itemsInCart]))
+            })
+
+            onSnapshot(ordersToListen, orders => {
+                orders.docChanges().forEach(change => {
+                    if (change.type === 'added') {
+                        ordersArr.push({...change.doc.data()})
+                    }
+                })
+                console.log(ordersArr)
+            })
+
+        }
     }, [userId])
 
     useEffect(() => {

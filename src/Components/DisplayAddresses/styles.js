@@ -1,6 +1,6 @@
 import { styled, makeStyles } from '@mui/styles'
-import { Paper } from '@mui/material'
-import { NoEncryption } from '@mui/icons-material'
+import { Paper, Box } from '@mui/material'
+import { CenterFocusStrong } from '@mui/icons-material'
 
 
 export const addressBox = makeStyles({
@@ -8,13 +8,14 @@ export const addressBox = makeStyles({
         color : 'inherit', 
         cursor : 'pointer',
         border : 0,
-        background : 'none'       
+        background : 'none',  
+        width : '100%',
+        height : '100%'     
     },
 
     addressContainer : {
         padding : 10,
         backgroundColor : '#110f12',
-        border : 'solid 1px #f9b826',
         color : '#f9b826',
         width : 340,
         height : 200, 
@@ -26,19 +27,19 @@ export const addressBox = makeStyles({
     },
 
     editBox : {
-        display : 'none',
         cursor : 'default',
+        display : 'none',
         position : 'absolute',
-        bottom :  0,
-        left : 0,
-        width : '100%',
-        height : 60,
-        gap : 20,
+        width : 200,
+        bottom : 10,
+        left : 70,
+        height : 55,
         '&::before' : {
             content : '""',
+            borderRadius : 50,
             position : 'absolute',
             width : '100%',
-            height : 60,
+            height : 55,
             backgroundColor : '#110f12',
             opacity : 0.95
         }
@@ -52,4 +53,11 @@ export const CustomPaper = styled(Paper)({
     "&:hover #configAddress" : {
         display : 'block'
     }
+})
+
+export const AddAddress = styled(Box)({
+    width : '100%',
+    height : '100%',
+    background : 'none',
+    border : 0
 })

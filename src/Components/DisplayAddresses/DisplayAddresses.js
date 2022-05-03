@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Box, Button, Paper, Stack, Typography } from '@mui/material'
+import { Box, Button, Paper, Stack, Typography, IconButton, ThemeProvider } from '@mui/material'
+import { Add, NoEncryption } from '@mui/icons-material'
 import { getDoc, collection, query, where, getDocs, doc, deleteDoc } from 'firebase/firestore'
 import { v4 as uniqueId } from 'uuid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faMobileRetro, faHouse, faCity } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faMobileRetro, faHouse, faCity, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { motion } from 'framer-motion'
 
 // ----- importing from other files -----------
 import { db } from '../../firebase-setup'
-import { CustomPaper, addressBox } from './styles'
+import { CustomPaper, addressBox, AddAddress } from './styles'
 import { ordersActions } from '../../Store/reducer/orders'
 import { deliveryAddressActions } from '../../Store/reducer/deliveryAddress'
+import { mainColors } from '../../theme/mui-theme'
 
 
 const DisplayAddresses = (props) => {
@@ -19,7 +21,6 @@ const DisplayAddresses = (props) => {
     const classes = addressBox()
 
     const addressStore = useSelector(state => state.deliveryAddresses.addressStore)
-    console.log(addressStore)
     const [toggle, setToggle] = useState(false) // helps to re-render the component after value get stores in local storage
     const idForStyling = parseInt(localStorage.getItem('id')) // the value by default stores as a string in local storage
 
@@ -33,9 +34,8 @@ const DisplayAddresses = (props) => {
     }
 
     const deleteAddressHandler = async (addressId) => {
-        const findAddress = addressStore.find(address => address.id === addressId )
         try {
-            await deleteDoc(doc(db, 'addresses', findAddress.id))
+            await deleteDoc(doc(db, 'addresses', addressId))
         } catch (err) {
             console.log('unable to delete')
         }
@@ -43,25 +43,33 @@ const DisplayAddresses = (props) => {
 
     const editAddressHandler = (id) => {
         props.openForm()
-        dispatch(deliveryAddressActions.updateEditFlag({flag : true, id : id}))
+        dispatch(deliveryAddressActions.updateEditZone({flag : true, id : id}))
     }
 
     return (
         <Box 
-            className = 'shadow p-5' 
+            className = 'p-2' 
             display = 'flex' 
             flexWrap = 'wrap' 
             justifyContent = 'center' 
-            gap = {1} 
-            sx = {{backgroundColor : '#110f12', height : 420, overflowY : 'auto'}}
-        >
+            gap = {1}
+            sx = {{ height : 520, overflowY : 'auto' }}
+        >   
+            <CustomPaper className = {classes.addressContainer}>
+                <AddAddress  onClick = {props.openForm} component = 'button'>
+                    <ThemeProvider theme = {mainColors}>
+                            <Add style = {{fontSize : '5rem'}} color = 'yellowish' icon = {faPlus} />
+                    </ThemeProvider>
+                </AddAddress>
+            </CustomPaper>
             {addressStore.map((address, index) => {
                 return (
                     <CustomPaper 
+                        elevation={5}
                         className = {[classes.addressContainer, idForStyling === index ? classes.clickedAddress : null].join(' ')}
                         key = {uniqueId()} 
-                        aria-label= 'select address card button'                         
-                    >
+                        aria-label= 'select address card button'                                                
+                    >                        
                         <Box 
                             className = {classes.addressBox} 
                             component = 'button'  
@@ -118,7 +126,7 @@ const DisplayAddresses = (props) => {
                             </Stack>
                             <Typography>zip code: {address.pinCode} </Typography>
                         </Box>
-                        <Box id = 'configAddress' className = {classes.editBox}>
+                        <Box id = 'configAddress' className = {[classes.editBox].join(' ')} >
                             <motion.div 
                                 style = {{height : 'inherit'}}
                             >
@@ -126,7 +134,7 @@ const DisplayAddresses = (props) => {
                                     direction = 'row' 
                                     justifyContent = 'center' 
                                     alignItems = 'center' 
-                                    sx = {{height : 'inherit'}} 
+                                    sx = {{height : 'inherit', width : '100%'}} 
                                     spacing = {2}
                                 >
                                     <Button 

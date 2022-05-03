@@ -1,9 +1,6 @@
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { addDoc, collection, onSnapshot, query, where, doc } from 'firebase/firestore'
+import { addDoc, collection, onSnapshot, query, where, doc, updateDoc } from 'firebase/firestore'
 import { Stack, Box, Paper, TextField, MenuItem, IconButton, FormControl, FormLabel, Radio, RadioGroup, FormControlLabel  } from '@mui/material'
 import { Backdrop } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
@@ -18,119 +15,84 @@ import { philippinesStates, indianStates } from '../../Places/places'
 import { CustomButton } from './styles.js'
 import { dialogActions } from '../../Store/reducer/dialog'
 import { deliveryAddressActions } from '../../Store/reducer/deliveryAddress'
-
-
-const formLabel = {
-    firstName : 'First Name',
-    lastName : 'Last Name',
-    phoneNumber : 'Phone Number',
-    address : 'Your Address',
-    country : 'Country',
-    state : 'State',
-    city : 'City/District/Town',
-    pinCode : 'Pin Code',
-    addressType : 'Address Type'
-}
+import { firstName, lastName, phoneNumber, address, country, state, city, pinCode, addressType } from '../../identifiers/identifiers'
 
 const AddAddress = () => {
     const dispatch = useDispatch()
 
+    // fetching data from redux store
     const userId = useSelector(state => state.userForm.currentUser.userId)
     const openModal = useSelector(state => state.dialog.openModal)
-    const editFlag = useSelector(state => state.deliveryAddresses.editFlag)
     const addressForm = useSelector(state => state.deliveryAddresses.addressForm)
+    const editZone = useSelector(state => state.deliveryAddresses.editZone)
+    const addressStore = useSelector(state => state.deliveryAddresses.addressStore)
+    const validationFlag = useSelector(state => state.deliveryAddresses.validationFlag)
     
-    const [selectAddressType, setSelectAddressType] = useState('Home')
-
-    // creating schema for form validation
-    const addressFormSchema = yup.object().shape({
-        firstName : yup.string().required('Mention first name'),
-        lastName : yup.string().required('Mention last name'),
-        phoneNumber : yup.number().required(),
-        address : yup.string().required('Mention address'),
-        city : yup.string().required('Add city'),
-        state : yup.string().required('Add state'),
-        country : yup.string().required('Add country'),
-        pinCode : yup.number().required('Add pin code'),  
-    })
-
-    // using react form hook and also connecting yup to react form hook
-    const { register, formState : {errors}, handleSubmit } = useForm({
-        resolver : yupResolver(addressFormSchema)
-    })
+    useEffect(() => {
+        if (editZone.flag) {
+            const resultantAddress = addressStore.find((_, index) => index === editZone.id)
+            dispatch(deliveryAddressActions.updateAddressForm({label: firstName, value : resultantAddress.firstName}))
+            dispatch(deliveryAddressActions.updateAddressForm({label: lastName, value : resultantAddress.lastName}))
+            dispatch(deliveryAddressActions.updateAddressForm({label: phoneNumber, value : resultantAddress.phoneNumber}))
+            dispatch(deliveryAddressActions.updateAddressForm({label: address, value : resultantAddress.address}))
+            dispatch(deliveryAddressActions.updateAddressForm({label: country, value : resultantAddress.country}))
+            dispatch(deliveryAddressActions.updateAddressForm({label: state, value : resultantAddress.state}))
+            dispatch(deliveryAddressActions.updateAddressForm({label: city, value : resultantAddress.city}))
+            dispatch(deliveryAddressActions.updateAddressForm({label: addressType, value : resultantAddress.addressType}))
+            dispatch(deliveryAddressActions.updateAddressForm({label: pinCode, value : resultantAddress.pinCode}))
+        }
+    }, [editZone.flag])
 
     // this method will send data to the database
-    const addressSubmitHandler = async(data) => {
+    const addressSubmitHandler = async(event) => {
+        event.preventDefault()
+        dispatch(deliveryAddressActions.updateValidationFlag(true)) // validation of form will begin once user click the SAVE button
         const addressData = {
-            firstName : data.firstName,
-            lastName : data.lastName,
-            phoneNumber : data.phoneNumber,
-            address : data.address,
+            firstName : addressForm.firstName,
+            lastName : addressForm.lastName,
+            phoneNumber : addressForm.phoneNumber,
+            address : addressForm.address,
             country : addressForm.selectCountry,
             state : addressForm.selectState,
-            city : data.city,
-            pinCode : data.pinCode,
+            city : addressForm.city,
+            pinCode : addressForm.pinCode,
             addressType : addressForm.addressType,
             userId : userId
         }
 
+        // to check whether the values inside addressForm object is non empty strings
+        let emptyFlag = false
+        const checkValues = Object.values(addressForm)
+        checkValues.forEach(value => {
+            if (value === '') {
+                emptyFlag = true
+            }
+        })
+
         try {
-            await addDoc(collection(db, 'addresses'), addressData) 
-            const toListen = query(collection(db, 'addresses'))
-            const addressesUpdate = onSnapshot(toListen, (result) => {
-
-            })
-
+            if (!emptyFlag) { 
+                if (editZone.flag) {
+                    await updateDoc(doc(db, 'addresses', addressStore[editZone.id].id), addressData)
+                } else {
+                    await addDoc(collection(db, 'addresses'), addressData) 
+                }                
+            }
+            closeAddressFormHandler()
         } catch(err) {
             console.log('Some error! Please try again later')
+            closeAddressFormHandler()
         }
     }
 
     const closeAddressFormHandler = () => {
         dispatch(dialogActions.updateOpenModal(false))
-        dispatch(deliveryAddressActions.updateFirstName(''))
-        dispatch(deliveryAddressActions.updateLastName(''))
-        dispatch(deliveryAddressActions.updatePhoneNumber(''))
-        dispatch(deliveryAddressActions.updateAddress(''))
-        dispatch(deliveryAddressActions.updateSelectCountry(''))
-        dispatch(deliveryAddressActions.updateSelectState(''))
-        dispatch(deliveryAddressActions.updateCity(''))
-        dispatch(deliveryAddressActions.updateAddressType(''))
-        dispatch(deliveryAddressActions.updatePinCode(''))
+        dispatch(deliveryAddressActions.updateEditZone({flag : false, id : null}))
+        dispatch(deliveryAddressActions.updateResetAddressForm(''))
+        dispatch(deliveryAddressActions.updateValidationFlag(false))
     }
 
     const changeHandler = (event, label) => {
-        switch (label) {
-            case formLabel.firstName:
-                dispatch(deliveryAddressActions.updateFirstName(event.target.value))
-                break;
-            case formLabel.lastName:
-                dispatch(deliveryAddressActions.updateLastName(event.target.value))
-                break;
-            case formLabel.phoneNumber:
-                dispatch(deliveryAddressActions.updatePhoneNumber(event.target.value))
-                break;
-            case formLabel.address:
-                dispatch(deliveryAddressActions.updateAddress(event.target.value))
-                break;
-            case formLabel.pinCode:
-                dispatch(deliveryAddressActions.updatePinCode(event.target.value))
-                break;
-            case formLabel.country:
-                dispatch(deliveryAddressActions.updateSelectCountry(event.target.value))
-                break;
-            case formLabel.state:
-                dispatch(deliveryAddressActions.updateSelectState(event.target.value))
-                break;
-            case formLabel.city:
-                dispatch(deliveryAddressActions.updateCity(event.target.value))
-                break;
-            case formLabel.addressType:
-                dispatch(deliveryAddressActions.updateAddressType(event.target.value))
-                break;
-            default:
-                throw 'unable to change input'
-        }
+        dispatch(deliveryAddressActions.updateAddressForm({label : label, value : event.target.value}))
     }
 
     let statesOfCountry = []
@@ -146,8 +108,6 @@ const AddAddress = () => {
             statesOfCountry = []
     }
 
-    
-
     return (
         <Backdrop open = {openModal}>
             <Modal centered size = 'lg' show = {openModal} onHide = {closeAddressFormHandler}>
@@ -160,70 +120,65 @@ const AddAddress = () => {
                             >
                                 <CloseRounded />
                             </IconButton>
-                            <form onSubmit = {handleSubmit(addressSubmitHandler)}>
+                            <form onSubmit = {(event) => addressSubmitHandler(event)}>
                                 <ThemeProvider theme = {userFormTheme}>
                                     <Stack direction = 'column'>
                                         <Stack direction = 'row'>
                                             <TextField variant='filled' className = 'noInputBorder' 
-                                                {...register('firstName')}
                                                 sx = {{mr : 2, input : {borderColor : 'red'}}} 
                                                 size = 'small' 
-                                                label = {formLabel.firstName}
+                                                label = {firstName}
                                                 value = {addressForm.firstName}
-                                                onChange = {(event) => changeHandler(event, formLabel.firstName)}
-                                                error = {Boolean(errors.firstName)}
-                                                helperText = {errors.firstName ?.message}
+                                                onChange = {(event) => changeHandler(event, firstName)}
+                                                error = {validationFlag && addressForm.firstName.length === 0 ? true : false}
+                                                helperText = {validationFlag && addressForm.firstName.length === 0 ? 'Mention first name' : ''}
                                             />
                                             <TextField 
-                                                {...register('lastName')}
                                                 variant='filled' 
                                                 className = 'noInputBorder' 
-                                                label = {formLabel.lastName} 
+                                                label = {lastName} 
                                                 size = 'small'
-                                                onChange={(event) => changeHandler(event, formLabel.lastName)}
+                                                onChange={(event) => changeHandler(event, lastName)}
                                                 value = {addressForm.lastName}
-                                                error = {Boolean(errors.lastName)}
-                                                helperText = {errors.lastName ?.message} />
+                                                error = {validationFlag && addressForm.lastName.length === 0 ? true : false}
+                                                helperText = {validationFlag && addressForm.lastName.length === 0 ? 'Mention last name' : ''} />
                                         </Stack>
                                         <Box sx = {{mt : 2}}>
                                             <TextField 
-                                                {...register('phoneNumber')}
                                                 variant='filled' 
                                                 className = 'noInputBorder' 
                                                 type = 'number' 
-                                                label = {formLabel.phoneNumber} 
+                                                label = {phoneNumber} 
                                                 size = 'small'
                                                 value = {addressForm.phoneNumber}
-                                                onChange = {(event) => changeHandler(event, formLabel.phoneNumber)}
-                                                error = {Boolean(errors.phoneNumber)}
-                                                helperText = {Boolean(errors.phoneNumber) ? 'Add phone number' : null} />
+                                                onChange = {(event) => changeHandler(event, phoneNumber)}
+                                                error = {validationFlag && addressForm.phoneNumber.length === 0 ? true : false}
+                                                helperText = {validationFlag && addressForm.phoneNumber.length === 0 ? 'Add phone number' : null} />
                                         </Box>
                                         <TextField 
-                                            {...register('address')}
                                             variant='filled' 
                                             className = 'noInputBorder' 
                                             sx = {{mt : 2}} 
                                             fullWidth multiline 
                                             rows={4} 
                                             size = 'small' 
-                                            label = {formLabel.address}
-                                            onChange = {event => changeHandler(event, formLabel.address)}
+                                            label = {address}
+                                            onChange = {event => changeHandler(event, address)}
                                             value = {addressForm.address}
-                                            error = {Boolean(errors.address)}
-                                            helperText = {errors.address ?.message} />
+                                            error = {validationFlag && addressForm.address.length === 0 ? true : false}
+                                            helperText = {validationFlag && addressForm.address.length === 0 ? 'Mention address' : ''} />
                                         <Stack direction = 'row' sx = {{mt : 2}}>
                                             <Box sx = {{width : 200, mr : 2}}>
                                                 <TextField 
-                                                    {...register('country')}
                                                     fullWidth select 
                                                     variant='filled'  
                                                     className = 'noInputBorder' 
-                                                    label = {formLabel.country}
+                                                    label = {country}
                                                     size = 'small' 
                                                     value = {addressForm.selectCountry}
-                                                    onChange = {(event) => changeHandler(event, formLabel.country)}
-                                                    error = {Boolean(errors.country)}
-                                                    helperText = {errors.country ?.message}
+                                                    onChange = {(event) => changeHandler(event, country)}
+                                                    error = {validationFlag && addressForm.selectCountry.length === 0 ? true : false}
+                                                    helperText = {validationFlag && addressForm.selectCountry.length === 0 ? 'Mention Country' : ''}
                                                 >
                                                     <MenuItem value = 'India'>India</MenuItem>
                                                     <MenuItem value = 'Philippines'>Philippines</MenuItem>
@@ -231,17 +186,16 @@ const AddAddress = () => {
                                             </Box>
                                             <Box sx = {{width : 200, mr : 2, '&.MuiPaper-root' : {height : '300px !important'}}}>
                                                 <TextField 
-                                                    {...register('state')} 
                                                     variant='filled' 
                                                     disabled  = {!Boolean(addressForm.selectCountry)}
                                                     select fullWidth
                                                     value = {addressForm.selectState}
-                                                    onChange = {(event) => changeHandler(event, formLabel.state)}                                         
+                                                    onChange = {(event) => changeHandler(event, state)}                                         
                                                     className = 'noInputBorder' 
-                                                    label = 'State' 
+                                                    label = {state}
                                                     size = 'small'
-                                                    error = {Boolean(errors.state)}
-                                                    helperText = {errors.state ?.message} 
+                                                    error = {validationFlag && addressForm.selectState.length === 0 ? true : false}
+                                                    helperText = {validationFlag && addressForm.selectState.length === 0 ? 'Mention state' : ''} 
                                                     SelectProps = {{
                                                         MenuProps : {
                                                             sx : {
@@ -258,30 +212,28 @@ const AddAddress = () => {
                                                 </TextField>
                                             </Box>
                                             <TextField 
-                                                {...register('city')}
                                                 variant='filled'
                                                 disabled = {!Boolean(addressForm.selectState)}
                                                 className = 'noInputBorder' 
-                                                label = {formLabel.city} 
+                                                label = {city} 
                                                 size = 'small'
-                                                onChange={(event) => changeHandler(event, formLabel.city)}
+                                                onChange={(event) => changeHandler(event, city)}
                                                 value = {addressForm.city}
-                                                error = {Boolean(errors.city)}
-                                                helperText = {errors.city ?.message} />
+                                                error = {validationFlag && addressForm.city.length === 0 ? true : false}
+                                                helperText = {validationFlag && addressForm.city.length === 0 ? 'Mention city' : ''} />
                                         </Stack>
                                         <Box>
                                             <TextField 
-                                                {...register('pinCode')}
                                                 variant='filled' 
                                                 sx = {{mt:2}} 
-                                                label = {formLabel.pinCode}
+                                                label = {pinCode}
                                                 type = 'number' 
                                                 size = 'small'
                                                 className = 'noInputBorder' 
                                                 value = {addressForm.pinCode}
-                                                onChange = {(event) => changeHandler(event, formLabel.pinCode)}
-                                                error = {Boolean(errors.pinCode)}
-                                                helperText = {Boolean(errors.pinCode) ? 'Add pincode' : null} />
+                                                onChange = {(event) => changeHandler(event, pinCode)}
+                                                error = {validationFlag && addressForm.pinCode.length === 0 ? true : false}
+                                                helperText = {validationFlag && addressForm.pinCode.length === 0 ? 'Add pincode' : null} />
                                         </Box>                            
                                         <FormControl sx = {{mt:2}}>
                                             <FormLabel 
@@ -291,10 +243,9 @@ const AddAddress = () => {
                                                 Address Type
                                             </FormLabel>
                                             <RadioGroup row
-                                                {...register('addressType')}
                                                 aria-labelledby='address-type'  
                                                 value = {addressForm.addressType} 
-                                                onChange = {(event) => changeHandler(event, formLabel.addressType)}
+                                                onChange = {(event) => changeHandler(event, addressType)}
                                             >
                                                 <FormControlLabel 
                                                     label = 'Home' 

@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Box, Button, Divider, FormControl, FormControlLabel, Grid, Paper, RadioGroup, Stack, Typography, Container, Fab } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { collection, addDoc, arrayUnion, setDoc, doc } from 'firebase/firestore'
+import { db } from '../../firebase-setup.js'
 
 // ---------- importing from other files -----------
 import { CustomRadio, CustomFormLabel, CustomFab } from './style.js'
@@ -12,10 +14,10 @@ const Payment = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
+    const userId = useSelector(state => state.userForm.currentUser.userId)
     const currentItem = useSelector(state => state.cart.currentItem)
     const cartItems = useSelector(state => state.cart.cartItems) 
     const instantBuy = useSelector(state => state.cart.instantBuy)
-
     const [paymentSuccess, setPaymentSuccess] = useState(false)
     
     let totalPrice
@@ -29,12 +31,24 @@ const Payment = () => {
         totalPrice = tempData.reduce((total, price) => total + price).toFixed(1)
     }
 
-    const paymentHandler = () => {
-        setTimeout(() => {
+    // will store the orders in the firebase database
+    const paymentHandler = async () => {
+        try {
+            if (instantBuy) {
+                await setDoc(doc(db, 'orders', 'instantBuy'), {[`items_${userId}`] : arrayUnion(...currentItem)})
+            } else {
+                for (let item of cartItems) {
+                    await setDoc(doc(db, 'orders', 'thruCart'), {[`items_${userId}`] : arrayUnion(item)})
+                }
+            }
             setPaymentSuccess(true)
-        }, [2000])
+        } catch (err) {
+            console.log(err)
+        }
     }
 
+    // this method will take back to the /build-burger page
+    // some state properties value also been reset
     const backToBuildingHandler = () => {
         navigate('/build-burger')
         dispatch(dialogActions.updateOpen(false))
@@ -135,7 +149,7 @@ const Payment = () => {
                             <CustomFab 
                                 variant = 'extended' 
                                 color = 'primary'
-                                onClick={paymentHandler}
+                                onClick= {paymentHandler}
                             >
                                 <strong>Click here to pay</strong>
                             </CustomFab>
@@ -147,7 +161,7 @@ const Payment = () => {
                     <Paper sx = {{p:3}}>
                         <Typography variant = 'h5'>Payment Successful :)</Typography>
                         <Typography sx = {{mt:4}}>Thanks for purchasing</Typography>
-                        <Typography sx = {{mt:1}}>Your Burger will be delieverd shortly</Typography>
+                        <Typography sx = {{mt:1}}>Your Burger will be deliever shortly</Typography>
                         <Button onClick = {backToBuildingHandler} sx = {{mt:5}} variant = 'contained' color = 'secondary'>Continue building burger</Button>
                     </Paper>
 

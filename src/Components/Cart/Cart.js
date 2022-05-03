@@ -12,42 +12,20 @@ import { cartActions } from '../../Store/reducer/cart'
 import Burger from '../Burger/Burger'
 import { dialogActions } from '../../Store/reducer/dialog'
 import { CustomPaper, CustomGrid, CustomStack } from './styles'
+import { toggleActions } from '../../Store/reducer/toggle'
 
 const Cart = () => {
     const dispatch = useDispatch()
-    console.log(uniqueId())
-    // to make sure useEffect execute everytime user clicks on delete button to delete cart item
-    const [isDelete, setIsDelete] = useState(false) 
 
     // getting values from the redux store
-    const userId = useSelector(state => state.userForm.currentUser.userId)
     const cartItems = useSelector(state => state.cart.cartItems)
+    const toggle = useSelector(state => state.toggle.isDelete)
 
-    useEffect (() => {
-        // fetching cart items from database
-        (async () => {
-            console.log('execute')
-            try {
-                const cartItemsQuery = query(collection(db, 'cart'), where('userId', '==', userId))
-                const getCartItem = await getDocs(cartItemsQuery)            
-                let temp = []
-                getCartItem.forEach(doc => {
-                    temp.push({...doc.data(), dataId : doc.id})
-                })
-                dispatch(cartActions.updateCartItems([...temp]))
-            } catch (err) {
-                console.log('failed to fetch cart items, please check ur internet connection')
-            }
-        })();
-    }, [userId, isDelete])
 
     // method to delete a cart item
     const deleteCartItemHandler = async (dataId) => {
-        const cartItemRef = doc(db, 'cart', dataId)
-
         try {
-            await deleteDoc(cartItemRef)
-            setIsDelete(v => !v)
+            await deleteDoc(doc(db, 'cart', dataId))
         } catch (err) {
             console.log('cant able to delete, please check your network connection')
         }
@@ -125,7 +103,7 @@ const Cart = () => {
                                         </Grid>
                                         <Grid item>
                                             <IconButton 
-                                                onClick = {() => deleteCartItemHandler(item.dataId)} 
+                                                onClick = {() => deleteCartItemHandler(item.id)} 
                                                 sx = {{border : 'solid 1px #f9b826', mt:2.5}}
                                                 size = 'large'
                                             >

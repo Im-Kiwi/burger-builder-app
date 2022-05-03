@@ -9,3 +9,14 @@ export const userFormTheme = createTheme({
     }
 })
 
+export const mainColors = createTheme({
+    palette : {
+        yellowish : {
+            main : '#f9b826'            
+        },
+        blackish : {
+            main : '#110f12'            
+        }
+    }
+})
+

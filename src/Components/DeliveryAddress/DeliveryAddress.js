@@ -5,27 +5,31 @@ import { Box, Typography, Button } from '@mui/material'
 import AddAddress from '../AddAddress/AddAddress'
 import DisplayAddresses from '../DisplayAddresses/DisplayAddresses'
 import { dialogActions } from '../../Store/reducer/dialog'
+import { deliveryAddressActions } from '../../Store/reducer/deliveryAddress'
 
 
 const DeliveryAddress = (props) => {
     const dispatch = useDispatch()
 
+    // fetching values from the redux store
+    const editZone = useSelector(state => state.deliveryAddresses.editZone)
+    const addressStore = useSelector(state => state.deliveryAddresses.addressStore)
+    
+    // to open address form
     const openAddressForm = () => {
         dispatch(dialogActions.updateOpenModal(true))
+
+        // if user clicked on edit button then address form will gonna open but with filled values which user can later edit
+        if (editZone.editFlag) {
+            const resultantAddress = addressStore.find((_, index) => index === editZone.id) // to find the address which user clicked to edit
+            dispatch(deliveryAddressActions.updateFirstName(resultantAddress.firstName))
+        }
     }
 
     return (
-        <Box sx = {{mt : 5, position : 'relative', height : '70vh'}} display = 'flex' flexDirection = 'column' alignItems = 'center' >
-            <Typography variant = 'h5' sx = {{mb:3}}>Select Your delivery address</Typography>
-            <DisplayAddresses openForm = {openAddressForm} />
-            <Typography variant = 'h5' sx = {{mt:2,mb:3}}>- Or -</Typography>
-            <Button 
-                variant = 'contained'
-                sx = {{backgroundColor : '#110f12', borderRadius : 0, '&:hover' : {backgroundColor : '#110f12'}}}
-                onClick = {openAddressForm}
-            >
-                Add Address
-            </Button>
+        <Box sx = {{mt : 5, position : 'relative'}} display = 'flex' flexDirection = 'column' alignItems = 'center' >
+            <Typography variant = 'h6' sx = {{mb:3}}>Select Your delivery address</Typography>
+            <DisplayAddresses openForm = {openAddressForm} />            
             <AddAddress />      
         </Box>
     )
