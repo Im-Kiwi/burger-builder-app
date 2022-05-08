@@ -10,7 +10,7 @@ import { auth } from '../../firebase-setup';
 import * as yup from 'yup';
 import { ThemeProvider } from '@mui/material/styles'
 import { db } from '../../firebase-setup'
-import { addDoc, collection, query, where, getDocs } from 'firebase/firestore'
+import { addDoc, collection, query, where, getDocs, arrayUnion, setDoc, doc } from 'firebase/firestore'
 
 //  ----------------- importing from other files ------------------
 import { userFormActions } from '../../Store/reducer/userForm';
@@ -25,6 +25,7 @@ const SignUp = props => {
     const [selectNation, setSelectNation] = useState('')
 
     const isUserNameExist = useSelector(state => state.userForm.isUserNameExist)
+    const userId = useSelector(state => state.userForm.currentUser.userId)
 
      // creating schema for sign up validation
     const signUpSchema = yup.object().shape({
@@ -59,28 +60,21 @@ const SignUp = props => {
 
         try {
             const response = await createUserWithEmailAndPassword(auth, data.emailAddress, data.password)
+            const userData = {
+                userName : data.userName,
+                nationality : data.nationality,
+                email : response._tokenResponse.email,
+                userId : response._tokenResponse.localId
+            }
+
             try {
-                const userData = {
-                    userName : data.userName,
-                    nationality : data.nationality,
-                    email : response._tokenResponse.email,
-                    userId : response._tokenResponse.localId
-                }
-
-                const cartData = {
-                    userName : data.userName,
-                    userId : response._tokenResponse.localId,
-                    cartItems : []
-                } 
-
                 // adding document in users and cart collection in database after successfully sign up
                 await addDoc(collection(db, 'users'), userData)
-                await addDoc(collection(db, 'cart'), cartData)
-            } catch(err) {
-                console.log('error in creating account')
-            }   
-            dispatch(dialogActions.updateOpen(false))
-            navigate('/build-burger')
+                dispatch(dialogActions.updateOpen(false))
+                navigate('/build-burger')
+            } catch (err) {
+                console.log(err)
+            }
         } catch (err) {
             console.log(err.message)
         }
@@ -117,6 +111,7 @@ const SignUp = props => {
                         <TextField select
                             error = {Boolean(errors.nationality)}
                             helperText = {errors.nationality?.message}
+                            aria-hidden = 'false'
                             label = 'Nationality'
                             size = 'small'
                             variant = 'standard'
@@ -125,13 +120,13 @@ const SignUp = props => {
                             onChange = {(event) => setSelectNation(event.target.value)}
                             value = {selectNation}
                         >
-                            <MenuItem value = {0}>
+                            <MenuItem  value = 'Philippine'>
                                 <Stack direction = 'row' spacing = {1}>
                                     <Image src = {Phili} alt = 'philippine flag' width = {30} />
                                     <Typography>Philippine</Typography>
                                 </Stack>
                             </MenuItem>
-                            <MenuItem value = {1}>
+                            <MenuItem value = 'India'>
                                 <Stack direction = 'row' spacing = {1}>
                                     <Image fluid src = {Ind} alt = 'indian flag' width= {30} />
                                     <Typography>India</Typography>

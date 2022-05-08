@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    deliveryAddress : {}
+    deliveryAddress : {},
+    orders : []
 }
 
 const ordersReducer = createSlice({
@@ -10,6 +11,9 @@ const ordersReducer = createSlice({
     reducers : {
         updateDeliveryAddress (state, action) {
             state.deliveryAddress = action.payload
+        },
+        updateOrders (state, action) {
+            state.orders = [...action.payload]
         }
     }
 })

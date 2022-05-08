@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Box, Button, Divider, FormControl, FormControlLabel, Grid, Paper, RadioGroup, Stack, Typography, Container, Fab } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { collection, addDoc, arrayUnion, setDoc, doc } from 'firebase/firestore'
+import { collection, addDoc, arrayUnion, setDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore'
 import { db } from '../../firebase-setup.js'
 
 // ---------- importing from other files -----------
@@ -28,19 +28,27 @@ const Payment = () => {
         totalPrice = currentItem[0].totalPrice.toFixed(1)
     } else {
         const tempData = cartItems.map(item => item.totalPrice)
-        totalPrice = tempData.reduce((total, price) => total + price).toFixed(1)
+        totalPrice = cartItems.length !== 0 ? tempData.reduce((total, price) => total + price).toFixed(1) : 0
     }
 
     // will store the orders in the firebase database
     const paymentHandler = async () => {
+        
+        let dataToSend
         try {
             if (instantBuy) {
-                await setDoc(doc(db, 'orders', 'instantBuy'), {[`items_${userId}`] : arrayUnion(...currentItem)})
+                dataToSend = {...currentItem, orderedOn : new Date().getTime(), userId : userId}
+                await addDoc(collection(db, 'orders'), dataToSend)
             } else {
+                dataToSend = {...cartItems, orderedOn : new Date().getTime(), userId : userId}
+                await addDoc(collection(db, 'orders'), dataToSend) 
+                                
+                // clearing cart
                 for (let item of cartItems) {
-                    await setDoc(doc(db, 'orders', 'thruCart'), {[`items_${userId}`] : arrayUnion(item)})
+                    await deleteDoc(doc(db, 'cart', item.id))
                 }
             }
+
             setPaymentSuccess(true)
         } catch (err) {
             console.log(err)

@@ -71,23 +71,13 @@ const BurgerController = () => {
         dispatch(cartActions.updateCurrentItem(ingredients))      
         dispatch(cartActions.updateInstantBuy(true)) // to update the instantBuy value to true means user buying directly not adding the item to the cart
         dispatch(stepperActions.resetStepper()) // to reset the stepper
-        console.log(pathname)
         navigate('/buy/delivery-address', {state : pathname})
     }
 
     // method to add item into cart
     const addToCartHandler = async () => {
         const cartItem = {
-            Lettuce : ingredients.Lettuce.qty,
-            Cheese : ingredients.Cheese.qty,
-            Onion : ingredients.Onion.qty,
-            Tomato : ingredients.Tomato.qty,
-            Meat : ingredients.Meat.qty,
-            Bacon : ingredients.Bacon.qty,
-            Coke : ingredients.Coke.status,
-            FrenchFries : ingredients.FrenchFries.status,
-            totalPrice : ingredients.totalPrice,
-            burgerName : ingredients.burgerName,
+            ...ingredients,
             userId
         }
 

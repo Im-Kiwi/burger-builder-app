@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Box } from '@mui/material'
 import { Routes, Route, useNavigate, useLocation } from 'react-router'
 import { onAuthStateChanged } from 'firebase/auth'
-import { query, where, getDocs, collection, onSnapshot } from 'firebase/firestore'
+import { query, where, collection, onSnapshot } from 'firebase/firestore'
 
 // ----------------- importing other components -----------------
 import Home from "../Home/Home"
@@ -13,9 +13,11 @@ import OrderSummary from '../OrderSummary/OrderSummary'
 import SignUp from '../../Components/SignUp/SignUp'
 import LogIn from '../../Components/LogIn/LogIn'
 import BuyBurger from '../BuyBurger/BuyBurger'
-import DeliveryAddress from '../../Components/DeliveryAddress/DeliveryAddress'
+import DeliveryAddress from '../DeliveryAddress/DeliveryAddress'
 import Payment from '../../Components/Payment/Payment'
 import Cart from '../../Components/Cart/Cart'
+import YourOrders from '../../Components/YourOrders/YourOrders'
+import YourAddresses from '../../Components/YourAddresses/YourAddresses'
 
 // --------- importing redux actions ------------
 import { userFormActions } from '../../Store/reducer/userForm'
@@ -41,28 +43,12 @@ const Layout = () => {
     let itemsInCart = []
     let ordersArr = []
 
-    const manageCartItems = (data) => {
-        return {
-            Lettuce : {name : 'Lettuce', qty : data.doc.data().Lettuce},
-            Cheese : {name : 'Cheese', qty : data.doc.data().Cheese},
-            Onion : {name : 'Onion', qty : data.doc.data().Onion},
-            Tomato : {name : 'Tomato', qty : data.doc.data().Tomato},
-            Meat : {name : 'Meat', qty : data.doc.data().Meat},    
-            Bacon : {name : 'Bacon', qty : data.doc.data().Bacon},
-            Coke : {name : 'Coke', status : data.doc.data().Coke},
-            FrenchFries : {name : 'FrenchFries', status : data.doc.data().FrenchFries},
-            totalPrice : data.doc.data().totalPrice,
-            burgerName : data.doc.data().burgerName,
-            id : data.doc.id
-        }
-    }
-    
     // listening to addresses collection of firestore database 
     useEffect(() => {
         if (userId) {            
             const addressToListen = query(collection(db, 'addresses'), where('userId', '==', userId))
             const cartToListen = query(collection(db, 'cart'), where('userId', '==', userId))
-            const ordersToListen = query(collection(db, 'orders'))
+            const ordersToListen = query(collection(db, 'orders'), where('userId', '==', userId))
 
             onSnapshot(addressToListen, (address) => {
                 address.docChanges().forEach((change) => {
@@ -85,8 +71,8 @@ const Layout = () => {
             onSnapshot(cartToListen, (cartItem) => {
                 cartItem.docChanges().forEach(change => {
                     if (change.type === 'added') {
-                        const data = manageCartItems(change)
-                        itemsInCart.push(data)
+                        // const data = manageCartItems(change)
+                        itemsInCart.push({...change.doc.data(), id : change.doc.id})
                     }
                     if (change.type === 'removed') {
                         const cartItemId = itemsInCart.findIndex(item => item.id === change.doc.id)
@@ -99,12 +85,15 @@ const Layout = () => {
             onSnapshot(ordersToListen, orders => {
                 orders.docChanges().forEach(change => {
                     if (change.type === 'added') {
-                        ordersArr.push({...change.doc.data()})
+                        ordersArr.push({...change.doc.data(), id : change.doc.id})
+                    }
+                    if (change.type === 'removed') {
+                        const ordersArrId = ordersArr.findIndex(order => order.id === change.doc.id)
+                        ordersArr.splice(ordersArrId, 1)
                     }
                 })
-                console.log(ordersArr)
-            })
-
+                dispatch(ordersActions.updateOrders(ordersArr))
+            })            
         }
     }, [userId])
 
@@ -217,8 +206,13 @@ const Layout = () => {
                 <Route path = 'cart' element = {dynamicElement}>
                     <Route index element = {<Cart />} />
                 </Route>
+                <Route  path = 'your-orders' element = {dynamicElement}>
+                    <Route index element = {<YourOrders />} />
+                </Route>
+                <Route  path = 'your-addresses' element = {dynamicElement}>
+                    <Route index element = {<YourAddresses />} />
+                </Route>
             </Routes>
-
             {pathname === '/' ?
                 <FullDialogs closeDialogHandler = {closeDialogHandler}>
                     <Box sx = {{mt:10}}>

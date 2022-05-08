@@ -11,10 +11,7 @@ import FullDialogs from '../../Components/FullDialogs/FullDialogs'
 import NavigationBar from '../../Components/NavigationBar/NavigationBar'
 
 const BuildBurger = (props) => {
-    const navigate = useNavigate()
     const { pathname } = useLocation()
-
-    const token = useSelector(state => state.userForm.currentUser.token)
 
     return (
         <Box className = {classes.main}>
@@ -22,16 +19,21 @@ const BuildBurger = (props) => {
             <Grid container>
                 <Grid xs = {7} item className = {[classes.firstItem].join(' ')}>
                     <Box display = 'flex' justifyContent = 'center' className = {classes.burgerContainer}>
-                        <DisplayBurger />
+                        <DisplayBurger /> {/* burger will display here */}
                     </Box>
                 </Grid>
                 <Grid xs = {5} item className = {classes.secondItem}>
-                    <BurgerController />
+                    <BurgerController /> {/* this will display the burger controller with the help of which user can add ingredients on the burger */}
                 </Grid>
             </Grid>
+            {/* below is the condition to show the modal and full screen modal depending upon the url */}
+            {pathname === '/your-orders' || pathname === '/your-addresses' ? 
+                <Outlet />
+            :
             <FullDialogs title = {props.title} priceInfo = {props.priceInfo} isOrderSummary = {true} closeDialogHandler = {props.closeDialogHandler} >
                 <Outlet />
             </FullDialogs>
+            }
         </Box>        
     )
 }

@@ -1,6 +1,6 @@
-import { Stack, Box, Grid, Typography, Button } from '@mui/material';
+import { Stack, Box, Grid, Typography, Button, TextField, MenuItem } from '@mui/material';
 import { useDispatch } from 'react-redux'
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 
 // ------------- importing from files -------------------
 import classes from './Home.module.css'
@@ -12,6 +12,7 @@ import FullDialogs from '../../Components/FullDialogs/FullDialogs';
 
 const Home = (props) => {
     const dispatch = useDispatch()
+    const { pathname } = useLocation()
 
     const dialogHandler = () => {
         dispatch(dialogActions.updateOpen(true))
@@ -44,9 +45,13 @@ const Home = (props) => {
                 <Grid xs = {6} item className = {classes.secondItem}>
                 </Grid>                
             </Grid>
-            <FullDialogs title = 'My Cart' closeDialogHandler = {props.closeDialogHandler} priceInfo = {props.priceInfo}>
+            {pathname === '/your-orders' || pathname === '/your-addresses' ? 
                 <Outlet />
-            </FullDialogs>
+            : 
+                <FullDialogs title = 'My Cart' closeDialogHandler = {props.closeDialogHandler} priceInfo = {props.priceInfo}>
+                    <Outlet />
+                </FullDialogs>
+            }           
         </Box>
     )
 }

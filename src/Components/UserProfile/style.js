@@ -6,5 +6,5 @@ export const CustomMenuItem = styled(MenuItem)({
     '&:hover' : {
         backgroundColor : '#110f12',
         color : '#f9b826'
-    }
+    }    
 })

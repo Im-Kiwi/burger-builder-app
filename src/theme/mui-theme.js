@@ -3,8 +3,11 @@ import { createTheme } from '@mui/material/styles'
 export const userFormTheme = createTheme({
     palette : {
         mode : 'dark',
-        common : {
-            white : '#f9b826'
+        yellowish : {
+            main : '#f9b826'            
+        },
+        blackish : {
+            main : '#110f12'            
         }
     }
 })

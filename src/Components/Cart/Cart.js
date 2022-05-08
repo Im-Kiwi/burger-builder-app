@@ -19,7 +19,6 @@ const Cart = () => {
 
     // getting values from the redux store
     const cartItems = useSelector(state => state.cart.cartItems)
-    const toggle = useSelector(state => state.toggle.isDelete)
 
 
     // method to delete a cart item

@@ -2,11 +2,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Box, Typography, Button } from '@mui/material'
 
 // -------- importing from other files -------------
-import AddAddress from '../AddAddress/AddAddress'
-import DisplayAddresses from '../DisplayAddresses/DisplayAddresses'
+import AddAddress from '../../Components/AddAddress/AddAddress'
+import DisplayAddresses from '../../Components/DisplayAddresses/DisplayAddresses'
 import { dialogActions } from '../../Store/reducer/dialog'
 import { deliveryAddressActions } from '../../Store/reducer/deliveryAddress'
-
 
 const DeliveryAddress = (props) => {
     const dispatch = useDispatch()

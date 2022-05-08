@@ -76,8 +76,8 @@ const AddAddress = () => {
                 } else {
                     await addDoc(collection(db, 'addresses'), addressData) 
                 }                
+                closeAddressFormHandler()
             }
-            closeAddressFormHandler()
         } catch(err) {
             console.log('Some error! Please try again later')
             closeAddressFormHandler()
@@ -120,12 +120,13 @@ const AddAddress = () => {
                             >
                                 <CloseRounded />
                             </IconButton>
+                            
                             <form onSubmit = {(event) => addressSubmitHandler(event)}>
                                 <ThemeProvider theme = {userFormTheme}>
                                     <Stack direction = 'column'>
                                         <Stack direction = 'row'>
                                             <TextField variant='filled' className = 'noInputBorder' 
-                                                sx = {{mr : 2, input : {borderColor : 'red'}}} 
+                                                sx = {{mr : 2}} 
                                                 size = 'small' 
                                                 label = {firstName}
                                                 value = {addressForm.firstName}
@@ -173,8 +174,8 @@ const AddAddress = () => {
                                                     fullWidth select 
                                                     variant='filled'  
                                                     className = 'noInputBorder' 
-                                                    label = {country}
-                                                    size = 'small' 
+                                                    label = 'Country'
+                                                    size = 'small'                                                     
                                                     value = {addressForm.selectCountry}
                                                     onChange = {(event) => changeHandler(event, country)}
                                                     error = {validationFlag && addressForm.selectCountry.length === 0 ? true : false}
@@ -184,7 +185,7 @@ const AddAddress = () => {
                                                     <MenuItem value = 'Philippines'>Philippines</MenuItem>
                                                 </TextField>                                            
                                             </Box>
-                                            <Box sx = {{width : 200, mr : 2, '&.MuiPaper-root' : {height : '300px !important'}}}>
+                                            <Box sx = {{width : 200, mr : 2}}>
                                                 <TextField 
                                                     variant='filled' 
                                                     disabled  = {!Boolean(addressForm.selectCountry)}

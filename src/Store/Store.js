@@ -7,7 +7,6 @@ import basePriceReducer from "./reducer/basePrice";
 import cartReducer from "./reducer/cart";
 import ordersReducer from "./reducer/orders";
 import deliveryAddress from "./reducer/deliveryAddress";
-import previousPath from "./reducer/previousPath";
 import toggleReducer from './reducer/toggle'
 
 const store = configureStore({
@@ -20,7 +19,6 @@ const store = configureStore({
         cart : cartReducer.reducer,
         orders : ordersReducer.reducer,
         deliveryAddresses : deliveryAddress.reducer,
-        previousPath : previousPath.reducer,
         toggle : toggleReducer.reducer
     }
 })
