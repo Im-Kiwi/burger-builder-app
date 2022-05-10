@@ -27,7 +27,7 @@ const BuildBurger = (props) => {
                 </Grid>
             </Grid>
             {/* below is the condition to show the modal and full screen modal depending upon the url */}
-            {pathname === '/your-orders' || pathname === '/your-addresses' ? 
+            {pathname === '/your-orders' || pathname === '/your-addresses' || pathname === '/security-settings' ? 
                 <Outlet />
             :
             <FullDialogs title = {props.title} priceInfo = {props.priceInfo} isOrderSummary = {true} closeDialogHandler = {props.closeDialogHandler} >

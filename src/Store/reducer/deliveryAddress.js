@@ -2,8 +2,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { firstName, lastName, phoneNumber, address, country, state as aState, city, addressType, pinCode } from '../../identifiers/identifiers'
 
+// this slice is to store the information of addresses 
 const initialState = {
-    addressForm : {
+    addressForm : { // store the values which user filled inside the address form
         firstName : '',
         lastName : '',
         phoneNumber : '',

@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux'
-import { Typography, Card, Grid, Box, Stack, Paper, Divider  } from '@mui/material'
+import { Typography, Grid, Box, Stack  } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { v4 as uniqueId } from 'uuid'
-import { faUser, faMobileRetro, faHouse, faCity, faCheck } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faMobileRetro, faHouse, faCity } from '@fortawesome/free-solid-svg-icons'
 
 // -------------- importing from other files ------------
 import Burger from '../../Components/Burger/Burger'

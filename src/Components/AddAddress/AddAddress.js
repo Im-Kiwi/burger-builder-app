@@ -28,6 +28,8 @@ const AddAddress = () => {
     const addressStore = useSelector(state => state.deliveryAddresses.addressStore)
     const validationFlag = useSelector(state => state.deliveryAddresses.validationFlag)
     
+    // when the user click on the edit button to edit address then all the information will be displayed in address form
+    // then user can edit and later save the new address
     useEffect(() => {
         if (editZone.flag) {
             const resultantAddress = addressStore.find((_, index) => index === editZone.id)
@@ -61,6 +63,7 @@ const AddAddress = () => {
         }
 
         // to check whether the values inside addressForm object is non empty strings
+        // if it is empty string that means user is not in edit mode 
         let emptyFlag = false
         const checkValues = Object.values(addressForm)
         checkValues.forEach(value => {
@@ -70,13 +73,14 @@ const AddAddress = () => {
         })
 
         try {
+            // to update the address which user edited 
             if (!emptyFlag) { 
                 if (editZone.flag) {
                     await updateDoc(doc(db, 'addresses', addressStore[editZone.id].id), addressData)
                 } else {
                     await addDoc(collection(db, 'addresses'), addressData) 
                 }                
-                closeAddressFormHandler()
+                closeAddressFormHandler() // to close the address form once user save it
             }
         } catch(err) {
             console.log('Some error! Please try again later')
@@ -84,6 +88,7 @@ const AddAddress = () => {
         }
     }
 
+    //  this method will help to close the address form
     const closeAddressFormHandler = () => {
         dispatch(dialogActions.updateOpenModal(false))
         dispatch(deliveryAddressActions.updateEditZone({flag : false, id : null}))
@@ -91,6 +96,7 @@ const AddAddress = () => {
         dispatch(deliveryAddressActions.updateValidationFlag(false))
     }
 
+    // method to handle change in the input tags of the address form
     const changeHandler = (event, label) => {
         dispatch(deliveryAddressActions.updateAddressForm({label : label, value : event.target.value}))
     }

@@ -45,7 +45,7 @@ const Home = (props) => {
                 <Grid xs = {6} item className = {classes.secondItem}>
                 </Grid>                
             </Grid>
-            {pathname === '/your-orders' || pathname === '/your-addresses' ? 
+            {pathname === '/your-orders' || pathname === '/your-addresses' || pathname === '/security-settings' ? 
                 <Outlet />
             : 
                 <FullDialogs title = 'My Cart' closeDialogHandler = {props.closeDialogHandler} priceInfo = {props.priceInfo}>

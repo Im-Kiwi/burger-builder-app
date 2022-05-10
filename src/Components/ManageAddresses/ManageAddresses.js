@@ -6,7 +6,7 @@ import { Box } from '@mui/material'
 import { dialogActions } from '../../Store/reducer/dialog'
 import DeliveryAddress from '../../Containers/DeliveryAddress/DeliveryAddress'
 
-const YourAddresses = () => {
+const ManageAddresses = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -40,4 +40,4 @@ const YourAddresses = () => {
     )
 }
 
-export default YourAddresses
+export default ManageAddresses

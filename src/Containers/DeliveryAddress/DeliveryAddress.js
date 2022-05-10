@@ -26,8 +26,15 @@ const DeliveryAddress = (props) => {
     }
 
     return (
-        <Box sx = {{mt : 5, position : 'relative'}} display = 'flex' flexDirection = 'column' alignItems = 'center' >
-            <Typography variant = 'h6' sx = {{mb:3}}>Select Your delivery address</Typography>
+        <Box 
+            sx = {{mt : 5, position : 'relative'}} 
+            display = 'flex' 
+            flexDirection = 'column' 
+            alignItems = 'center'
+        >
+            <Typography variant = 'h6' sx = {{mb:3}}>
+                Select Your delivery address
+            </Typography>
             <DisplayAddresses openForm = {openAddressForm} />            
             <AddAddress />      
         </Box>

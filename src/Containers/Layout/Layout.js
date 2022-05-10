@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Box } from '@mui/material'
 import { Routes, Route, useNavigate, useLocation } from 'react-router'
 import { onAuthStateChanged } from 'firebase/auth'
-import { query, where, collection, onSnapshot } from 'firebase/firestore'
+import { query, where, collection, onSnapshot, getDocs } from 'firebase/firestore'
 
 // ----------------- importing other components -----------------
 import Home from "../Home/Home"
@@ -17,7 +17,9 @@ import DeliveryAddress from '../DeliveryAddress/DeliveryAddress'
 import Payment from '../../Components/Payment/Payment'
 import Cart from '../../Components/Cart/Cart'
 import YourOrders from '../../Components/YourOrders/YourOrders'
-import YourAddresses from '../../Components/YourAddresses/YourAddresses'
+import ManageAddresses from '../../Components/ManageAddresses/ManageAddresses'
+import Security from '../../Components/Security/Security'
+import DeleteAccount from '../../Components/DeleteAccount/DeleteAccount'
 
 // --------- importing redux actions ------------
 import { userFormActions } from '../../Store/reducer/userForm'
@@ -43,13 +45,16 @@ const Layout = () => {
     let itemsInCart = []
     let ordersArr = []
 
-    // listening to addresses collection of firestore database 
+    // listening to addresses, cart, orders collection of firestore database 
+    // this will autmaticaly run when there is a change in the collections of the firebase database
     useEffect(() => {
-        if (userId) {            
+        if (userId) {      
+            // selecting the collection to listen to   
             const addressToListen = query(collection(db, 'addresses'), where('userId', '==', userId))
             const cartToListen = query(collection(db, 'cart'), where('userId', '==', userId))
             const ordersToListen = query(collection(db, 'orders'), where('userId', '==', userId))
 
+            // listening to addresses collection, if any change happens like deletion, update, adding of doc then this below method will run
             onSnapshot(addressToListen, (address) => {
                 address.docChanges().forEach((change) => {
                     if (change.type === 'added') {
@@ -68,6 +73,7 @@ const Layout = () => {
                 dispatch(deliveryAddressActions.updateAddressStore(addressesArr))            
             })
 
+            // to listen the cart collection
             onSnapshot(cartToListen, (cartItem) => {
                 cartItem.docChanges().forEach(change => {
                     if (change.type === 'added') {
@@ -82,6 +88,7 @@ const Layout = () => {
                 dispatch(cartActions.updateCartItems([...itemsInCart]))
             })
 
+            // to listen orders collection
             onSnapshot(ordersToListen, orders => {
                 orders.docChanges().forEach(change => {
                     if (change.type === 'added') {
@@ -97,8 +104,8 @@ const Layout = () => {
         }
     }, [userId])
 
+    // this will make sure that full dialog wont close when user try to reload the page
     useEffect(() => {
-        // this will make sure that full dialog wont close when user try to reload the page
         let cartPath = '/cart'
         let buyPath = '/buy'
 
@@ -119,12 +126,21 @@ const Layout = () => {
     // making sure user stays logged in once it logs in
     onAuthStateChanged(auth, (currentUser) => {
         if (currentUser) {
-            const userData = { // data is stored in a seperate object to avoid storing non seriealizable data inside redux store
-                email : currentUser.email,
-                token : currentUser.accessToken,
-                userId : currentUser.uid
-            }            
-            dispatch(userFormActions.updateCurrentUser(userData))  
+            let userDbId
+            (async () => {
+                const q = query(collection(db, 'users'), where('userId', '==', currentUser.uid))
+                const getUser = await getDocs(q)
+                getUser.forEach(user => {
+                    userDbId = user.id
+                })
+                const userData = { // data is stored in a seperate object to avoid storing non seriealizable data inside redux store
+                    email : currentUser.email,
+                    token : currentUser.accessToken,
+                    userId : currentUser.uid,
+                    dbId : userDbId
+                }            
+                dispatch(userFormActions.updateCurrentUser(userData))  
+            })();
         }
     })
 
@@ -210,9 +226,13 @@ const Layout = () => {
                     <Route index element = {<YourOrders />} />
                 </Route>
                 <Route  path = 'your-addresses' element = {dynamicElement}>
-                    <Route index element = {<YourAddresses />} />
+                    <Route index element = {<ManageAddresses />} />
+                </Route>
+                <Route  path = 'security-settings' element = {dynamicElement}>
+                    <Route index element = {<Security />} />
                 </Route>
             </Routes>
+            <DeleteAccount />
             {pathname === '/' ?
                 <FullDialogs closeDialogHandler = {closeDialogHandler}>
                     <Box sx = {{mt:10}}>

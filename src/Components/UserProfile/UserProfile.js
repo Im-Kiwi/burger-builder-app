@@ -45,6 +45,20 @@ const UserProfile = () => {
         navigate('/your-addresses') 
     }
 
+    // method to open 'security settings' modal
+    const securityHandler = () => {
+        dispatch(dialogActions.updateUserProfModal(true))
+        localStorage.setItem('prevPath', pathname)
+        navigate('/security-settings')
+        setAnchorEl(null)
+    }
+
+    // method to open delete account modal
+    const deleteAccountHandler = () => {
+        dispatch(dialogActions.updateDelAccModal(true))
+        setAnchorEl(null)
+    }
+
     // method to logout
     const logoutHandler = async() => {
         await signOut(auth) // method to sign out the user from the firebase
@@ -80,10 +94,10 @@ const UserProfile = () => {
                     sx = {{ '.MuiList-root':{background : '#f9b826 !important'}}}
             >
                 <CustomMenuItem onClick = {yourOrdersHandler}>Your Orders</CustomMenuItem>
-                <CustomMenuItem onClick = {yourAddressesHandler}>Your Addresses</CustomMenuItem>
-                <CustomMenuItem>Security settings</CustomMenuItem>
-                <CustomMenuItem>Delete Account</CustomMenuItem>
-                <CustomMenuItem  onClick = {logoutHandler}>Sign Out</CustomMenuItem>
+                <CustomMenuItem onClick = {yourAddressesHandler}>Manage Addresses</CustomMenuItem>
+                <CustomMenuItem onClick = {securityHandler}>Security</CustomMenuItem>
+                <CustomMenuItem onClick = {deleteAccountHandler}>Delete Account</CustomMenuItem>
+                <CustomMenuItem onClick = {logoutHandler}>Sign Out</CustomMenuItem>
             </Menu>            
         </div>
     )

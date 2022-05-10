@@ -22,8 +22,10 @@ const SignUp = props => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
+    // this will record the selection of nation by the user
     const [selectNation, setSelectNation] = useState('')
 
+    // fetching values from the redux store
     const isUserNameExist = useSelector(state => state.userForm.isUserNameExist)
     const userId = useSelector(state => state.userForm.currentUser.userId)
 
@@ -36,7 +38,7 @@ const SignUp = props => {
         confirmPassword : yup.string().required().oneOf([yup.ref('password')], 'password does not match')        
     });
 
-    // this will help to handle validation in the form
+    // this will help to handle validation of the form
     const { register, handleSubmit, formState : {errors} } = useForm({
         resolver : yupResolver(signUpSchema)
     })
@@ -59,6 +61,7 @@ const SignUp = props => {
         }
 
         try {
+            // sending the sign up form information to firebase which will result in success of creating account
             const response = await createUserWithEmailAndPassword(auth, data.emailAddress, data.password)
             const userData = {
                 userName : data.userName,
@@ -68,7 +71,8 @@ const SignUp = props => {
             }
 
             try {
-                // adding document in users and cart collection in database after successfully sign up
+                // adding document in users collection in database after successfully sign up
+                // document is the information of the user
                 await addDoc(collection(db, 'users'), userData)
                 dispatch(dialogActions.updateOpen(false))
                 navigate('/build-burger')

@@ -8,6 +8,7 @@ import cartReducer from "./reducer/cart";
 import ordersReducer from "./reducer/orders";
 import deliveryAddress from "./reducer/deliveryAddress";
 import toggleReducer from './reducer/toggle'
+import securityReducer from "./reducer/security";
 
 const store = configureStore({
     reducer : {
@@ -19,7 +20,8 @@ const store = configureStore({
         cart : cartReducer.reducer,
         orders : ordersReducer.reducer,
         deliveryAddresses : deliveryAddress.reducer,
-        toggle : toggleReducer.reducer
+        toggle : toggleReducer.reducer,
+        security : securityReducer.reducer
     }
 })
 
