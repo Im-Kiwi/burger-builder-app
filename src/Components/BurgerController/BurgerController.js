@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from  'react-router-dom'
 import { Grid, Typography, IconButton, Stack, Box, Checkbox, TextField, Button } from '@mui/material'
 import { ThemeProvider } from '@mui/material'
 import { getDoc, doc, addDoc, collection } from 'firebase/firestore'
+import { motion } from 'framer-motion'
 
 // ------------ importing from files -----------------
 import { db } from '../../firebase-setup'
@@ -14,8 +15,10 @@ import { dialogActions } from '../../Store/reducer/dialog'
 import { cartActions } from '../../Store/reducer/cart'
 import { stepperActions } from '../../Store/reducer/stepper'
 import { toggleActions } from '../../Store/reducer/toggle'
+import { animationActions } from '../../Store/reducer/animation'
+import { LettuceIco, CheeseIco, MeatIco, TomatoIco, OnionIco, BaconIco } from '../../path-to-assets/pathToImages'
 
-const BurgerController = () => {
+const BurgerController = (props) => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { pathname } = useLocation()
@@ -40,6 +43,8 @@ const BurgerController = () => {
     const addIngredient = (ingName) => {
         if (ingredients[ingName].qty < 3) {
             dispatch(ingredientsActions.updateIngredient({ingName : ingName, qty : 1, price : basePrice[ingName] }))
+            dispatch(animationActions.updateBeginAnime(true)) // to animate slice
+            dispatch(animationActions.updateAnimeAtEnd(false))
         }
     }
 
@@ -47,16 +52,19 @@ const BurgerController = () => {
     const removeIngredient = (ingName) => {
         if (ingredients[ingName].qty > 0) {
             dispatch(ingredientsActions.updateIngredient({ingName : ingName, qty : -1, price : -basePrice[ingName]}))
+            dispatch(animationActions.updateBeginAnime(false))
+            dispatch(animationActions.updateAnimeAtEnd(true))
         }
     }
 
     // method to control checkboxes
     const checkBoxHandler = (name) => {
         if (ingredients[name].status) {
-            dispatch(ingredientsActions.updateAddExtras({name : name, value : false}))    
+            dispatch(ingredientsActions.updateAddExtras({name : name, value : false, price : -basePrice[name]}))    
         } else if (!ingredients[name].status) {
-            dispatch(ingredientsActions.updateAddExtras({name : name, value : true}))    
+            dispatch(ingredientsActions.updateAddExtras({name : name, value : true, price : basePrice[name]}))    
         }
+        dispatch(animationActions.updateBeginAnime(true)) // to not animate the slice
     }
 
     // it will reset the ingredients and total price
@@ -67,10 +75,11 @@ const BurgerController = () => {
 
     // this method will navigate to the order summary page
     const buyHandler = () => {
-        dispatch(dialogActions.updateOpen(true)) // to open the full screen dialog(modal)  
+        dispatch(dialogActions.updateOpen(true)) // to open the full screen dialog(modal)      
         dispatch(cartActions.updateCurrentItem(ingredients))      
         dispatch(cartActions.updateInstantBuy(true)) // to update the instantBuy value to true means user buying directly not adding the item to the cart
         dispatch(stepperActions.resetStepper()) // to reset the stepper
+        dispatch(animationActions.updateBeginAnime(false)) // this will disable the animation on burger & other items
         navigate('/buy/delivery-address', {state : pathname})
     }
 
@@ -91,86 +100,107 @@ const BurgerController = () => {
 
 
     return (
-        <Stack className = 'h-100' direction = 'column' justifyContent = 'center' alignItems = 'center' spacing = {2}>
-            <ThemeProvider theme = {userFormTheme}>
-                <TextField 
-                    variant = 'filled' 
-                    size = 'small' 
-                    label = 'Name your burger'
-                    value = {burgerName}
-                    onChange = {(event) => dispatch(ingredientsActions.updateBurgerName(event.target.value))}
-                />
-            </ThemeProvider>
-            <Controls 
-                ingredient = {ingredients.Lettuce} 
-                addIngredient = {addIngredient} 
-                removeIngredient = {removeIngredient} />
-            <Controls 
-                ingredient = {ingredients.Cheese} 
-                addIngredient = {addIngredient} 
-                removeIngredient = {removeIngredient} />
-            <Controls 
-                ingredient = {ingredients.Onion} 
-                addIngredient = {addIngredient} 
-                removeIngredient = {removeIngredient} />
-            <Controls 
-                ingredient = {ingredients.Tomato} 
-                addIngredient = {addIngredient} 
-                removeIngredient = {removeIngredient} />
-            <Controls 
-                ingredient = {ingredients.Meat} 
-                addIngredient = {addIngredient} 
-                removeIngredient = {removeIngredient} />
-            <Controls 
-                ingredient = {ingredients.Bacon} 
-                addIngredient = {addIngredient} 
-                removeIngredient = {removeIngredient} /> 
-            <Box className = 'text-light'>
-                <Typography>Include Extras</Typography>                                                             
-                <Stack direction = 'row' alignItems = 'center'>
-                    <Checkbox 
-                        checked = {ingredients.Coke.status} 
-                        onChange = {() => checkBoxHandler(ingredients.Coke.name)} 
-                        className = 'text-light' />
-                    <Typography>Coke</Typography>                                                             
-                </Stack>               
-                <Stack direction = 'row' alignItems = 'center'>
-                    <Checkbox 
-                        checked = {ingredients.FrenchFries.status} 
-                        className = 'text-light' 
-                        onChange = {() => checkBoxHandler(ingredients.FrenchFries.name)} />
-                    <Typography>French Fries</Typography>                                                             
+        <Stack className = 'h-100' direction = 'column' justifyContent = 'center' alignItems = 'center'>
+            <motion.div
+                initial = {!props.noTransition && {x : '100vw'}}
+                animate = {!props.noTransition && {x : 0}}
+                exit = {!props.noTransition && {x : '100vw'}}
+                transition = {!props.noTransition && {duration : 0.7, type : 'spring'}}
+            >
+                <Stack spacing = {2} alignItems = 'center'>
+                    <ThemeProvider theme = {userFormTheme}>
+                        <TextField 
+                            variant = 'filled' 
+                            size = 'small' 
+                            label = 'Name your burger'
+                            value = {burgerName}
+                            onChange = {(event) => dispatch(ingredientsActions.updateBurgerName(event.target.value))}
+                        />
+                    </ThemeProvider>
+                    <Controls 
+                        ingredient = {ingredients.Lettuce} 
+                        addIngredient = {addIngredient} 
+                        removeIngredient = {removeIngredient}
+                        icon = {LettuceIco} />
+                    <Controls 
+                        ingredient = {ingredients.Cheese} 
+                        addIngredient = {addIngredient} 
+                        removeIngredient = {removeIngredient}
+                        icon = {CheeseIco} />
+                    <Controls 
+                        ingredient = {ingredients.Onion} 
+                        addIngredient = {addIngredient} 
+                        removeIngredient = {removeIngredient}
+                        icon = {OnionIco} />
+                    <Controls 
+                        ingredient = {ingredients.Tomato} 
+                        addIngredient = {addIngredient} 
+                        removeIngredient = {removeIngredient}
+                        icon = {TomatoIco} />
+                    <Controls 
+                        ingredient = {ingredients.Meat} 
+                        addIngredient = {addIngredient} 
+                        removeIngredient = {removeIngredient}
+                        icon = {MeatIco} />
+                    <Controls 
+                        ingredient = {ingredients.Bacon} 
+                        addIngredient = {addIngredient} 
+                        removeIngredient = {removeIngredient}
+                        icon = {BaconIco} /> 
+                    <Box className = 'text-light'>
+                        <Typography>Include Extras</Typography>                                                             
+                        <Stack direction = 'row' alignItems = 'center'>
+                            <Checkbox 
+                                checked = {ingredients.Coke.status} 
+                                onChange = {() => checkBoxHandler(ingredients.Coke.name)} 
+                                sx = {{'&.MuiCheckbox-root' : {
+                                    color : '#ee6c4d'
+                                }}}
+                            />
+                            <Typography>Coke</Typography>                                                             
+                        </Stack>               
+                        <Stack direction = 'row' alignItems = 'center'>
+                            <Checkbox 
+                                checked = {ingredients.FrenchFries.status} 
+                                onChange = {() => checkBoxHandler(ingredients.FrenchFries.name)}
+                                sx = {{'&.MuiCheckbox-root' : {
+                                    color : '#ee6c4d'
+                                }}}
+                            />
+                            <Typography>French Fries</Typography>                                                             
+                        </Stack>
+                    </Box>
+                    <Box className = 'mt-5'>
+                        <Button 
+                            onClick = {resetHandler} 
+                            sx = {{borderRadius : 0, mr : 2}} 
+                            variant = 'outlined' 
+                            size = 'large' 
+                            color = 'warning'
+                        >
+                            Reset
+                        </Button>
+                        <Button 
+                            sx = {{borderRadius : 0, mr : 2}} 
+                            variant = 'contained' 
+                            size = 'large' 
+                            color = 'warning'
+                            onClick = {buyHandler}
+                        >
+                            Buy Now
+                        </Button>
+                        <Button 
+                            sx = {{borderRadius : 0}} 
+                            variant = 'contained' 
+                            size = 'large' 
+                            color = 'warning'
+                            onClick = {addToCartHandler}
+                        >
+                            Add to Cart
+                        </Button>
+                    </Box>
                 </Stack>
-            </Box>
-            <Box className = 'mt-5'>
-                <Button 
-                    onClick = {resetHandler} 
-                    sx = {{borderRadius : 0, mr : 2}} 
-                    variant = 'outlined' 
-                    size = 'large' 
-                    color = 'warning'
-                >
-                    Reset
-                </Button>
-                <Button 
-                    sx = {{borderRadius : 0, mr : 2}} 
-                    variant = 'contained' 
-                    size = 'large' 
-                    color = 'warning'
-                    onClick = {buyHandler}
-                >
-                    Buy Now
-                </Button>
-                <Button 
-                    sx = {{borderRadius : 0}} 
-                    variant = 'contained' 
-                    size = 'large' 
-                    color = 'warning'
-                    onClick = {addToCartHandler}
-                >
-                    Add to Cart
-                </Button>
-            </Box>
+            </motion.div>
         </Stack>
     )
 }

@@ -9,6 +9,7 @@ import { db } from '../../firebase-setup.js'
 import { CustomRadio, CustomFormLabel, CustomFab } from './style.js'
 import { dialogActions } from '../../Store/reducer/dialog.js'
 import { ingredientsActions } from '../../Store/reducer/ingredients.js'
+import { stepperActions } from '../../Store/reducer/stepper.js'
 
 const Payment = () => {
     const navigate = useNavigate()
@@ -31,16 +32,16 @@ const Payment = () => {
         totalPrice = cartItems.length !== 0 ? tempData.reduce((total, price) => total + price).toFixed(1) : 0
     }
 
-    // will store the orders in the firebase database
+    // will sends the orders information to the firebase database
     const paymentHandler = async () => {
         
         let dataToSend
         try {
             if (instantBuy) {
-                dataToSend = {...currentItem, orderedOn : new Date().getTime(), userId : userId}
+                dataToSend = {...currentItem, orderedOn : new Date().getTime(), userId : userId, totalPrice : totalPrice}
                 await addDoc(collection(db, 'orders'), dataToSend)
             } else {
-                dataToSend = {...cartItems, orderedOn : new Date().getTime(), userId : userId}
+                dataToSend = {...cartItems, orderedOn : new Date().getTime(), userId : userId, totalPrice : totalPrice}
                 await addDoc(collection(db, 'orders'), dataToSend) 
                                 
                 // clearing cart
@@ -48,7 +49,7 @@ const Payment = () => {
                     await deleteDoc(doc(db, 'cart', item.id))
                 }
             }
-
+            dispatch(stepperActions.updateActiveStep(1))
             setPaymentSuccess(true)
         } catch (err) {
             console.log(err)
@@ -118,7 +119,11 @@ const Payment = () => {
                                 Price Details
                             </Typography>  
                             <Container>
-                                <Grid sx = {{mt : 2, mb : 2}} container justifyContent = 'space-evenly'>
+                                <Grid 
+                                    sx = {{mt : 2, mb : 2}} 
+                                    container 
+                                    justifyContent = 'space-evenly'
+                                >
                                     <Grid item xs = {8}>
                                         <Typography sx = {{color : '#f9b826', ml : 6}}>
                                             {instantBuy ? `${currentItem.length} Item` : `${cartItems.length} Items`}
@@ -130,7 +135,11 @@ const Payment = () => {
                                         </Typography>                    
                                     </Grid>                        
                                 </Grid>
-                                <Grid container justifyContent = 'center' sx = {{mb: 2}}> 
+                                <Grid 
+                                    container 
+                                    justifyContent = 'center' 
+                                    sx = {{mb: 2}}
+                                > 
                                     <Grid item xs = {8}>
                                         <Typography sx = {{color : '#f9b826', ml:6}}>
                                             Delivery Charges
@@ -165,15 +174,36 @@ const Payment = () => {
                     </Grid>                     
             </Grid>
             : 
-                <Box sx = {{mt:10}} display = 'flex' justifyContent = 'center'>
-                    <Paper sx = {{p:3}}>
-                        <Typography variant = 'h5'>Payment Successful :)</Typography>
-                        <Typography sx = {{mt:4}}>Thanks for purchasing</Typography>
-                        <Typography sx = {{mt:1}}>Your Burger will be deliever shortly</Typography>
-                        <Button onClick = {backToBuildingHandler} sx = {{mt:5}} variant = 'contained' color = 'secondary'>Continue building burger</Button>
-                    </Paper>
-
-                </Box>
+            <Box 
+                sx = {{mt:10}} 
+                display = 'flex' 
+                justifyContent = 'center' 
+                alignItems = 'center' 
+                flexDirection = 'column'
+            >
+                <Typography variant = 'h4'>Payment Successful :)</Typography>
+                <Typography 
+                    sx = {{mt:4}} 
+                    variant = 'body1'
+                >
+                    Thanks for purchasing
+                </Typography>
+                <Typography 
+                    sx = {{mt:1}} 
+                    variant = 'body1'
+                >
+                    Your Burger will be deliever shortly
+                </Typography>
+                <Button 
+                    onClick = {backToBuildingHandler} 
+                    sx = {{mt:5, borderRadius : 0}} 
+                    variant = 'contained' 
+                    color = 'success'
+                    size = 'large'                    
+                >
+                    Continue building burger
+                </Button>
+            </Box>
             }
         </>
     )

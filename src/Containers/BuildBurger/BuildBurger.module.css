@@ -4,7 +4,7 @@
 
 .firstItem {
   background-color: #110f12;
-  overflow-y: hidden !important;
+  overflow: hidden !important;
   height: 100vh;
 }
 
@@ -27,4 +27,5 @@
 
 .secondItem {
   background-color: #110f12;
+  overflow: hidden !important;
 }

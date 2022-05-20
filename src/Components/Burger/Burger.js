@@ -1,19 +1,26 @@
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { Stack, Box } from '@mui/material'
 import { Image } from 'react-bootstrap'
 import { v4 as uniqueId } from 'uuid'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence, useAnimation, LayoutGroup } from 'framer-motion'
 import { TransitionGroup } from 'react-transition-group'
 
 // -------- importing from other files ----------------
-import { burgerBase, burgerTop, Cheese, Coke, Lettuce, Meat, Bacon,Tomato, Sauce, Fries, Onion } from '../../path-to-assets/pathToImages'
+import { burgerBase, burgerTop, Cheese, Coke, Lettuce, Meat, Bacon, Tomato, Fries, Onion, Plate } from '../../path-to-assets/pathToImages'
+import { animationActions } from '../../Store/reducer/animation'
+import { Scale } from '@mui/icons-material'
 
 const Burger = (props) => {
+    const dispatch = useDispatch()
+    const animation = useAnimation()
 
-    const checkCoke = useSelector(state => state.ingredients.Coke.status)
-    const checkSauce = useSelector(state => state.ingredients.Sauce.status)
-    const checkFries = useSelector(state => state.ingredients.FrenchFries.status)
+    const checkCoke = props.ingredients.Coke.status
+    const checkFries = props.ingredients.FrenchFries.status
     
+    const beginAnime = useSelector(state => state.animation.beginAnime)
+    
+    // creating object which containes ingredients of the burger
     let ingredients = {
         Lettuce : {...props.ingredients.Lettuce, img : Lettuce},
         Cheese : {...props.ingredients.Cheese, img : Cheese},
@@ -23,45 +30,105 @@ const Burger = (props) => {
         Bacon : {...props.ingredients.Bacon, img : Bacon}
     }
 
+    // now spreading the ingredients on the array
+    // also making sure that it also contains repetitive ingredients depending upon the quantity of each ingredients
     let allSlices = []
     for (let ing in ingredients) {
         for (let i=0; i <= ingredients[ing].qty - 1; i++) {
-            allSlices.push({name : ingredients[ing].name, img : ingredients[ing].img})
+            allSlices.push({name : ingredients[ing].name, img : ingredients[ing].img, id : `${ingredients[ing].name}_${i}`})
         }
     }
+    
+    useEffect(() => {
+        // to stop animation of burger slices 
+        // the animation only begin when user add slices by clicking on the add button
+        dispatch(animationActions.updateBeginAnime(false))
+        dispatch(animationActions.updateAnimeAtEnd(false))
+    }, [dispatch])
 
     return (
-        <>
-            {checkCoke ?
-                <Image fluid src = {Coke} alt = 'Coke' width = {props.width} />                
-            : null
-            }                
-            <Stack direction = 'column'>
-                <Image src = {burgerTop} style = {{maxWidth : props.width}} />
-                    <Stack direction = 'column'>
-                        {allSlices.map((slice) => {                           
-                            return (
-                                <Image                                                                 
-                                    key = {uniqueId()}
-                                    src = {slice.img} 
-                                    alt = {`${slice.name} slice`} 
-                                    style = {{width : props.width}}
-                                />
-                            )
-                        })}
-                    </Stack>
-                <Image src = {burgerBase} width = {props.width} />
+        <Stack>
+            <Stack 
+                direction = 'row' 
+                justifyContent = 'center' 
+                alignItems = 'flex-end'
+                sx = {{position : 'relative'}}
+            > 
+                <AnimatePresence>
+                    {checkCoke &&
+                        <motion.div 
+                            layout
+                            initial = {{x: beginAnime ? -400 : 0}}
+                            animate = {{x: 0}}
+                            exit = {{x: -450, opacity : 0}}
+                            transition = {{type : 'spring', stiffness : 110}}
+                            style ={{zIndex : 9, position : 'absolute', left : props.isOrder ? '5%' :'16%'}} 
+                        >
+                            <Image 
+                                fluid 
+                                src = {Coke} 
+                                alt = 'Coke' 
+                                width = {props.cokeWidth} 
+                            />                
+                        </motion.div>
+                    }
+                </AnimatePresence>
+                <Stack 
+                    direction = 'column' 
+                    alignItems = 'center' 
+                    sx = {{zIndex : 10}}
+                >   
+                    <LayoutGroup>
+                        <motion.div layout>
+                            <Image src = {burgerTop} width = {props.width} style = {{transform : 'scale(1.2, 1.2)'}} />
+                        </motion.div>
+                        <Stack>
+                            <AnimatePresence>
+                                {allSlices.map(({name, img, id}) => {                         
+                                    return ( 
+                                        <motion.img
+                                            key = {id}  
+                                            style = {{width : props.width}}
+                                            initial = {{scale : beginAnime ? 0 : 1.2}}
+                                            animate = {{scale : 1.2}}  
+                                            exit = {{scale : 0}}
+                                            src = {img} 
+                                            alt = {`${name} slice`} 
+                                        />
+                                    )
+                                })}
+                            </AnimatePresence>
+                        </Stack>
+                        <Image src = {burgerBase} width = {props.width} style ={{transform : 'scale(1.2, 1.2)'}} />
+                    </LayoutGroup>
+                </Stack>                
+                <AnimatePresence>
+                    {checkFries &&
+                        <motion.div 
+                            style = {{zIndex : 9, position : 'absolute', right : props.isOrder ? '7%' : '16%'}}
+                            initial = {{x: beginAnime ? 400 : 0}}
+                            animate = {{x: 0}}
+                            exit = {{x: 450, opacity : 0}}
+                            transition = {{type : 'spring', stiffness : 110}}
+                        >
+                            <Image 
+                                fluid 
+                                src = {Fries} 
+                                alt = 'French Fries' 
+                                width = {props.friesWidth} 
+                            />
+                        </motion.div>
+                    }        
+                </AnimatePresence>                    
             </Stack>
-            {checkSauce ?
-                <Image fluid src = {Sauce} alt = 'Sauce' width = {props.width} />
-            : null
-            }
-            {checkFries ? 
-                <Image fluid src = {Fries} alt = 'French Fries' width = {props.width}  />
-            : null
-            }        
-        </>
+            <Image 
+                style = {{position : 'relative', bottom : 1}} 
+                src = {Plate} 
+                width = {props.plateWidth} 
+                alt = 'plate'
+            />
+        </Stack>
     )
 }
 
-export default Burger
+export default React.memo(Burger)

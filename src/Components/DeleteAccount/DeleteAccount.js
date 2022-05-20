@@ -1,5 +1,5 @@
 import { Modal } from 'react-bootstrap'   
-import { Box, Button, Stack, Typography } from '@mui/material'
+import { Box, Button, Stack, Typography, ThemeProvider } from '@mui/material'
 import { auth, db } from '../../firebase-setup'
 import { deleteUser, signOut } from 'firebase/auth'
 import { deleteDoc, doc } from 'firebase/firestore'
@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 // ----- importing from other files -----------
 import { dialogActions } from '../../Store/reducer/dialog'
 import { userFormActions } from '../../Store/reducer/userForm'
+import { mainColors } from '../../theme/mui-theme'
 
 const DeleteAccount = () => {
     const dispatch = useDispatch()
@@ -24,8 +25,8 @@ const DeleteAccount = () => {
             await deleteUser(auth.currentUser)
             await deleteDoc(doc(db, 'users', userDbId))
             await signOut(auth) // method to sign out the user from the firebase
-            navigate('/')
-            dispatch(dialogActions.updateDelAccModal(false))
+            navigate('/') // navigate to home page
+            dispatch(dialogActions.updateDelAccModal(false)) // to close modal
             dispatch(userFormActions.updateCurrentUser({})) // resetting the current user info as user logged out
         } catch (err) {
             console.log('unable to delete account')
@@ -39,23 +40,31 @@ const DeleteAccount = () => {
 
     return (
         <Modal style = {{marginTop : 100}} show = {showModal} onHide = {closeModalHandler}>
-            <Box sx = {{backgroundColor : 'yellow'}}>
+            <Box sx = {{backgroundColor : '#f9b826', p:5}}>
                 <Typography variant = 'h6'>
                     Are you sure that u wanna delete your account ?
                 </Typography>
-                <Stack direction = 'row'>
-                    <Button 
-                        size = 'small'
-                        onClick = {confirmHandler}
-                    >
-                        Yes
-                    </Button>
-                    <Button 
-                        size = 'small'
-                        onClick = {closeModalHandler}
-                    >
-                        No
-                    </Button>
+                <Stack direction = 'row' sx = {{mt:2, color: '#f9b826'}} justifyContent = 'flex-end' spacing = {2}>
+                    <ThemeProvider theme = {mainColors}>
+                        <Button 
+                            size = 'small'
+                            variant = 'contained'
+                            color = 'blackish'
+                            sx = {{borderRadius : 0}}
+                            onClick = {confirmHandler}
+                        >
+                            Yes
+                        </Button>
+                        <Button 
+                            variant = 'contained'
+                            color = 'blackish'
+                            size = 'small'
+                            sx = {{borderRadius : 0}}
+                            onClick = {closeModalHandler}
+                        >
+                            No
+                        </Button>
+                    </ThemeProvider>
                 </Stack>
             </Box>
 

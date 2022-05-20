@@ -37,7 +37,7 @@ const LogIn = props => {
     const submitForm = async (data) => {
         try {
             await signInWithEmailAndPassword(auth, data.emailAddress, data.password)
-            dispatch(dialogActions.updateOpen(false))
+            dispatch(dialogActions.updateShowCanvas(false))
             navigate(`/build-burger`)
 
         } catch(err) {

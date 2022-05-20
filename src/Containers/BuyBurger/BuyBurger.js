@@ -7,6 +7,7 @@ import { Routes, Route } from 'react-router-dom'
 // --------- importing from other files ----------------
 import { stepperActions } from '../../Store/reducer/stepper'
 import useStyle from './style'
+import DeliveryAddress from '../DeliveryAddress/DeliveryAddress'
 
 const BuyBurger = () => {
 
@@ -65,15 +66,18 @@ const BuyBurger = () => {
                 </Step>
             </Stepper>
             <Outlet />
-            <Fab 
-                variant = 'extended' size = 'small'
-                color = 'secondary' 
-                onClick = {backHandler}
-                className = {[classes.both, classes.back].join(' ')}
-            >
-                Back
-            </Fab> 
-            {true ?
+            {activeStep !== 0 &&
+                <Fab 
+                    variant = 'extended' size = 'small'
+                    color = 'secondary' 
+                    onClick = {backHandler}
+                    className = {[classes.both, classes.back].join(' ')}
+                >
+                    Back
+                </Fab> 
+            
+            }
+            {activeStep < 2 &&
                 <Fab 
                     variant = 'extended' size = 'small'
                     color = 'secondary' 
@@ -82,8 +86,7 @@ const BuyBurger = () => {
                     disabled = {selectedAddressKey.length === 0}
                 >
                     Next
-                </Fab>           
-            : null
+                </Fab>                       
             }
         </Container>
     )

@@ -1,9 +1,10 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Box } from '@mui/material'
+import { Box, Container } from '@mui/material'
 import { Routes, Route, useNavigate, useLocation } from 'react-router'
 import { onAuthStateChanged } from 'firebase/auth'
 import { query, where, collection, onSnapshot, getDocs } from 'firebase/firestore'
+import { AnimatePresence } from 'framer-motion'
 
 // ----------------- importing other components -----------------
 import Home from "../Home/Home"
@@ -20,6 +21,7 @@ import YourOrders from '../../Components/YourOrders/YourOrders'
 import ManageAddresses from '../../Components/ManageAddresses/ManageAddresses'
 import Security from '../../Components/Security/Security'
 import DeleteAccount from '../../Components/DeleteAccount/DeleteAccount'
+import Canvas from '../../Components/Canvas/Canvas'
 
 // --------- importing redux actions ------------
 import { userFormActions } from '../../Store/reducer/userForm'
@@ -34,12 +36,12 @@ import { auth, db } from '../../firebase-setup'
 const Layout = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const { pathname } = useLocation() 
+    const { pathname, key } = useLocation() 
     
     const token = useSelector(state => state.userForm.currentUser.token)
     const userId = useSelector(state => state.userForm.currentUser.userId)
-    const isSignUpForm = useSelector(state => state.userForm.isSignUpForm)
     const cartItems = useSelector(state => state.cart.cartItems)
+
 
     let addressesArr = []
     let itemsInCart = []
@@ -92,7 +94,12 @@ const Layout = () => {
             onSnapshot(ordersToListen, orders => {
                 orders.docChanges().forEach(change => {
                     if (change.type === 'added') {
-                        ordersArr.push({...change.doc.data(), id : change.doc.id})
+                        // fetching order data which is not older then 1 week
+                        const expiryDate = new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate() - 1).getTime()
+                        const order = {...change.doc.data()}
+                        if (order.orderedOn > expiryDate) {
+                            ordersArr.push({...change.doc.data(), id : change.doc.id})
+                        }
                     }
                     if (change.type === 'removed') {
                         const ordersArrId = ordersArr.findIndex(order => order.id === change.doc.id)
@@ -192,7 +199,7 @@ const Layout = () => {
             break;
         case '/':
             dynamicElement = (
-                <Home 
+                <Home                     
                     closeDialogHandler = {closeDialogHandler} 
                     priceInfo = {cartInfo.totalPrice() ? `Total Price (${cartInfo.totalCartItems} items) : $ ${cartInfo.totalPrice().toFixed(2)}` : null}
                 />
@@ -203,11 +210,11 @@ const Layout = () => {
     }
 
     return (
-        <div>
+        <div> 
             <Routes>
                 <Route path = '/' element = {<Home />} /> 
-                <Route path = 'build-burger' element = {token ? <BuildBurger closeDialogHandler = {closeDialogHandler} /> : null} />
-                <Route path = 'buy' element = {<BuildBurger closeDialogHandler = {closeDialogHandler} />}>
+                <Route path = 'build-burger' element = {token ? <BuildBurger closeDialogHandler = {closeDialogHandler} /> : null} />                
+                <Route path = 'buy' element = {<BuildBurger noTransition = {true} closeDialogHandler = {closeDialogHandler} />}>
                     <Route index element = {<BuyBurger />} />
                     <Route path = 'delivery-address' element = {<BuyBurger />}>
                         <Route index element = {<DeliveryAddress />} />
@@ -232,19 +239,9 @@ const Layout = () => {
                     <Route index element = {<Security />} />
                 </Route>
             </Routes>
+            {/* Below two components are modals */}
             <DeleteAccount />
-            {pathname === '/' ?
-                <FullDialogs closeDialogHandler = {closeDialogHandler}>
-                    <Box sx = {{mt:10}}>
-                        {isSignUpForm ? 
-                            <SignUp />
-                        :
-                            <LogIn />   
-                        }
-                    </Box>
-                </FullDialogs>
-            : null
-            }
+            <Canvas />
         </div>
     )
 }

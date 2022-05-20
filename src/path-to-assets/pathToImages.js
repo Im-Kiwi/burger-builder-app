@@ -11,6 +11,17 @@ import Tomato from '../Assets/tomato.svg'
 import Onion from '../Assets/onion.svg'
 import Phili from '../Assets/phili.svg'
 import Ind from '../Assets/ind.svg'
+import HomeImg from '../Assets/homeImg.png'
+import HomeImg2 from '../Assets/homeImg2.png'
+import Burger from '../Assets/burger.svg'
+import Plate from '../Assets/plate.svg'
+import LettuceIco from '../Assets/lettuce_ico.svg'
+import CheeseIco  from '../Assets/cheese_ico.svg'
+import MeatIco from '../Assets/meat_ico.svg'
+import TomatoIco from '../Assets/tomato_ico.svg'
+import OnionIco from '../Assets/onion_ico.svg'
+import BaconIco from '../Assets/bacon_ico.svg'
+
 
 export {
     burgerBase,
@@ -25,5 +36,10 @@ export {
     Fries,
     Sauce,
     Phili,
-    Ind
+    Ind,
+    HomeImg,
+    HomeImg2,
+    Burger,
+    Plate,
+    LettuceIco, CheeseIco, MeatIco, TomatoIco, OnionIco, BaconIco
 }

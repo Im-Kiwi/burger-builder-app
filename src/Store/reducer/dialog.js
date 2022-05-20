@@ -4,7 +4,8 @@ const initialState = {
     open : false,
     openModal : false,
     openUserProfModal : false,
-    openDeleteAccModal : false
+    openDeleteAccModal : false,
+    showCanvas : false, 
 }
 
 const dialogReducer = createSlice({
@@ -22,6 +23,9 @@ const dialogReducer = createSlice({
         },
         updateDelAccModal (state, action) {
             state.openDeleteAccModal = action.payload
+        },
+        updateShowCanvas (state, action) {
+            state.showCanvas = action.payload
         }
     }
 })

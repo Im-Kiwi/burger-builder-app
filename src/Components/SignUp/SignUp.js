@@ -74,7 +74,7 @@ const SignUp = props => {
                 // adding document in users collection in database after successfully sign up
                 // document is the information of the user
                 await addDoc(collection(db, 'users'), userData)
-                dispatch(dialogActions.updateOpen(false))
+                dispatch(dialogActions.updateShowCanvas(false))
                 navigate('/build-burger')
             } catch (err) {
                 console.log(err)

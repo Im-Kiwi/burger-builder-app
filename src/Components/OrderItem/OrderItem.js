@@ -9,22 +9,31 @@ import Burger from '../Burger/Burger'
 const OrderItem = ({ing}) => {
 
     return (
-        <Paper sx = {{width : 300, height: 250, borderRadius : 0, backgroundColor : '#403d39'}}>                                    
+        <Paper sx = {{width : 300, height: 250, borderRadius : 2, backgroundColor : '#111d13'}}>                                    
             <Grid container sx = {{width : 300, height : 250}} columnSpacing = {1}>
-                <Grid item xs = {8} display = 'flex' alignItems = 'center' justifyContent = 'center' position = 'relative'>  
-                <Box sx = {{                                                                                        
-                        position : 'absolute',
-                        backgroundColor : "#f9b826",
-                        width : '100%',
-                        height : 250,
-                        border : 'solid 3px #110f12',
-                        transform : 'scaleY(1.09) !important',
-                        left : 0,
-                        zIndex : 1
-                }}></Box>
-                        <Box sx = {{zIndex : 10}}>
-                            <Burger ingredients = {ing} width = '80px' />
-                        </Box>
+                <Grid item xs = {8} sx = {{ p:1}} display = 'flex' alignItems = 'center' justifyContent = 'center' position = 'relative'>  
+                    <Box
+                        className = 'shadow' 
+                        sx = {{                                                                                        
+                            position : 'absolute',
+                            backgroundColor : "#f08700",
+                            left : -15,
+                            borderRadius : 2,
+                            width : '100%',
+                            height : 200,
+                            transform : 'scaleX(1.05) !important',
+                            overflow : 'hidden',
+                            zIndex : 1
+                    }}></Box>
+                    <Box sx = {{zIndex : 10, mt : 10, position : 'relative', left : -15}}>
+                        <Burger 
+                            ingredients = {ing} 
+                            width = '80px'
+                            cokeWidth = {100}
+                            friesWidth = {100}
+                            isOrder = {true}
+                        />
+                    </Box>
                 </Grid>
                 <Grid item 
                     xs = {4} 

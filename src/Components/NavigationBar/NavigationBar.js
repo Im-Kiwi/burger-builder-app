@@ -1,7 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Nav, Navbar } from 'react-bootstrap'
-import { Box, Container, Typography, Button, Stack, Avatar, IconButton } from '@mui/material'
+import { Container, Typography, Button, Stack, Badge, IconButton } from '@mui/material'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCartShopping } from '@fortawesome/free-solid-svg-icons'
 
 
 // ------ importing from files -------------
@@ -9,23 +11,27 @@ import classes from './NavigationBar.module.css'
 import { userFormActions } from '../../Store/reducer/userForm'
 import { dialogActions } from '../../Store/reducer/dialog'
 import UserProfile from '../UserProfile/UserProfile'
+import { animationActions } from '../../Store/reducer/animation'
 
 const NavigationBar = () => {
     const dispatch = useDispatch()
-    const navigate = useNavigate()
     const { pathname } = useLocation()
 
     const token = useSelector(state => state.userForm.currentUser.token)
+    const cartItems = useSelector(state => state.cart.cartItems)
 
+    // this will open the login form modal
     const openLogInHandler = () => {
         if (!token) { // login form will appear if unauthenticated user try to click on 'Build' navigation button
             dispatch(userFormActions.updateIsSignUpForm(false))
-            dispatch(dialogActions.updateOpen(true))
+            dispatch(dialogActions.updateShowCanvas(true)) 
         }
     }
-
+    
+    // this will open the cart full screen dialog box
     const openCartHandler = () => {
         dispatch(dialogActions.updateOpen(true))
+        dispatch(animationActions.updateBeginAnime(false))
         localStorage.setItem('prevPath', pathname)
     }
 
@@ -62,7 +68,11 @@ const NavigationBar = () => {
                             }
                             {token ? 
                                 <Link to = '/cart' onClick = {openCartHandler} className = {[classes.link, 'me-4'].join(' ')}>
-                                    Cart
+                                    <IconButton sx = {{color : '#f9b826'}}>
+                                        <Badge badgeContent = {cartItems.length} color = 'error'>
+                                            <FontAwesomeIcon icon = {faCartShopping} />
+                                        </Badge>
+                                    </IconButton>
                                 </Link>
                             : null
                             }

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Box, Button, Grid, Stack, Typography } from '@mui/material'
+import { Box, Button, Grid, Stack, Typography, Container } from '@mui/material'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 
 // ------- importing from files -------------
@@ -14,27 +14,29 @@ const BuildBurger = (props) => {
     const { pathname } = useLocation()
 
     return (
-        <Box className = {classes.main}>
-            <NavigationBar />
-            <Grid container>
-                <Grid xs = {7} item className = {[classes.firstItem].join(' ')}>
-                    <Box display = 'flex' justifyContent = 'center' className = {classes.burgerContainer}>
-                        <DisplayBurger /> {/* burger will display here */}
-                    </Box>
-                </Grid>
-                <Grid xs = {5} item className = {classes.secondItem}>
-                    <BurgerController /> {/* this will display the burger controller with the help of which user can add ingredients on the burger */}
-                </Grid>
-            </Grid>
-            {/* below is the condition to show the modal and full screen modal depending upon the url */}
-            {pathname === '/your-orders' || pathname === '/your-addresses' || pathname === '/security-settings' ? 
-                <Outlet />
-            :
-            <FullDialogs title = {props.title} priceInfo = {props.priceInfo} isOrderSummary = {true} closeDialogHandler = {props.closeDialogHandler} >
-                <Outlet />
-            </FullDialogs>
-            }
-        </Box>        
+        <Container maxWidth = 'xl'>
+            <Box className = {classes.main}>
+                <NavigationBar />
+                    <Grid container>
+                        <Grid xs = {7} item className = {[classes.firstItem].join(' ')}>
+                            <Box display = 'flex' justifyContent = 'center' className = {classes.burgerContainer}>
+                                <DisplayBurger noTransition = {props.noTransition} /> {/* burger will display here */}
+                            </Box>
+                        </Grid>
+                        <Grid xs = {5} item className = {classes.secondItem}>
+                            <BurgerController noTransition = {props.noTransition} /> {/* this will display the burger controller with the help of which user can add ingredients on the burger */}
+                        </Grid>
+                    </Grid>            
+                {/* below is the condition to show the modal and full screen modal depending upon the url */}
+                {pathname === '/your-orders' || pathname === '/your-addresses' || pathname === '/security-settings' ? 
+                    <Outlet />
+                    :
+                    <FullDialogs title = {props.title} priceInfo = {props.priceInfo} isOrderSummary = {true} closeDialogHandler = {props.closeDialogHandler} >
+                    <Outlet />
+                </FullDialogs>
+                }
+            </Box>        
+        </Container>
     )
 }
 

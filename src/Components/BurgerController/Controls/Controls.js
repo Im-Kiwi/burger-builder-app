@@ -1,4 +1,5 @@
 import { Grid, Typography, IconButton, Container } from '@mui/material'
+import { Image } from 'react-bootstrap'
 import { AddCircleRounded } from '@mui/icons-material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCirclePlus, faCircleMinus } from '@fortawesome/free-solid-svg-icons'
@@ -10,7 +11,8 @@ const Controls = (props) => {
     return (
         <Container>
             <Grid container justifyContent = 'center' alignItems = 'center'>
-                <Grid xs = {6} item>
+                <Grid xs = {6} item display = 'flex' gap = {1}>
+                    <Image src = {props.icon} fluid width = {40} />
                     <Typography className = 'text-light'>{props.ingredient.name}</Typography>
                 </Grid>
                 <Grid display = 'flex' justifyContent= 'center' xs = {2} item>

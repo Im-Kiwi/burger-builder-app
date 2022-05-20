@@ -18,7 +18,7 @@ const initialState = {
 const ingredientsReducer = createSlice({
     name : 'ingredients',
     initialState,
-    reducers : {
+    reducers : {    
         updateIngredient (state, action) {
             switch (action.payload.ingName) {
                 case state.Lettuce.name:
@@ -53,12 +53,11 @@ const ingredientsReducer = createSlice({
             switch (action.payload.name) {
                 case state.Coke.name:
                     state.Coke.status = action.payload.value
-                    break;
-                case state.Sauce.name:
-                    state.Sauce.status = action.payload.value
-                    break;
+                    state.totalPrice = state.totalPrice + action.payload.price
+                    break;                
                 case state.FrenchFries.name:
                     state.FrenchFries.status = action.payload.value
+                    state.totalPrice = state.totalPrice + action.payload.price
                     break;
                 default:
                     break;
