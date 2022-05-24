@@ -12,7 +12,7 @@ const ManageAddresses = () => {
 
     // values fetched from the redux store
     const showModal = useSelector(state => state.dialog.openUserProfModal)
-
+    console.log(showModal)
     // to close modal 
     const closeModalHandler = () => {
         navigate(localStorage.getItem('prevPath')) // this will navigate the user to the previous page where he/she came from 
@@ -25,15 +25,13 @@ const ManageAddresses = () => {
             size = 'xl' 
             centered 
             show = {showModal} 
-            onHide = {closeModalHandler} 
-        >
+            onHide = {closeModalHandler}>
             <Box 
                 sx = {{
                     width : 'inherit', 
                     height : 'inherit', 
                     backgroundColor : '#f9b826'
-                }}
-            >
+                }}>
                 <DeliveryAddress />
             </Box>
         </Modal>

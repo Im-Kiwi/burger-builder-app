@@ -1,18 +1,19 @@
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { IconButton, Avatar, Menu } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { signOut } from 'firebase/auth'
 import { auth } from '../../firebase-setup'
+import { motion } from 'framer-motion'
 
 // -------- importing from other files ---------------
 import { userFormActions } from '../../Store/reducer/userForm'
 import { CustomMenuItem } from './style.js'
 import { dialogActions } from '../../Store/reducer/dialog'
 
-const UserProfile = () => {
+const UserProfile = (props) => {
     const navigate = useNavigate() 
     const dispatch = useDispatch()
     const { pathname } = useLocation()
@@ -42,7 +43,7 @@ const UserProfile = () => {
         setAnchorEl(null) 
         dispatch(dialogActions.updateUserProfModal(true)) 
         localStorage.setItem('prevPath', pathname) 
-        navigate('/your-addresses') 
+        navigate('/manage-addresses') 
     }
 
     // method to open 'security settings' modal
@@ -72,32 +73,52 @@ const UserProfile = () => {
         <div>
             {/* user Icon button */}
             <IconButton id = 'userProfile' onClick = {(event) => openPopoverHandler(event)}>
-                <Avatar sx = {{backgroundColor : '#f9b826'}}>
-                    <FontAwesomeIcon style = {{color : '#110f12'}} icon = {faUser} />
-                </Avatar>
+                <motion.div
+                    variants={props.animateButton}
+                    initial = 'initial'
+                    animate = 'animate'
+                    style = {{borderRadius : '50%'}}>
+                    <Avatar sx = {{backgroundColor : 'inherit'}}>
+                        <motion.div
+                            variants = {props.animateButton}
+                            initial = 'initial'
+                            animate = 'animate'>
+                            <FontAwesomeIcon style = {{color : 'inherit'}} icon = {faUser} />
+                        </motion.div>
+                    </Avatar>
+                </motion.div>
             </IconButton>
 
             {/* menu popover after clicking on the user profile button */}
             <Menu
-                    aria-labelledby = 'userProfile' 
-                    open = {Boolean(anchorEl)} 
-                    anchorEl = {anchorEl} 
-                    onClose = {closePopoverHandler}
-                    anchorOrigin = {{
-                        vertical : 'bottom',
-                        horizontal : 'center'
-                    }}
-                    transformOrigin = {{
-                        horizontal : 'right',
-                        vertical : 'top'
-                    }}
-                    sx = {{ '.MuiList-root':{background : '#f9b826 !important'}}}
-            >
-                <CustomMenuItem onClick = {yourOrdersHandler}>Your Orders</CustomMenuItem>
-                <CustomMenuItem onClick = {yourAddressesHandler}>Manage Addresses</CustomMenuItem>
-                <CustomMenuItem onClick = {securityHandler}>Security</CustomMenuItem>
-                <CustomMenuItem onClick = {deleteAccountHandler}>Delete Account</CustomMenuItem>
-                <CustomMenuItem onClick = {logoutHandler}>Sign Out</CustomMenuItem>
+                aria-labelledby = 'userProfile' 
+                open = {Boolean(anchorEl)} 
+                anchorEl = {anchorEl} 
+                onClose = {closePopoverHandler}
+                anchorOrigin = {{
+                    vertical : 'bottom',
+                    horizontal : 'center'
+                }}
+                transformOrigin = {{
+                    horizontal : 'right',
+                    vertical : 'top'
+                }}
+                sx = {{ '.MuiList-root':{background : '#f9b826 !important'}}}>
+                <CustomMenuItem onClick = {yourOrdersHandler}>
+                    Your Orders
+                </CustomMenuItem>
+                <CustomMenuItem onClick = {yourAddressesHandler}>
+                    Manage Addresses
+                </CustomMenuItem>
+                <CustomMenuItem onClick = {securityHandler}>
+                    Security
+                </CustomMenuItem>
+                <CustomMenuItem onClick = {deleteAccountHandler}>
+                    Delete Account
+                </CustomMenuItem>
+                <CustomMenuItem onClick = {logoutHandler}>
+                    Sign Out
+                </CustomMenuItem>
             </Menu>            
         </div>
     )

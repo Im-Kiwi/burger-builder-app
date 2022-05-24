@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Box, Container, Grid, Paper, Stack, Typography, Chip, Button, IconButton } from '@mui/material'
-import { DeleteForever } from '@mui/icons-material'
+import { Close, Delete, DeleteOutline } from '@mui/icons-material'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { getDocs, query, where, doc, collection, deleteDoc } from 'firebase/firestore'
 import { useSelector, useDispatch } from 'react-redux'
 import { v4 as uniqueId } from 'uuid'
@@ -12,15 +14,13 @@ import { db } from '../../firebase-setup'
 import { cartActions } from '../../Store/reducer/cart'
 import Burger from '../Burger/Burger'
 import { dialogActions } from '../../Store/reducer/dialog'
-import { CustomPaper, CustomGrid, CustomStack } from './styles'
+import { CustomBox, CustomGrid, CustomStack, CustomChip } from './styles'
 import { toggleActions } from '../../Store/reducer/toggle'
 
 const Cart = () => {
-    const dispatch = useDispatch()
 
     // getting values from the redux store
     const cartItems = useSelector(state => state.cart.cartItems)
-    console.log(cartItems)
 
     // method to delete a cart item
     const deleteCartItemHandler = async (dataId) => {
@@ -34,104 +34,98 @@ const Cart = () => {
     return (
         <Container>
             <Box sx = {{mt : 12,  height: '650px', overflowY : 'auto'}}>
-                {cartItems.length !== 0 ?
-                    <Box>
+                    <Box position = 'relative'>
+                        {cartItems.length === 0 &&
+                            <Typography position = 'absolute'>Your Cart is Empty</Typography>
+                        }
                         <AnimatePresence>
-                        {cartItems.map((item) => {                    
-                            return (
-                                <motion.div 
-                                    layout
-                                    key = {item.id}
-                                    exit = {{scale : 0 }}
-                                >
-                                    <CustomPaper >
-                                        <CustomGrid container                                          
-                                            justifyContent = 'space-around'                             
-                                        >
-                                            <Grid item display = 'flex' flexDirection = 'row' alignItems = 'center' sx = {{mb:5}}>
-                                                <CustomStack
-                                                    direction = 'row'  
-                                                    alignItems = 'flex-end'                                                 
-                                                    className = 'shadow-sm'
-                                                >
-                                                    <Burger 
-                                                        ingredients = {item} 
-                                                        width = {45} 
-                                                        plateWidth = {150} 
-                                                        cokeWidth = {60}
-                                                        friesWidth = {60}
-                                                    />
-                                                </CustomStack>
+                            {cartItems.map((item) => {                    
+                                return (
+                                    <motion.div 
+                                        layout
+                                        key = {item.id}
+                                        exit = {{
+                                            x : -100, 
+                                            opacity : 0,
+                                            transition : {
+                                                ease : 'easeOut'
+                                            }
+                                        }}>
+                                        <CustomBox>
+                                            <Grid container                                          
+                                                justifyContent = 'flex-start'  
+                                                alignItems = 'center'>
+                                                <Grid item 
+                                                    display = 'flex' 
+                                                    flexDirection = 'row'>
+                                                    <CustomStack
+                                                        direction = 'row'  
+                                                        alignItems = 'flex-end'>
+                                                        <Burger 
+                                                            ingredients = {item} 
+                                                            width = {45} 
+                                                            plateWidth = {150} 
+                                                            cokeWidth = {60}
+                                                            friesWidth = {60}/>
+                                                    </CustomStack>
+                                                </Grid>
+                                                <Grid item 
+                                                    display = 'flex' 
+                                                    flexDirection = 'column' 
+                                                    alignItems = 'flex-start'>
+                                                    <Stack 
+                                                        direction = 'row' 
+                                                        justifyContent = 'center' 
+                                                        sx = {{mb : 2, mt: 1, color : '#110f12'}}>                                                            
+                                                        <Typography sx = {{ml : 5}} variant = 'h6'>
+                                                            ${item.totalPrice.toFixed(2)}
+                                                        </Typography>
+                                                    </Stack>
+                                                    <Stack direction = 'row' sx = {{color : '#110f12'}}>
+                                                        <Typography>
+                                                            <strong>Ingredients</strong> 
+                                                        </Typography>                                                                                        
+                                                        <CustomChip 
+                                                            label = {`${item.Lettuce.name} ${item.Lettuce.qty}`} 
+                                                            size = 'small'/>
+                                                        <CustomChip 
+                                                            label = {`${item.Cheese.name} ${item.Cheese.qty}`} 
+                                                            size = 'small'/>
+                                                        <CustomChip 
+                                                            label = {`${item.Onion.name} ${item.Onion.qty}`}
+                                                            size = 'small'/>
+                                                        <CustomChip 
+                                                            label = {`${item.Tomato.name} ${item.Tomato.qty}`} 
+                                                            size = 'small' />
+                                                        <CustomChip 
+                                                            label = {`${item.Meat.name} ${item.Meat.qty}`} 
+                                                            size = 'small'/>
+                                                        <CustomChip 
+                                                            label = {`${item.Bacon.name} ${item.Bacon.qty}`} 
+                                                            size = 'small'/>
+                                                    </Stack>
+                                                </Grid>
+                                                <Grid item>
+                                                    <motion.div
+                                                        whileTap = {{transform : 'translateY(5px)'}}
+                                                        transition = {{ease : 'easeOut', duration : 0.1}}>
+                                                        <IconButton
+                                                            sx = {{ml:10, mt:5}} 
+                                                            onClick = {() => deleteCartItemHandler(item.id)} 
+                                                            size = 'small'>
+                                                            <FontAwesomeIcon 
+                                                                style = {{color : '#011627', fontSize : '1.2rem'}}
+                                                                icon = {faTrashCan} />                
+                                                        </IconButton>
+                                                    </motion.div>
+                                                </Grid>                                      
                                             </Grid>
-                                            <Grid item display = 'flex' flexDirection = 'column' alignItems = 'center'>
-                                                <Stack 
-                                                    className = 'text-light' 
-                                                    direction = 'row' 
-                                                    justifyContent = 'center' 
-                                                    sx = {{mb : 2, mt: 1}}
-                                                >
-                                                    <Typography variant = 'h6'>Burger Name - {item.burgerName}</Typography>
-                                                    <Typography sx = {{ml : 5}} variant = 'h6'>${item.totalPrice.toFixed(2)}</Typography>
-                                                </Stack>
-                                                <Stack direction = 'row'>
-                                                    <Typography className = 'text-light'>Ingredients</Typography>                                                                                        
-                                                    <Chip 
-                                                        sx = {{ml : 2, mb : 1}} 
-                                                        label = {`${item.Lettuce.name} ${item.Lettuce.qty}`} 
-                                                        color = 'warning' 
-                                                        size = 'small' 
-                                                    />
-                                                    <Chip 
-                                                        sx = {{ml : 2, mb : 1}} 
-                                                        label = {`${item.Cheese.name} ${item.Cheese.qty}`} 
-                                                        color = 'warning' 
-                                                        size = 'small'
-                                                    />
-                                                    <Chip 
-                                                        sx = {{ml : 2, mb : 1}} 
-                                                        label = {`${item.Onion.name} ${item.Onion.qty}`} 
-                                                        color = 'warning' 
-                                                        size = 'small'
-                                                    />
-                                                    <Chip 
-                                                        sx = {{ml : 2, mb : 1}} 
-                                                        label = {`${item.Tomato.name} ${item.Tomato.qty}`} 
-                                                        color = 'warning' 
-                                                        size = 'small' 
-                                                    />
-                                                    <Chip 
-                                                        sx = {{ml : 2, mb : 1}} 
-                                                        label = {`${item.Meat.name} ${item.Meat.qty}`} 
-                                                        color = 'warning' 
-                                                        size = 'small' 
-                                                    />
-                                                    <Chip 
-                                                        sx = {{ml : 2, mb : 1}} 
-                                                        label = {`${item.Bacon.name} ${item.Bacon.qty}`} 
-                                                        color = 'warning' 
-                                                        size = 'small' 
-                                                    />
-                                                </Stack>
-                                            </Grid>
-                                            <Grid item>
-                                                <IconButton 
-                                                    onClick = {() => deleteCartItemHandler(item.id)} 
-                                                    sx = {{border : 'solid 1px #f9b826', mt:2.5}}
-                                                    size = 'large'
-                                                >
-                                                    <DeleteForever sx = {{color : '#f9b826', fontSize : 30}} />                
-                                                </IconButton>
-                                            </Grid>                                      
-                                        </CustomGrid>
-                                    </CustomPaper>
-                                </motion.div>
-                            )
-                        })}
+                                        </CustomBox>
+                                    </motion.div>
+                                )
+                            })}
                         </AnimatePresence>
-                    </Box>
-                :
-                    <Typography>Your Cart is Empty :(</Typography>
-                }
+                    </Box>                
             </Box>
         </Container>
     )

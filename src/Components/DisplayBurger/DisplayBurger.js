@@ -40,7 +40,7 @@ const DisplayBurger = (props) => {
             }
         },
         exit : {
-            x : props.noTransition ? 0 : '-100vw'
+            x : props.noTransition ? 0 : '-100vw',
         },                
     }
 

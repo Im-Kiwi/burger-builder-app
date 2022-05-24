@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Image } from 'react-bootstrap'
 import { Box, Button, Divider, FormControl, FormControlLabel, Grid, Paper, RadioGroup, Stack, Typography, Container, Fab } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -10,6 +11,7 @@ import { CustomRadio, CustomFormLabel, CustomFab } from './style.js'
 import { dialogActions } from '../../Store/reducer/dialog.js'
 import { ingredientsActions } from '../../Store/reducer/ingredients.js'
 import { stepperActions } from '../../Store/reducer/stepper.js'
+import { CuteBurger } from '../../path-to-assets/pathToImages'
 
 const Payment = () => {
     const navigate = useNavigate()
@@ -181,7 +183,8 @@ const Payment = () => {
                 alignItems = 'center' 
                 flexDirection = 'column'
             >
-                <Typography variant = 'h4'>Payment Successful :)</Typography>
+                <Image src = {CuteBurger} fluid width = {300} alt = 'a cute burger' />
+                <Typography variant = 'h4' sx = {{mt:3}}>Payment Successful :)</Typography>
                 <Typography 
                     sx = {{mt:4}} 
                     variant = 'body1'

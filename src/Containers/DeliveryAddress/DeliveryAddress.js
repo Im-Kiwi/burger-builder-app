@@ -32,8 +32,8 @@ const DeliveryAddress = (props) => {
             flexDirection = 'column' 
             alignItems = 'center'
         >
-            <Typography variant = 'h6' sx = {{mb:3}}>
-                Select Your delivery address
+            <Typography variant = 'h6' sx = {{mb:3, color : '#110f12'}}>
+                <strong>Select Your delivery address</strong>
             </Typography>
             <DisplayAddresses openForm = {openAddressForm} />            
             <AddAddress />      

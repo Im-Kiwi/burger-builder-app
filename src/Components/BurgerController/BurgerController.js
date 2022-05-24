@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from  'react-router-dom'
-import { Grid, Typography, IconButton, Stack, Box, Checkbox, TextField, Button } from '@mui/material'
-import { ThemeProvider } from '@mui/material'
+import { Typography, Stack, Box, Checkbox, Button } from '@mui/material'
 import { getDoc, doc, addDoc, collection } from 'firebase/firestore'
 import { motion } from 'framer-motion'
 
@@ -10,11 +9,9 @@ import { motion } from 'framer-motion'
 import { db } from '../../firebase-setup'
 import Controls from './Controls/Controls'
 import { ingredientsActions } from '../../Store/reducer/ingredients'
-import { userFormTheme } from '../../theme/mui-theme'
 import { dialogActions } from '../../Store/reducer/dialog'
 import { cartActions } from '../../Store/reducer/cart'
 import { stepperActions } from '../../Store/reducer/stepper'
-import { toggleActions } from '../../Store/reducer/toggle'
 import { animationActions } from '../../Store/reducer/animation'
 import { LettuceIco, CheeseIco, MeatIco, TomatoIco, OnionIco, BaconIco } from '../../path-to-assets/pathToImages'
 
@@ -26,9 +23,7 @@ const BurgerController = (props) => {
     const [basePrice, setBasePrice] = useState({}) // It contains the base prices of the ingredients
 
     const ingredients = useSelector(state => state.ingredients) // contains the ingredients object
-    const burgerName = useSelector(state => state.ingredients.burgerName)
     const userId = useSelector(state => state.userForm.currentUser.userId)
-    const toggle = useSelector(state => state.toggle.isDelete)
 
     // fetching the base prices of ingredients from the database
     useEffect(() => {
@@ -107,16 +102,7 @@ const BurgerController = (props) => {
                 exit = {!props.noTransition && {x : '100vw'}}
                 transition = {!props.noTransition && {duration : 0.7, type : 'spring'}}
             >
-                <Stack spacing = {2} alignItems = 'center'>
-                    <ThemeProvider theme = {userFormTheme}>
-                        <TextField 
-                            variant = 'filled' 
-                            size = 'small' 
-                            label = 'Name your burger'
-                            value = {burgerName}
-                            onChange = {(event) => dispatch(ingredientsActions.updateBurgerName(event.target.value))}
-                        />
-                    </ThemeProvider>
+                <Stack spacing = {2} alignItems = 'center'>                   
                     <Controls 
                         ingredient = {ingredients.Lettuce} 
                         addIngredient = {addIngredient} 
@@ -147,29 +133,33 @@ const BurgerController = (props) => {
                         addIngredient = {addIngredient} 
                         removeIngredient = {removeIngredient}
                         icon = {BaconIco} /> 
-                    <Box className = 'text-light'>
-                        <Typography>Include Extras</Typography>                                                             
+
+                    <Box>
+                        <Typography sx = {{color : '#f9b826'}}>
+                            <strong>Include Extras</strong>
+                        </Typography>                                                             
                         <Stack direction = 'row' alignItems = 'center'>
                             <Checkbox 
                                 checked = {ingredients.Coke.status} 
                                 onChange = {() => checkBoxHandler(ingredients.Coke.name)} 
                                 sx = {{'&.MuiCheckbox-root' : {
-                                    color : '#ee6c4d'
+                                    color : '#fef9ef'
                                 }}}
                             />
-                            <Typography>Coke</Typography>                                                             
+                            <Typography sx = {{color : '#f9b826'}}>Coke</Typography>                                                             
                         </Stack>               
                         <Stack direction = 'row' alignItems = 'center'>
                             <Checkbox 
                                 checked = {ingredients.FrenchFries.status} 
                                 onChange = {() => checkBoxHandler(ingredients.FrenchFries.name)}
                                 sx = {{'&.MuiCheckbox-root' : {
-                                    color : '#ee6c4d'
+                                    color : '#fef9ef'
                                 }}}
                             />
-                            <Typography>French Fries</Typography>                                                             
+                            <Typography sx = {{color : '#f9b826'}}>French Fries</Typography>                                                             
                         </Stack>
                     </Box>
+
                     <Box className = 'mt-5'>
                         <Button 
                             onClick = {resetHandler} 

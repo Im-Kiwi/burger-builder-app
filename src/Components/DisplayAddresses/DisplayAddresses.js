@@ -70,9 +70,7 @@ const DisplayAddresses = (props) => {
         >   
             <CustomPaper className = {classes.addressContainer}>
                 <AddAddress  onClick = {props.openForm} component = 'button'>
-                    <ThemeProvider theme = {mainColors}>
-                            <Add style = {{fontSize : '5rem'}} color = 'yellowish' icon = {faPlus} />
-                    </ThemeProvider>
+                    <Add style = {{fontSize : '5rem', color : '#f9b826'}} icon = {faPlus} />
                 </AddAddress>
             </CustomPaper>
             {addressStore.map((address, index) => {
@@ -149,7 +147,11 @@ const DisplayAddresses = (props) => {
                                 <motion.div 
                                     variants = {animateAddress}
                                 >
-                                    <Box id = 'configAddress' className = {[classes.editBox].join(' ')} >
+                                    <Box 
+                                        id = 'configAddress' 
+                                        className = {classes.editBox}
+                                        sx = {{'&:before' : {backgroundColor : index === idForStyling ? '#110f12' : '#f9b826'}}}
+                                    >
                                             <Stack 
                                                 direction = 'row' 
                                                 justifyContent = 'center' 

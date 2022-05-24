@@ -41,32 +41,34 @@ const OrderSummary = (props) => {
                 justifyContent = 'flex-start'
             >
                 <Grid item  sx = {{mb:2}}>
-                    <Typography>display address</Typography>
+                    <Typography sx = {{color : '#ffecd1'}}>display address</Typography>
                 </Grid>
-                <Grid item  display = 'flex' justifyContent = 'center' >
+                <Grid item  display = 'flex' justifyContent = 'center'  >
                     <Box 
-                        sx = {{width : '60%'}} 
                         display = 'flex' 
                         flexDirection = 'column' 
                         alignItems = 'center'
+                        sx = {{color : '#ffecd1', width : '60%'}}
                     >
                         <Stack 
                             direction = 'row' 
                             spacing = {5} 
                             justifyContent = 'flex-start' 
-                            sx = {{width : 300}}
+                            sx = {{width : 300, }}
+                            
                         >
                             <Stack 
                                 direction = 'row' 
                                 justifyContent= 'center' 
                                 spacing = {1}  
                                 alignItems = 'center'
+                                
                             >
                                 <FontAwesomeIcon 
                                     icon = {faUser} 
-                                    style = {{fontSize : '1.5rem', color : '#110f12'}} 
+                                    style = {{fontSize : '1.5rem'}} 
                                 />
-                                <Typography sx = {{color : '#110f12'}}>                                                            
+                                <Typography>                                                            
                                     {address.firstName} {address.lastName}
                                 </Typography>
                             </Stack>
@@ -77,9 +79,9 @@ const OrderSummary = (props) => {
                             >
                                 <FontAwesomeIcon 
                                     icon = {faMobileRetro} 
-                                    style = {{fontSize : '1.5rem', color : '#110f12'}} 
+                                    style = {{fontSize : '1.5rem'}} 
                                 />
-                                <Typography sx = {{color : '#110f12'}}>
+                                <Typography>
                                     {address.phoneNumber}
                                 </Typography>
                             </Stack>
@@ -93,9 +95,9 @@ const OrderSummary = (props) => {
                         >
                             <FontAwesomeIcon 
                                 icon = {faHouse} 
-                                style = {{fontSize : '1.5rem', color : '#110f12'}} 
+                                style = {{fontSize : '1.5rem'}} 
                             />
-                            <Typography sx = {{color : '#110f12'}}>
+                            <Typography>
                                 {address.address}
                             </Typography>
                         </Stack>
@@ -106,11 +108,9 @@ const OrderSummary = (props) => {
                         >
                             <FontAwesomeIcon  
                                 icon = {faCity} 
-                                style = {{fontSize : '1.5rem', color : '#110f12'}} 
+                                style = {{fontSize : '1.5rem'}} 
                             />
-                            <Typography 
-                                sx = {{color : '#110f12'}}
-                            >
+                            <Typography>
                                 {address.city}, {address.state}, {address.country}
                             </Typography>
                         </Stack>
@@ -119,7 +119,7 @@ const OrderSummary = (props) => {
                             display = 'flex' 
                             justifyContent = 'flex-start'
                         >
-                            <Typography sx = {{color : '#110f12', mt:2}}>
+                            <Typography sx = {{mt:2}}>
                                 <strong>zip code:</strong> {address.pinCode} 
                             </Typography>
                         </Box>

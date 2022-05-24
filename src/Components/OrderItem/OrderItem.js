@@ -9,14 +9,14 @@ import Burger from '../Burger/Burger'
 const OrderItem = ({ing}) => {
 
     return (
-        <Paper sx = {{width : 300, height: 250, borderRadius : 2, backgroundColor : '#111d13'}}>                                    
+        <Paper sx = {{width : 300, height: 250, borderRadius : 2, backgroundColor : '#001524'}}>                                    
             <Grid container sx = {{width : 300, height : 250}} columnSpacing = {1}>
                 <Grid item xs = {8} sx = {{ p:1}} display = 'flex' alignItems = 'center' justifyContent = 'center' position = 'relative'>  
                     <Box
                         className = 'shadow' 
                         sx = {{                                                                                        
                             position : 'absolute',
-                            backgroundColor : "#f08700",
+                            backgroundColor : "#ffecd1",
                             left : -15,
                             borderRadius : 2,
                             width : '100%',
@@ -40,7 +40,7 @@ const OrderItem = ({ing}) => {
                     display = 'flex' 
                     flexDirection = 'column' 
                     justifyContent = 'center' 
-                    sx = {{color : '#f9b826', fontSize : '0.8rem'}}
+                    sx = {{color : '#ffecd1', fontSize : '0.8rem'}}
                 >
                     <Grid 
                         container 

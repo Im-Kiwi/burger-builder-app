@@ -19,8 +19,8 @@
 }
 
 .signIn {
-  background-color: #f9b826 !important;
-  color: #110f12 !important;
+  background-color: inherit !important;
+  color: inherit !important;
   border-radius: 0 !important;
   font-size: 1rem !important;
 }

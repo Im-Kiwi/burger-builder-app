@@ -1,18 +1,14 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Box, Container } from '@mui/material'
+import { Container } from '@mui/material'
 import { Routes, Route, useNavigate, useLocation } from 'react-router'
 import { onAuthStateChanged } from 'firebase/auth'
 import { query, where, collection, onSnapshot, getDocs } from 'firebase/firestore'
-import { AnimatePresence } from 'framer-motion'
 
 // ----------------- importing other components -----------------
 import Home from "../Home/Home"
 import BuildBurger from '../BuildBurger/BuildBurger'
-import FullDialogs from '../../Components/FullDialogs/FullDialogs'
 import OrderSummary from '../OrderSummary/OrderSummary'
-import SignUp from '../../Components/SignUp/SignUp'
-import LogIn from '../../Components/LogIn/LogIn'
 import BuyBurger from '../BuyBurger/BuyBurger'
 import DeliveryAddress from '../DeliveryAddress/DeliveryAddress'
 import Payment from '../../Components/Payment/Payment'
@@ -22,6 +18,9 @@ import ManageAddresses from '../../Components/ManageAddresses/ManageAddresses'
 import Security from '../../Components/Security/Security'
 import DeleteAccount from '../../Components/DeleteAccount/DeleteAccount'
 import Canvas from '../../Components/Canvas/Canvas'
+import NavigationBar from '../../Components/NavigationBar/NavigationBar'
+import Pricing from '../../Components/Pricing/Pricing'
+import AboutUs from '../../Components/AboutUs/AboutUs'
 
 // --------- importing redux actions ------------
 import { userFormActions } from '../../Store/reducer/userForm'
@@ -192,57 +191,113 @@ const Layout = () => {
             dynamicElement = (
                 <BuildBurger 
                     title = 'My Cart' 
-                    priceInfo = {cartInfo.totalPrice() ? `Total Price (${cartInfo.totalCartItems} items) : $ ${cartInfo.totalPrice().toFixed(2)}` : null} 
                     closeDialogHandler = {closeDialogHandler}
-                />
+                    priceInfo = {cartInfo.totalPrice() && `Total Price (${cartInfo.totalCartItems} items) : $ ${cartInfo.totalPrice().toFixed(0)}`} />
             )
             break;
         case '/':
             dynamicElement = (
                 <Home                     
                     closeDialogHandler = {closeDialogHandler} 
-                    priceInfo = {cartInfo.totalPrice() ? `Total Price (${cartInfo.totalCartItems} items) : $ ${cartInfo.totalPrice().toFixed(2)}` : null}
-                />
+                    priceInfo = {cartInfo.totalPrice() && `Total Price (${cartInfo.totalCartItems} items) : $ ${cartInfo.totalPrice().toFixed(0)}`} />
             )
             break; 
+        case '/pricing':
+            dynamicElement = (
+                <Pricing 
+                    closeDialogHandler = {closeDialogHandler}
+                    priceInfo = {cartInfo.totalPrice() && `Total Price (${cartInfo.totalCartItems} items) : $ ${cartInfo.totalPrice().toFixed(0)}`} />
+            )
+            break;
+        case '/about-us':
+            dynamicElement = (
+                <AboutUs
+                    closeDialogHandler = {closeDialogHandler}
+                    priceInfo = {cartInfo.totalPrice() && `Total Price (${cartInfo.totalCartItems} items) : $ ${cartInfo.totalPrice().toFixed(0)}`}/>
+            )
         default:
             break;     
     }
 
     return (
-        <div> 
+        <> 
+            <Container>
+                <NavigationBar />
+            </Container>
             <Routes>
-                <Route path = '/' element = {<Home />} /> 
-                <Route path = 'build-burger' element = {token ? <BuildBurger closeDialogHandler = {closeDialogHandler} /> : null} />                
-                <Route path = 'buy' element = {<BuildBurger noTransition = {true} closeDialogHandler = {closeDialogHandler} />}>
-                    <Route index element = {<BuyBurger />} />
-                    <Route path = 'delivery-address' element = {<BuyBurger />}>
-                        <Route index element = {<DeliveryAddress />} />
+                <Route 
+                    path = '/' 
+                    element = {<Home />} /> 
+                <Route 
+                    path = 'build-burger' 
+                    element = {token ? <BuildBurger closeDialogHandler = {closeDialogHandler} /> : null} /> 
+                <Route 
+                    path = 'pricing' 
+                    element = {<Pricing />} />   
+                <Route 
+                    path = 'about-us'
+                    element = {<AboutUs />} />            
+                <Route 
+                    path = 'buy' 
+                    element = {<BuildBurger noTransition = {true} closeDialogHandler = {closeDialogHandler} />}>
+                    <Route 
+                        index 
+                        element = {<BuyBurger />} />
+                    <Route 
+                        path = 'delivery-address' 
+                        element = {<BuyBurger />}>
+                        <Route 
+                            index 
+                            element = {<DeliveryAddress />} />
                     </Route>
-                    <Route path = 'order-summary' element = {<BuyBurger />}>
-                        <Route index element = {<OrderSummary />} />
+                    <Route 
+                        path = 'order-summary' 
+                        element = {<BuyBurger />}>
+                        <Route 
+                            index 
+                            element = {<OrderSummary />} />
                     </Route>
-                    <Route path = 'payment' element = {<BuyBurger />}>
-                        <Route index element = {<Payment />} />
+                    <Route 
+                        path = 'payment' 
+                        element = {<BuyBurger />}>
+                        <Route 
+                            index 
+                            element = {<Payment />} />
                     </Route>
                 </Route>
-                <Route path = 'cart' element = {dynamicElement}>
-                    <Route index element = {<Cart />} />
+                <Route 
+                    path = 'cart' 
+                    element = {dynamicElement}>
+                    <Route 
+                        index 
+                        element = {<Cart />} />
                 </Route>
-                <Route  path = 'your-orders' element = {dynamicElement}>
-                    <Route index element = {<YourOrders />} />
+                <Route  
+                    path = 'your-orders' 
+                    element = {dynamicElement}>
+                    <Route 
+                        index 
+                        element = {<YourOrders />} />
                 </Route>
-                <Route  path = 'your-addresses' element = {dynamicElement}>
-                    <Route index element = {<ManageAddresses />} />
+                <Route  
+                    path = 'manage-addresses' 
+                    element = {dynamicElement}>
+                    <Route 
+                        index 
+                        element = {<ManageAddresses />} />
                 </Route>
-                <Route  path = 'security-settings' element = {dynamicElement}>
-                    <Route index element = {<Security />} />
+                <Route  
+                    path = 'security-settings' 
+                    element = {dynamicElement}>
+                    <Route 
+                        index 
+                        element = {<Security />} />
                 </Route>
             </Routes>
             {/* Below two components are modals */}
             <DeleteAccount />
             <Canvas />
-        </div>
+        </>
     )
 }
 

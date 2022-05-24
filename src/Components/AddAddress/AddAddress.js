@@ -10,7 +10,7 @@ import { v4 as uniqueId } from 'uuid'
 
 // -------- importing from other files -------------
 import { db } from '../../firebase-setup'
-import { userFormTheme } from '../../theme/mui-theme'
+import { mainColors } from '../../theme/mui-theme'
 import { philippinesStates, indianStates } from '../../Places/places'
 import { CustomButton } from './styles.js'
 import { dialogActions } from '../../Store/reducer/dialog'
@@ -118,22 +118,23 @@ const AddAddress = () => {
         <Backdrop open = {openModal}>
             <Modal centered size = 'lg' show = {openModal} onHide = {closeAddressFormHandler}>
                 <Box style = {{width : 'inherit'}}>
-                        <Paper sx = {{padding : 5, backgroundColor : '#110f12', border : 'solid 2px white', borderRadius : 0}} >
+                        <Paper sx = {{padding : 5, backgroundColor : '#ffecd1', border : 'solid 2px #110f12', borderRadius : 0}} >
                             <IconButton 
                                 sx = {{float : 'right', position : 'relative', bottom : 25, left : 20}} 
-                                className = 'text-light'
+                                className = 'text-dark'
                                 onClick = {closeAddressFormHandler}
                             >
                                 <CloseRounded />
                             </IconButton>
                             
                             <form onSubmit = {(event) => addressSubmitHandler(event)}>
-                                <ThemeProvider theme = {userFormTheme}>
+                                <ThemeProvider theme = {mainColors}>
                                     <Stack direction = 'column'>
                                         <Stack direction = 'row'>
                                             <TextField variant='filled' className = 'noInputBorder' 
                                                 sx = {{mr : 2}} 
-                                                size = 'small' 
+                                                size = 'small'
+                                                color = 'blackish' 
                                                 label = {firstName}
                                                 value = {addressForm.firstName}
                                                 onChange = {(event) => changeHandler(event, firstName)}
@@ -143,6 +144,7 @@ const AddAddress = () => {
                                             <TextField 
                                                 variant='filled' 
                                                 className = 'noInputBorder' 
+                                                color = 'blackish' 
                                                 label = {lastName} 
                                                 size = 'small'
                                                 onChange={(event) => changeHandler(event, lastName)}
@@ -154,6 +156,7 @@ const AddAddress = () => {
                                             <TextField 
                                                 variant='filled' 
                                                 className = 'noInputBorder' 
+                                                color = 'blackish' 
                                                 type = 'number' 
                                                 label = {phoneNumber} 
                                                 size = 'small'
@@ -165,6 +168,7 @@ const AddAddress = () => {
                                         <TextField 
                                             variant='filled' 
                                             className = 'noInputBorder' 
+                                            color = 'blackish' 
                                             sx = {{mt : 2}} 
                                             fullWidth multiline 
                                             rows={4} 
@@ -181,7 +185,8 @@ const AddAddress = () => {
                                                     variant='filled'  
                                                     className = 'noInputBorder' 
                                                     label = 'Country'
-                                                    size = 'small'                                                     
+                                                    size = 'small' 
+                                                    color = 'blackish' 
                                                     value = {addressForm.selectCountry}
                                                     onChange = {(event) => changeHandler(event, country)}
                                                     error = {validationFlag && addressForm.selectCountry.length === 0 ? true : false}
@@ -201,6 +206,7 @@ const AddAddress = () => {
                                                     className = 'noInputBorder' 
                                                     label = {state}
                                                     size = 'small'
+                                                    color = 'blackish' 
                                                     error = {validationFlag && addressForm.selectState.length === 0 ? true : false}
                                                     helperText = {validationFlag && addressForm.selectState.length === 0 ? 'Mention state' : ''} 
                                                     SelectProps = {{
@@ -224,6 +230,7 @@ const AddAddress = () => {
                                                 className = 'noInputBorder' 
                                                 label = {city} 
                                                 size = 'small'
+                                                color = 'blackish' 
                                                 onChange={(event) => changeHandler(event, city)}
                                                 value = {addressForm.city}
                                                 error = {validationFlag && addressForm.city.length === 0 ? true : false}
@@ -236,6 +243,7 @@ const AddAddress = () => {
                                                 label = {pinCode}
                                                 type = 'number' 
                                                 size = 'small'
+                                                color = 'blackish'                                             
                                                 className = 'noInputBorder' 
                                                 value = {addressForm.pinCode}
                                                 onChange = {(event) => changeHandler(event, pinCode)}
@@ -246,6 +254,7 @@ const AddAddress = () => {
                                             <FormLabel 
                                                 id = 'address-type' 
                                                 sx = {{'& .Mui-focused' : {color : 'rgba(0, 0, 0, 0.6)'}}}
+                                                color = 'blackish'
                                             >
                                                 Address Type
                                             </FormLabel>
@@ -257,21 +266,22 @@ const AddAddress = () => {
                                                 <FormControlLabel 
                                                     label = 'Home' 
                                                     value = 'Home' 
-                                                    control = {<Radio color = 'success' />} />
+                                                    control = {<Radio color = 'blackish' />} />
                                                 <FormControlLabel 
                                                     label = 'Office' 
-                                                    value = 'Office' 
-                                                    control = {<Radio color = 'success' />} />
+                                                    value = 'Office'
+                                                    control = {<Radio color = 'blackish' />} />
                                             </RadioGroup>
                                         </FormControl>
                                     </Stack>                        
+                                    <CustomButton 
+                                        sx = {{mt : 2, borderRadius : 0, color : '#f9b826'}}
+                                        color = 'blackish' 
+                                        variant = 'contained' type = 'submit'
+                                    >
+                                        <strong>Save</strong>
+                                    </CustomButton>
                                 </ThemeProvider>
-                                <CustomButton 
-                                    sx = {{mt : 2}} 
-                                    variant = 'contained' type = 'submit'
-                                >
-                                    Save
-                                </CustomButton>
                             </form>
                         </Paper>
                 </Box>

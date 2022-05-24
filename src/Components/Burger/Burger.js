@@ -3,21 +3,21 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Stack, Box } from '@mui/material'
 import { Image } from 'react-bootstrap'
 import { v4 as uniqueId } from 'uuid'
-import { motion, AnimatePresence, useAnimation, LayoutGroup } from 'framer-motion'
+import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import { TransitionGroup } from 'react-transition-group'
 
 // -------- importing from other files ----------------
 import { burgerBase, burgerTop, Cheese, Coke, Lettuce, Meat, Bacon, Tomato, Fries, Onion, Plate } from '../../path-to-assets/pathToImages'
 import { animationActions } from '../../Store/reducer/animation'
-import { Scale } from '@mui/icons-material'
 
 const Burger = (props) => {
     const dispatch = useDispatch()
-    const animation = useAnimation()
 
     const checkCoke = props.ingredients.Coke.status
     const checkFries = props.ingredients.FrenchFries.status
     
+    // this value will make sure that slices, coke and fries only animates when controlled by the user
+    // thus it will prevent the unnecessary animation when whole components gets unmounted
     const beginAnime = useSelector(state => state.animation.beginAnime)
     
     // creating object which containes ingredients of the burger
@@ -39,13 +39,6 @@ const Burger = (props) => {
         }
     }
     
-    useEffect(() => {
-        // to stop animation of burger slices 
-        // the animation only begin when user add slices by clicking on the add button
-        dispatch(animationActions.updateBeginAnime(false))
-        dispatch(animationActions.updateAnimeAtEnd(false))
-    }, [dispatch])
-
     return (
         <Stack>
             <Stack 
@@ -58,11 +51,11 @@ const Burger = (props) => {
                     {checkCoke &&
                         <motion.div 
                             layout
-                            initial = {{x: beginAnime ? -400 : 0}}
-                            animate = {{x: 0}}
-                            exit = {{x: -450, opacity : 0}}
+                            initial = {{x: beginAnime ? -150 : 0, opacity : 0}}
+                            animate = {{x: 0, opacity : 1}}
+                            exit = {{x: -150, opacity : 0}}
                             transition = {{type : 'spring', stiffness : 110}}
-                            style ={{zIndex : 9, position : 'absolute', left : props.isOrder ? '5%' :'16%'}} 
+                            style ={{zIndex : 10, position : 'absolute', left : props.isOrder ? '5%' :'16%'}} 
                         >
                             <Image 
                                 fluid 
@@ -76,7 +69,7 @@ const Burger = (props) => {
                 <Stack 
                     direction = 'column' 
                     alignItems = 'center' 
-                    sx = {{zIndex : 10}}
+                    sx = {{zIndex : 11}}
                 >   
                     <LayoutGroup>
                         <motion.div layout>
@@ -87,6 +80,7 @@ const Burger = (props) => {
                                 {allSlices.map(({name, img, id}) => {                         
                                     return ( 
                                         <motion.img
+                                            layout
                                             key = {id}  
                                             style = {{width : props.width}}
                                             initial = {{scale : beginAnime ? 0 : 1.2}}
@@ -106,9 +100,9 @@ const Burger = (props) => {
                     {checkFries &&
                         <motion.div 
                             style = {{zIndex : 9, position : 'absolute', right : props.isOrder ? '7%' : '16%'}}
-                            initial = {{x: beginAnime ? 400 : 0}}
-                            animate = {{x: 0}}
-                            exit = {{x: 450, opacity : 0}}
+                            initial = {{x: beginAnime ? 150 : 0, opacity : 0}}
+                            animate = {{x: 0, opacity : 1}}
+                            exit = {{x: 150, opacity : 0}}
                             transition = {{type : 'spring', stiffness : 110}}
                         >
                             <Image 

@@ -14,14 +14,14 @@ export const addressBox = makeStyles({
 
     addressContainer : {
         backgroundColor : '#110f12',
-        color : '#f9b826',
+        color : '#f9a620',
         width : 340,
         height : 200, 
     },
 
     clickedAddress : {
         color : '#110f12',
-        backgroundColor : '#f9b826' 
+        backgroundColor : '#f9a620' 
     },
 
     editBox : {
@@ -37,7 +37,6 @@ export const addressBox = makeStyles({
             position : 'absolute',
             width : '100%',
             height : 55,
-            backgroundColor : '#110f12',
             opacity : 0.95
         }
     },
