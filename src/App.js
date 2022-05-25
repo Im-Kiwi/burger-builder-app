@@ -17,9 +17,7 @@ function App() {
           <Grid xs = {6} item sx = {{backgroundColor : '#f9b826'}}></Grid>
           <Grid xs = {6} item sx = {{backgroundColor : '#110f12'}}></Grid>
         </Grid>
-        <ThemeProvider theme={mainColors}>
-          <Layout />
-        </ThemeProvider>
+        <Layout />
       </div>
     </Router>
   );

@@ -133,7 +133,7 @@ const YourOrders = () => {
                     backgroundColor : '#f9b826', 
                     py : 1.5, 
                     overflowY: 'auto',
-                    position : 'relative'
+                    position : 'relative',
                 }}>
                 <Box sx = {{mt:2}}>
                     {displayOrders}

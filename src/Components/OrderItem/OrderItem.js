@@ -1,163 +1,93 @@
-import { Paper, Grid, Box, Typography, Divider} from '@mui/material'
+import { Paper, Grid, Box, Typography, Divider, Stack, Chip} from '@mui/material'
+import { DoneRounded, CloseRounded } from '@mui/icons-material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { v4 as uniqueId } from 'uuid'
 
 // ----------- importing from other files -----------
 import Burger from '../Burger/Burger'
+import { CustomChip, styles } from './styles'
 
 const OrderItem = ({ing}) => {
+    const classes = styles()
 
     return (
-        <Paper sx = {{width : 300, height: 250, borderRadius : 2, backgroundColor : '#001524'}}>                                    
-            <Grid container sx = {{width : 300, height : 250}} columnSpacing = {1}>
-                <Grid item xs = {8} sx = {{ p:1}} display = 'flex' alignItems = 'center' justifyContent = 'center' position = 'relative'>  
-                    <Box
-                        className = 'shadow' 
-                        sx = {{                                                                                        
-                            position : 'absolute',
-                            backgroundColor : "#ffecd1",
-                            left : -15,
-                            borderRadius : 2,
-                            width : '100%',
-                            height : 200,
-                            transform : 'scaleX(1.05) !important',
-                            overflow : 'hidden',
-                            zIndex : 1
-                    }}></Box>
-                    <Box sx = {{zIndex : 10, mt : 10, position : 'relative', left : -15}}>
-                        <Burger 
+        <Box>
+            <Box>
+                <Grid container gap = {2}>
+                    <Grid item>                        
+                        <Burger
                             ingredients = {ing} 
-                            width = '80px'
-                            cokeWidth = {100}
-                            friesWidth = {100}
-                            isOrder = {true}
-                        />
-                    </Box>
+                            width = {45} 
+                            plateWidth = {120} 
+                            cokeWidth = {60}
+                            friesWidth = {60}
+                            isOrder = {true} />
+                    </Grid>
+                    <Grid item 
+                        display = 'flex' 
+                        flexDirection = 'column' 
+                        sx = {{color : '#110f12'}}>
+                        <Stack 
+                            direction = 'row' 
+                            alignItems = 'center' 
+                            spacing = {2} 
+                            sx = {{mb:1}}>
+                            <Typography>
+                                <strong>Ingredients</strong> 
+                            </Typography>
+                            <Chip
+                                className = {classes.ingredientChip}                                     
+                                label = {`${ing.Lettuce.name} ${ing.Lettuce.qty}`} 
+                                size = 'small'/>
+                            <Chip
+                                className = {classes.ingredientChip} 
+                                label = {`${ing.Cheese.name} ${ing.Cheese.qty}`} 
+                                size = 'small'/>
+                            <Chip
+                                className = {classes.ingredientChip} 
+                                label = {`${ing.Onion.name} ${ing.Onion.qty}`}
+                                size = 'small'/>
+                            <Chip
+                                className = {classes.ingredientChip} 
+                                label = {`${ing.Tomato.name} ${ing.Tomato.qty}`} 
+                                size = 'small' />
+                            <Chip
+                                className = {classes.ingredientChip} 
+                                label = {`${ing.Meat.name} ${ing.Meat.qty}`} 
+                                size = 'small'/>
+                            <Chip
+                                className = {classes.ingredientChip} 
+                                label = {`${ing.Bacon.name} ${ing.Bacon.qty}`} 
+                                size = 'small'/>
+                        </Stack>
+                        <Stack direction = 'row' spacing = {2}>
+                            <Typography>
+                                <strong>Extras</strong>
+                            </Typography>
+                            <Chip
+                                className = {classes.extrasChip}
+                                size = 'small'
+                                variant = 'outlined'
+                                icon = {
+                                    ing.Coke.status ? 
+                                    <DoneRounded sx = {{color : '#333533 !important'}} /> : 
+                                    <CloseRounded sx = {{color : '#333533 !important'}} />}
+                                label = {`${ing.Coke.name}`}/>
+                            <Chip
+                                className = {classes.extrasChip}
+                                size = 'small' 
+                                variant = 'outlined'
+                                icon = {
+                                    ing.FrenchFries.status ? 
+                                    <DoneRounded sx = {{color : '#333533 !important'}} /> : 
+                                    <CloseRounded sx = {{color : '#333533 !important'}} />}
+                                label = 'French Fries'/>
+                        </Stack>
+                    </Grid>
                 </Grid>
-                <Grid item 
-                    xs = {4} 
-                    display = 'flex' 
-                    flexDirection = 'column' 
-                    justifyContent = 'center' 
-                    sx = {{color : '#ffecd1', fontSize : '0.8rem'}}
-                >
-                    <Grid 
-                        container 
-                        display = 'flex' 
-                        flexDirection = 'row'
-                    >
-                        <Grid item xs = {10}>
-                            <Typography sx = {{fontSize : '0.9rem'}}>
-                                {ing.Lettuce.name}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs = {2}>
-                            <Typography sx = {{fontSize : '0.9rem'}}>
-                                {ing.Lettuce.qty}
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                    <Grid 
-                        container 
-                        display = 'flex' 
-                        flexDirection = 'row'
-                    >
-                        <Grid item xs = {10}>
-                            <Typography sx = {{fontSize : '0.9rem'}}>
-                                {ing.Cheese.name}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs = {2}>
-                            <Typography sx = {{fontSize : '0.9rem'}}>
-                                {ing.Cheese.qty}
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                    <Grid 
-                        container 
-                        display = 'flex' 
-                        flexDirection = 'row'
-                    >
-                        <Grid item xs = {10}>
-                            <Typography sx = {{fontSize : '0.9rem'}}>
-                                {ing.Onion.name}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs = {2}>
-                            <Typography sx = {{fontSize : '0.9rem'}}>
-                                {ing.Onion.qty}
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                    <Grid 
-                        container 
-                        display = 'flex' 
-                        flexDirection = 'row'
-                    >
-                        <Grid item xs = {10}>
-                            <Typography sx = {{fontSize : '0.9rem'}}>
-                                {ing.Tomato.name}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs = {2}>
-                            <Typography sx = {{fontSize : '0.9rem'}}>
-                                {ing.Tomato.qty}
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                    <Grid 
-                        container 
-                        display = 'flex' 
-                        flexDirection = 'row'
-                    >
-                        <Grid item xs = {10}>
-                            <Typography sx = {{fontSize : '0.9rem'}}>
-                                {ing.Meat.name}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs = {2}>
-                            <Typography sx = {{fontSize : '0.9rem'}}>
-                                {ing.Meat.qty}
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                    <Grid container>
-                        <Grid item xs = {10}>
-                            <Typography sx = {{fontSize : '0.9rem'}}>
-                                {ing.Bacon.name}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs = {2}>
-                            <Typography sx = {{fontSize : '0.9rem'}}>
-                                {ing.Bacon.qty}
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                    <Divider sx = {{mt: 1, mb:1}} />
-                    <Grid container>
-                        <Grid item xs = {3}>
-                            <FontAwesomeIcon icon = {faCheck} />
-                        </Grid>
-                        <Grid item xs = {8}>
-                            <Typography sx = {{fontSize : '0.9rem'}}>
-                                {ing.Coke.name}
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                    <Grid container display = 'flex' flexDirection = 'row'>
-                        <Grid item xs = {3}>
-                            <FontAwesomeIcon icon = {faCheck} />
-                        </Grid>
-                        <Grid item xs = {8}>
-                            <Typography sx = {{fontSize : '0.9rem'}}>
-                                French Fries
-                            </Typography>
-                        </Grid>
-                    </Grid>                                                                                                              
-                </Grid>
-            </Grid>
-        </Paper>
+            </Box>
+        </Box>        
     )
 }
 

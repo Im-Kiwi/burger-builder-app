@@ -20,6 +20,8 @@ import TomatoIco from '../Assets/tomato_ico.svg'
 import OnionIco from '../Assets/onion_ico.svg'
 import BaconIco from '../Assets/bacon_ico.svg'
 import CuteBurger from '../Assets/cute-burger.svg'
+import Logo from '../Assets/logo.svg'
+import Girl from '../Assets/girl.svg'
 
 
 export {
@@ -27,8 +29,9 @@ export {
     Lettuce, Cheese, Meat, Onion, Tomato, Bacon,
     Coke, Fries,
     Phili, Ind,
-    Burger,
+    Logo,
+    Burger, Girl,
     Plate,
     LettuceIco, CheeseIco, MeatIco, TomatoIco, OnionIco, BaconIco,
-    CuteBurger
+    CuteBurger,
 }

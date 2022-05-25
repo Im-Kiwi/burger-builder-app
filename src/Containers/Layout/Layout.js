@@ -145,7 +145,8 @@ const Layout = () => {
                     userId : currentUser.uid,
                     dbId : userDbId
                 }            
-                dispatch(userFormActions.updateCurrentUser(userData))  
+                dispatch(userFormActions.updateCurrentUser(userData)) 
+                localStorage.setItem('token', currentUser.accessToken) 
             })();
         }
     })

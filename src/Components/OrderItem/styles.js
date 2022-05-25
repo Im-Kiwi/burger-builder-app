@@ -1,4 +1,4 @@
-import { styled } from '@mui/styles'
+import { styled, makeStyles } from '@mui/styles'
 import { Grid, Stack, Box, Chip } from '@mui/material'
 
 
@@ -21,6 +21,17 @@ export const CustomStack = styled(Stack)({
 export const CustomChip = styled(Chip)({
     marginLeft : 20,
     marginBottom : 10,
-    backgroundColor : '#621708',
-    color : '#fdf0d5'
+    backgroundColor : '#333533',
+    color : '#fefae0'
 }) 
+
+export const styles = makeStyles({
+    ingredientChip : {
+        backgroundColor : '#333533',
+        color : '#fefae0'
+    },
+    extrasChip : {
+        borderColor : '#333533',
+        color : '#333533'
+    }
+})

@@ -65,6 +65,7 @@ const UserProfile = (props) => {
         await signOut(auth) // method to sign out the user from the firebase
         navigate('/') // navigate the user to the home page
         setAnchorEl(null) // close the popover
+        localStorage.removeItem('token')
         dispatch(userFormActions.updateCurrentUser({})) // resetting the current user info as user loggin out
     }
 

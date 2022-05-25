@@ -14,8 +14,9 @@
 
 .link {
   color: #f9b826 !important;
-  font-size: 1.1rem !important;
+  font-size: 1.5rem !important;
   text-decoration: none;
+  font-family: 'Pathway Gothic One', sans-serif;
 }
 
 .signIn {

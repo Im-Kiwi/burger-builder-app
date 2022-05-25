@@ -1,6 +1,7 @@
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Nav, Navbar } from 'react-bootstrap'
-import { Container, Typography, Button, Stack, Badge, IconButton } from '@mui/material'
+import { Nav, Navbar, Image } from 'react-bootstrap'
+import { Container, Typography, Button, Stack, Badge, IconButton, Box } from '@mui/material'
 import { Link, useLocation } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons'
@@ -12,22 +13,25 @@ import { userFormActions } from '../../Store/reducer/userForm'
 import { dialogActions } from '../../Store/reducer/dialog'
 import UserProfile from '../UserProfile/UserProfile'
 import { animationActions } from '../../Store/reducer/animation'
+import { Logo } from '../../path-to-assets/pathToImages'
 
 const NavigationBar = () => {
     const dispatch = useDispatch()
     const { pathname } = useLocation()
     const prevPath = localStorage.getItem('prevPath')
 
-    const token = useSelector(state => state.userForm.currentUser.token)
+    const [navId, setNavId] = useState(null)
+
     const cartItems = useSelector(state => state.cart.cartItems)
+    const token = localStorage.getItem('token')
 
     let navColor, buttonColor, buttonBgColor // this will store the color dynamically
     
-    const trackingPrevPathHandler = () => {
+    const trackingPrevPathHandler = (id) => {
         localStorage.setItem('prevPath', pathname)
         // also disabling animation specially the coke, fries, slices of burger 
         dispatch(animationActions.updateBeginAnime(false)) 
-
+        setNavId(id)
     }
 
     // this will open the login form modal
@@ -65,7 +69,8 @@ const NavigationBar = () => {
                 duration : 0.1,
                 ease : 'easeOut'
             }
-        }
+        },
+        
     }
 
     // to animate the buttons (changing colors)
@@ -85,6 +90,40 @@ const NavigationBar = () => {
         }
     }
 
+    const hoverAnime = {
+        initial : {
+            width : 0,
+        },
+        homeHover : {
+            width : 43,
+            transition : {
+                duration : 0.1,
+                type : 'tween'
+            }
+        },
+        buildHover : {
+            width : 37,
+            transition : {
+                duration : 0.1,
+                type : 'tween'
+            }
+        },
+        pricingHover : {
+            width : 51,
+            transition : {
+                duration : 0.1,
+                type : 'tween'
+            }
+        },
+        aboutUsHover : {
+            width : 64,
+            transition : {
+                duration : 0.1,
+                type : 'tween'
+            }
+        }     
+    }
+
 
     return (
         <Navbar 
@@ -97,11 +136,15 @@ const NavigationBar = () => {
                     direction = 'row' 
                     alignItems = 'center'>
                     <Navbar.Brand>
-                        <Typography 
-                            variant = 'h5' 
-                            className = 'text-dark'>
-                                LOGO
-                        </Typography>                    
+                        <Box sx = {{position : 'absolute', top : 0}}>
+                            <Typography 
+                                variant = 'subtitle2'
+                                sx = {{textAlign : 'center', position : 'relative', top : 5, color : 'white'}}>
+                                CLARISH
+                            </Typography>                       
+                            <Image src = {Logo} fluid width = {90} alt = 'logo' />
+                                                
+                        </Box> 
                     </Navbar.Brand>
                     <Nav className = 'w-100'>
                         <Stack
@@ -113,50 +156,106 @@ const NavigationBar = () => {
                                 to = '/' 
                                 state = {pathname} 
                                 className = {[classes.link, 'me-4'].join(' ')}
-                                onClick = {trackingPrevPathHandler}>
-                                <motion.p
-                                    variants = {animateNav} 
-                                    animate = 'animate'
-                                    style = {{marginTop : 10}}
-                                    >
-                                    Home
-                                </motion.p>
+                                onClick = {() => trackingPrevPathHandler(0)}>
+                                <motion.div
+                                    initial = 'initial'
+                                    whileHover = 'homeHover'>
+                                    <motion.p
+                                        variants = {animateNav} 
+                                        animate = 'animate'
+                                        style = {{marginTop : 10}}
+                                        >
+                                        Home
+                                    </motion.p>
+                                    <motion.div
+                                        variants = {hoverAnime}
+                                        animate = {{width : navId === 0 ? 43 : 0}}
+                                        style = {{
+                                            backgroundColor : pathname === '/pricing' || pathname === '/about-us' ? '#110f12' : '#f9b826',
+                                            position : 'relative',
+                                            height : 2,
+                                            bottom : 15,
+                                            borderRadius : 10
+                                        }}></motion.div>
+                                </motion.div>
                             </Link> 
                             {token && 
                                 <Link 
                                     to = '/build-burger' 
                                     state = {pathname} 
                                     className = {[classes.link, 'me-4'].join(' ')}
-                                    onClick = {trackingPrevPathHandler}>
-                                    <motion.p 
-                                        variants = {animateNav}
-                                        animate = 'animate'
-                                        style = {{marginTop : 10}}>
-                                        Build
-                                    </motion.p>
+                                    onClick = {() => trackingPrevPathHandler(1)}>
+                                    <motion.div
+                                        initial = 'initial'
+                                        whileHover = 'buildHover'>
+                                        <motion.p 
+                                            variants = {animateNav}
+                                            animate = 'animate'                                        
+                                            style = {{marginTop : 10}}>
+                                            Build
+                                        </motion.p>
+                                        <motion.div
+                                            variants = {hoverAnime}
+                                            animate = {{width : navId === 1 ? 37 : 0}}
+                                            style = {{
+                                                backgroundColor : pathname === '/pricing' || pathname === '/about-us' ? '#110f12' : '#f9b826',
+                                                position : 'relative',
+                                                height : 2,
+                                                bottom : 15,
+                                                borderRadius : 10
+                                            }}></motion.div>
+                                    </motion.div>
                                 </Link>
                             }                       
                             <Link 
                                 to = '/pricing' 
                                 className = {[classes.link, 'me-4'].join(' ')}
-                                onClick = {trackingPrevPathHandler}>
-                                <motion.p 
-                                    variants = {animateNav}
-                                    animate = 'animate'
-                                    style = {{marginTop : 10}}>
-                                    Pricing
-                                </motion.p>
+                                onClick = {() => trackingPrevPathHandler(2)}>
+                                <motion.div
+                                    initial = 'initial'
+                                    whileHover = 'pricingHover'>
+                                    <motion.p 
+                                        variants = {animateNav}
+                                        animate = 'animate'
+                                        style = {{marginTop : 10}}>
+                                        Pricing
+                                    </motion.p>
+                                    <motion.div
+                                        variants = {hoverAnime}
+                                        animate = {{width : navId === 2 ? 51 : 0}}
+                                        style = {{
+                                            backgroundColor : pathname === '/pricing' || pathname === '/about-us'  ? '#110f12' : '#f9b826',
+                                            position : 'relative',
+                                            height : 2,
+                                            bottom : 15,
+                                            borderRadius : 10
+                                        }}></motion.div>
+                                </motion.div>
                             </Link>
                             <Link 
                                 to = '/about-us' 
                                 className = {[classes.link, 'me-4'].join(' ')}
-                                onClick = {trackingPrevPathHandler}>
-                                <motion.p
-                                    variants = {animateNav}
-                                    animate = 'animate' 
-                                    style = {{marginTop : 10}}>
-                                    About Us
-                                </motion.p>
+                                onClick = {() => trackingPrevPathHandler(3)}>
+                                <motion.div
+                                    initial = 'initial'
+                                    whileHover = 'aboutUsHover'>
+                                    <motion.p
+                                        variants = {animateNav}
+                                        animate = 'animate' 
+                                        style = {{marginTop : 10}}>
+                                        About Us
+                                    </motion.p>
+                                    <motion.div
+                                        variants = {hoverAnime}
+                                        animate = {{width : navId === 3 ? 64 : 0}}
+                                        style = {{
+                                            backgroundColor : pathname === '/pricing' || pathname === '/about-us' ? '#110f12' : '#f9b826',
+                                            position : 'relative',
+                                            height : 2,
+                                            bottom : 15,
+                                            borderRadius : 10
+                                    }}></motion.div>
+                                </motion.div>
                             </Link>
                             {token ? 
                                 <UserProfile animateButton = {animateButton} />
