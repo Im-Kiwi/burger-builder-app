@@ -221,10 +221,10 @@ const Layout = () => {
     }
 
     return (
-        <> 
-            <Container>
+        <>  
+            <Container maxWidth = 'xl'>
                 <NavigationBar />
-            </Container>
+            </Container>        
             <Routes>
                 <Route 
                     path = '/' 

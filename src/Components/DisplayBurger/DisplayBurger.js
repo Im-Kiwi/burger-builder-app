@@ -1,26 +1,25 @@
-import { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Stack, Typography, Grid, IconButton, Box, Switch } from '@mui/material'
-import { motion, AnimatePresence } from 'framer-motion'
+import { Stack, Typography, Grid, Box } from '@mui/material'
+import { motion } from 'framer-motion'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPesoSign, faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons'
 
 // ------------importing from other files---------
 import Burger from '../Burger/Burger'
-import { styles, CustomSwitch } from './styles'
+import useSwitchCurrency from '../../Hooks/useSwitchCurrency'
+import SwitchCurrency from '../SwitchCurrency/SwitchCurrency'
 
 const DisplayBurger = (props) => {
-    const classes = styles()
 
+    const ingredients = useSelector(state => state.ingredients) 
     const totalPrice = useSelector(state => state.ingredients.totalPrice)
-    const ingredients = useSelector(state => state.ingredients)    
 
-    const [isRupee, setIsRupee] = useState(false)
-
+    const [switchCurr, switchCurrHandler] = useSwitchCurrency()
+    
     let convertPrice
 
     // converting the price from rupee to pesos (philippine currency)
-    if (isRupee) {
+    if (switchCurr) {
         convertPrice = totalPrice.toFixed(0)
     } else {
         const temp = totalPrice*0.67
@@ -42,26 +41,6 @@ const DisplayBurger = (props) => {
         exit : {
             x : props.noTransition ? 0 : '-100vw',
         },                
-    }
-
-    const underlineAnime = {
-        initial : {
-            width : 0
-        },
-        animate : {
-            width : 10,
-            transition : {
-                duration : 0.15,
-                ease : 'easeIn'
-            }
-        },
-        exit : {
-            width : 0,
-            transition : {
-                duration : 0.15,
-                ease : 'easeIn'
-            }
-        }
     }
 
     return (
@@ -113,8 +92,11 @@ const DisplayBurger = (props) => {
                         alignItems = 'center'
                     >
                         <FontAwesomeIcon  
-                            icon = {isRupee ? faIndianRupeeSign : faPesoSign}
-                            className = {classes.currencyIcon}
+                            icon = {switchCurr ? faIndianRupeeSign : faPesoSign}
+                            style = {{
+                                color : '#110f12',
+                                fontSize : '1.3rem'
+                            }}
                         />
                         <Typography 
                             variant = 'body1'
@@ -126,47 +108,11 @@ const DisplayBurger = (props) => {
                             {convertPrice}
                         </Typography>
                     </Stack>
-                    <Box display = 'flex' gap = {1} alignItems = 'center'>
-                        <Stack position = 'relative'>
-                            <FontAwesomeIcon 
-                                icon = {faPesoSign} 
-                                className = {classes.selectCurrIcon}
-                            />
-                                <AnimatePresence exitBeforeEnter>
-                                    {!isRupee &&
-                                        <motion.div
-                                            variants = {underlineAnime}
-                                            initial = 'initial'
-                                            animate = 'animate'  
-                                            exit = 'exit'
-                                            className = {classes.underline}
-                                        ></motion.div>                                                                    
-                                    }
-                                </AnimatePresence>
-                        </Stack>
-                        <CustomSwitch 
-                            checked = {isRupee}
-                            onChange = {() => setIsRupee(v => !v)}
-                            size = 'small'                           
-                        />                        
-                        <Stack position = 'relative'>
-                            <FontAwesomeIcon  
-                                icon = {faIndianRupeeSign} 
-                                className = {classes.selectCurrIcon}
-                            />
-                                <AnimatePresence exitBeforeEnter>
-                                    {isRupee &&
-                                        <motion.div
-                                            variants = {underlineAnime}
-                                            initial = 'initial'
-                                            animate = 'animate'
-                                            exit = 'exit'                                                
-                                            className = {classes.underline}
-                                        ></motion.div>                                                                
-                                    }                                                             
-                                </AnimatePresence>  
-                        </Stack>
-                    </Box>
+                    <SwitchCurrency
+                        switchCurr = {switchCurr}
+                        switchCurrHandler = {switchCurrHandler}
+                        convertPrice = {convertPrice}
+                    />                        
                 </motion.div>
             </Grid>
         </Grid>

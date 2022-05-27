@@ -1,7 +1,14 @@
 import { styled, makeStyles } from "@mui/styles"
+import { Switch } from '@mui/material'
 
 export const styles = makeStyles({
+
     pricingContainer : {
+        position : 'relative',
+        backgroundColor : '#110f12',
+        width : '100%',
+    },    
+    pricingBackdrop : {
         zIndex : 1,
         height : '100vh', 
         backgroundColor : '#f9b826',

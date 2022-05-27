@@ -1,13 +1,20 @@
 ::-webkit-scrollbar {
-    width : 8px;
-    background-color: black;
-    border-radius: 10px;
+    width : 4px;
+    background-color: #f9b826;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: yellow;
+    background-color: #110f12;
     border-radius: 10px;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Pathway+Gothic+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Concert+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Electrolize&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');

@@ -1,10 +1,14 @@
-import { Container, Box } from '@mui/material'
+import { Container, Box, Typography, Grid } from '@mui/material'
 import { Outlet, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { Image } from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faQuoteLeft, faPersonBiking, faCity, faUsers } from '@fortawesome/free-solid-svg-icons'
 
 // ----- importing from other files --------
 import FullDialogs from '../FullDialogs/FullDialogs'
 import { styles } from './styles'
+import { Staff, WorldMap } from '../../path-to-assets/pathToImages'
 
 const AboutUs = (props) => {
     const { pathname } = useLocation()
@@ -51,14 +55,140 @@ const AboutUs = (props) => {
                     backgroundColor : '#110f12',
                     width : '100%'}}>
                 <motion.div 
-                    className = {classes.pricingContainer}
+                    className = {classes.aboutUsContainer}
                     variants = {animation}
                     initial = 'initial'
                     animate = 'animate'>                    
                 </motion.div>
-                <Box sx = {{zIndex:10, mt:9, position : 'absolute'}}>
-                    enter ur content here
-                    Burger Pricing
+                <Box 
+                    display = 'flex'
+                    justifyContent = 'center'
+                    sx = {{
+                        zIndex:10, 
+                        mt:15, 
+                        width : '100%',
+                        position : 'absolute'}}>                   
+                    <Box
+                        display = "flex"
+                        flexDirection = 'column'
+                        alignItems = 'center' 
+                        sx = {{zIndex : 11, color : '#252422'}}>
+                        <Container maxWidth = 'md'>
+                            <FontAwesomeIcon style = {{fontSize : '3rem'}} icon = {faQuoteLeft} />
+                            <Typography 
+                                className = 'text-center'
+                                variant = 'body1' 
+                                sx = {{fontSize : '2.5rem', fontFamily : 'Abril Fatface, cursive'}}>
+                                Following your heart will always lead you to clarish burgers 
+                            </Typography>   
+                        </Container>
+                        <div 
+                            style = {{
+                                width : 500, 
+                                height : 2, 
+                                borderRadius : '50%', 
+                                marginTop : 20,
+                                backgroundColor : '#343a40'}}></div>                    
+                        <Grid container
+                            alignItems = 'center'
+                            className = 'shadow-sm' 
+                            sx = {{
+                                borderRadius : 3,
+                                mt:5, mb:5,
+                                overflow : 'hidden',
+                                textAlign : 'center'}}>
+                            <Grid 
+                                item xs = {6} 
+                                sx = {{
+                                    backgroundColor : '#eb5e28', 
+                                    height : '100%',
+                                    width : '100%'}}>
+                                <Image 
+                                    fluid 
+                                    width = {500}
+                                    style = {{marginTop : 10, marginBottom : 10}}
+                                    src = {Staff}  
+                                    alt = 'staff'/>
+                            </Grid>
+                            <Grid item xs = {6} sx = {{p:10, color : '#fffcf2', backgroundColor : '#252422'}}>
+                                <Typography variant = 'h3' sx = {{mb:5, fontFamily : 'Anton, sans-serif', fontSize : '2.5rem'}}>
+                                    Who are we ?                                    
+                                </Typography>
+                                <Typography variant = 'body1' sx = {{fontFamily : 'Poppins, sans-serif', fontSize : '1.4rem'}}>
+                                    We Clarish team has sole purpose to provide yummy burgers to our customers with our quick delivery system.
+                                    <br />
+                                    Giving control to our customers to build their favourite burger and we make sure to prepare and deliver on their door step quickly as possible
+                                    <br />
+                                    Build your burger then sit and relax and let us handle the rest XD
+                                </Typography>
+                            </Grid>                                                        
+                        </Grid>
+                        <Grid 
+                            container 
+                            justifyContent = 'space-between' 
+                            spacing = {5}
+                            sx = {{mb:10, mt:4, color : '#252422'}}>
+                            <Grid 
+                                xs = {4}
+                                item 
+                                display = 'flex' 
+                                flexDirection = 'column'
+                                alignItems = 'center'>
+                                    <FontAwesomeIcon icon = {faUsers} style = {{fontSize : '3rem'}} />
+                                    <Typography variant = 'body1' sx = {{fontFamily : 'Anton, sans-serif', fontSize : '1.7rem'}}>1M+ customers</Typography>                                
+                            </Grid>
+                            <Grid 
+                                xs = {4}
+                                item
+                                display = 'flex'
+                                flexDirection = 'column'
+                                alignItems = 'center'>
+                                <FontAwesomeIcon icon = {faCity} style = {{fontSize : '3rem'}} />
+                                <Typography variant = 'body1' sx = {{fontFamily : 'Anton, sans-serif', fontSize : '1.7rem'}}>
+                                    services available in 40+ cities                            
+                                </Typography>
+                            </Grid>
+                            <Grid 
+                                xs = {4}
+                                item
+                                display = 'flex'
+                                flexDirection = 'column'
+                                alignItems = 'center'>
+                                <FontAwesomeIcon icon = {faPersonBiking} style = {{fontSize : '3rem'}} />
+                                <Typography variant = 'body1' sx = {{fontFamily : 'Anton, sans-serif', fontSize : '1.7rem'}}>
+                                    Door to door fast delivery system
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                        <Box sx = {{mb:3}}>
+                            <Typography 
+                                className = 'text-center mb-3'
+                                variant = 'h3' 
+                                sx = {{fontFamily : 'Anton, sans-serif', fontSize : '2.5rem'}}>
+                                Where are we located ?
+                            </Typography>
+                            <Container maxWidth = 'md'>
+                                <Typography 
+                                    className = 'text-center mb-3'
+                                    variant = 'body1' 
+                                    sx = {{fontFamily : 'Poppins, sans-serif', fontSize : '1.4rem'}}>
+                                    Currently our centers are located in two countries, India and philippine, but we looking forward to expand our territory further :)
+                                </Typography>
+                            </Container>
+                            <Container maxWidth = 'lg'>
+                                <Image src = {WorldMap} fluid alt = 'world map' />
+                            </Container>
+                            <Container maxWidth = 'md'>
+                                <Typography
+                                    className = 'text-center'
+                                    variant = 'body1'
+                                    sx = {{fontFamily : 'Poppins, sans-serif', fontSize : '1.4rem'}}>
+                                    We covered all the major cities of these countries, but still if you wanna know whether our services are availale in your area
+                                    then fill up the address form while adding your address and check whether ur city is mentioned in 'Select City' options
+                                </Typography>
+                            </Container>
+                        </Box>
+                    </Box>
                 </Box>
             </Box>
             {pathname === '/your-orders' || pathname === '/manage-addresses' || pathname === '/security-settings' ?

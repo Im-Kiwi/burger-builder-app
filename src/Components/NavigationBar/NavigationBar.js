@@ -15,23 +15,27 @@ import UserProfile from '../UserProfile/UserProfile'
 import { animationActions } from '../../Store/reducer/animation'
 import { Logo } from '../../path-to-assets/pathToImages'
 
+const paths = {
+    home : {path : '/', id : 0},
+    build : {path : '/build-burger', id : 1},
+    pricing : {path : '/pricing', id : 2},
+    aboutUs : {path : 'about-us', id : 3}
+}
+
 const NavigationBar = () => {
     const dispatch = useDispatch()
     const { pathname } = useLocation()
     const prevPath = localStorage.getItem('prevPath')
-
-    const [navId, setNavId] = useState(null)
 
     const cartItems = useSelector(state => state.cart.cartItems)
     const token = localStorage.getItem('token')
 
     let navColor, buttonColor, buttonBgColor // this will store the color dynamically
     
-    const trackingPrevPathHandler = (id) => {
+    const trackingPrevPathHandler = () => {
         localStorage.setItem('prevPath', pathname)
         // also disabling animation specially the coke, fries, slices of burger 
         dispatch(animationActions.updateBeginAnime(false)) 
-        setNavId(id)
     }
 
     // this will open the login form modal
@@ -97,28 +101,28 @@ const NavigationBar = () => {
         homeHover : {
             width : 43,
             transition : {
-                duration : 0.1,
+                duration : 0.2,
                 type : 'tween'
             }
         },
         buildHover : {
             width : 37,
             transition : {
-                duration : 0.1,
+                duration : 0.2,
                 type : 'tween'
             }
         },
         pricingHover : {
             width : 51,
             transition : {
-                duration : 0.1,
+                duration : 0.2,
                 type : 'tween'
             }
         },
         aboutUsHover : {
             width : 64,
             transition : {
-                duration : 0.1,
+                duration : 0.2,
                 type : 'tween'
             }
         }     
@@ -127,7 +131,6 @@ const NavigationBar = () => {
 
     return (
         <Navbar 
-            fixed = 'top' 
             className = {classes.navbar} 
             expand = 'lg'>
             <Container maxWidth = 'xl'>
@@ -156,7 +159,7 @@ const NavigationBar = () => {
                                 to = '/' 
                                 state = {pathname} 
                                 className = {[classes.link, 'me-4'].join(' ')}
-                                onClick = {() => trackingPrevPathHandler(0)}>
+                                onClick = {trackingPrevPathHandler}>
                                 <motion.div
                                     initial = 'initial'
                                     whileHover = 'homeHover'>
@@ -169,7 +172,7 @@ const NavigationBar = () => {
                                     </motion.p>
                                     <motion.div
                                         variants = {hoverAnime}
-                                        animate = {{width : navId === 0 ? 43 : 0}}
+                                        animate = {{width : pathname === '/' ? 43 : 0}}
                                         style = {{
                                             backgroundColor : pathname === '/pricing' || pathname === '/about-us' ? '#110f12' : '#f9b826',
                                             position : 'relative',
@@ -184,7 +187,7 @@ const NavigationBar = () => {
                                     to = '/build-burger' 
                                     state = {pathname} 
                                     className = {[classes.link, 'me-4'].join(' ')}
-                                    onClick = {() => trackingPrevPathHandler(1)}>
+                                    onClick = {trackingPrevPathHandler}>
                                     <motion.div
                                         initial = 'initial'
                                         whileHover = 'buildHover'>
@@ -196,7 +199,7 @@ const NavigationBar = () => {
                                         </motion.p>
                                         <motion.div
                                             variants = {hoverAnime}
-                                            animate = {{width : navId === 1 ? 37 : 0}}
+                                            animate = {{width : pathname === '/build-burger' ? 37 : 0}}
                                             style = {{
                                                 backgroundColor : pathname === '/pricing' || pathname === '/about-us' ? '#110f12' : '#f9b826',
                                                 position : 'relative',
@@ -210,7 +213,7 @@ const NavigationBar = () => {
                             <Link 
                                 to = '/pricing' 
                                 className = {[classes.link, 'me-4'].join(' ')}
-                                onClick = {() => trackingPrevPathHandler(2)}>
+                                onClick = {trackingPrevPathHandler}>
                                 <motion.div
                                     initial = 'initial'
                                     whileHover = 'pricingHover'>
@@ -222,7 +225,7 @@ const NavigationBar = () => {
                                     </motion.p>
                                     <motion.div
                                         variants = {hoverAnime}
-                                        animate = {{width : navId === 2 ? 51 : 0}}
+                                        animate = {{width : pathname === '/pricing' ? 51 : 0}}
                                         style = {{
                                             backgroundColor : pathname === '/pricing' || pathname === '/about-us'  ? '#110f12' : '#f9b826',
                                             position : 'relative',
@@ -235,7 +238,7 @@ const NavigationBar = () => {
                             <Link 
                                 to = '/about-us' 
                                 className = {[classes.link, 'me-4'].join(' ')}
-                                onClick = {() => trackingPrevPathHandler(3)}>
+                                onClick = {trackingPrevPathHandler}>
                                 <motion.div
                                     initial = 'initial'
                                     whileHover = 'aboutUsHover'>
@@ -247,7 +250,7 @@ const NavigationBar = () => {
                                     </motion.p>
                                     <motion.div
                                         variants = {hoverAnime}
-                                        animate = {{width : navId === 3 ? 64 : 0}}
+                                        animate = {{width : pathname === '/about-us' ? 64 : 0}}
                                         style = {{
                                             backgroundColor : pathname === '/pricing' || pathname === '/about-us' ? '#110f12' : '#f9b826',
                                             position : 'relative',

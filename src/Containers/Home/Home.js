@@ -10,6 +10,7 @@ import { dialogActions } from '../../Store/reducer/dialog';
 import { userFormActions } from '../../Store/reducer/userForm';
 import FullDialogs from '../../Components/FullDialogs/FullDialogs';
 import { Burger, Girl } from '../../path-to-assets/pathToImages'
+import NavigationBar from '../../Components/NavigationBar/NavigationBar';
 
 
 const Home = (props) => {

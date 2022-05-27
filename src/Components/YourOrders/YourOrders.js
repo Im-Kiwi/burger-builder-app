@@ -106,7 +106,6 @@ const YourOrders = () => {
     
     const displayOrders = ordersDisplayMethod()
 
-
     return (
         <Modal size = 'xl' centered show = {showModal} onHide = {closeModalHandler}>
             <Fab

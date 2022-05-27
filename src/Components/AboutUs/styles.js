@@ -1,7 +1,7 @@
 import { styled, makeStyles } from "@mui/styles"
 
 export const styles = makeStyles({
-    pricingContainer : {
+    aboutUsContainer : {
         zIndex : 1,
         height : '100vh', 
         backgroundColor : '#f9b826',

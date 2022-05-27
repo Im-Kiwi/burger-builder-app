@@ -9,6 +9,7 @@ import classes from './BuildBurger.module.css'
 import BurgerController from '../../Components/BurgerController/BurgerController'
 import DisplayBurger from '../../Components/DisplayBurger/DisplayBurger'
 import FullDialogs from '../../Components/FullDialogs/FullDialogs'
+import NavigationBar from '../../Components/NavigationBar/NavigationBar'
 
 const BuildBurger = (props) => {
     const { pathname } = useLocation()
