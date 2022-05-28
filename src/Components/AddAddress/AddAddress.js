@@ -116,174 +116,178 @@ const AddAddress = () => {
 
     return (
         <Backdrop open = {openModal}>
-            <Modal centered size = 'lg' show = {openModal} onHide = {closeAddressFormHandler}>
+            <Modal centered 
+                size = 'lg' 
+                show = {openModal} 
+                onHide = {closeAddressFormHandler}>
                 <Box style = {{width : 'inherit'}}>
-                        <Paper sx = {{padding : 5, backgroundColor : '#ffecd1', border : 'solid 2px #110f12', borderRadius : 0}} >
-                            <IconButton 
-                                sx = {{float : 'right', position : 'relative', bottom : 25, left : 20}} 
-                                className = 'text-dark'
-                                onClick = {closeAddressFormHandler}
-                            >
-                                <CloseRounded />
-                            </IconButton>
-                            
-                            <form onSubmit = {(event) => addressSubmitHandler(event)}>
-                                <ThemeProvider theme = {mainColors}>
-                                    <Stack direction = 'column'>
-                                        <Stack direction = 'row'>
-                                            <TextField variant='filled' className = 'noInputBorder' 
-                                                sx = {{mr : 2}} 
-                                                size = 'small'
-                                                color = 'blackish' 
-                                                label = {firstName}
-                                                value = {addressForm.firstName}
-                                                onChange = {(event) => changeHandler(event, firstName)}
-                                                error = {validationFlag && addressForm.firstName.length === 0 ? true : false}
-                                                helperText = {validationFlag && addressForm.firstName.length === 0 ? 'Mention first name' : ''}
-                                            />
-                                            <TextField 
-                                                variant='filled' 
-                                                className = 'noInputBorder' 
-                                                color = 'blackish' 
-                                                label = {lastName} 
-                                                size = 'small'
-                                                onChange={(event) => changeHandler(event, lastName)}
-                                                value = {addressForm.lastName}
-                                                error = {validationFlag && addressForm.lastName.length === 0 ? true : false}
-                                                helperText = {validationFlag && addressForm.lastName.length === 0 ? 'Mention last name' : ''} />
-                                        </Stack>
-                                        <Box sx = {{mt : 2}}>
-                                            <TextField 
-                                                variant='filled' 
-                                                className = 'noInputBorder' 
-                                                color = 'blackish' 
-                                                type = 'number' 
-                                                label = {phoneNumber} 
-                                                size = 'small'
-                                                value = {addressForm.phoneNumber}
-                                                onChange = {(event) => changeHandler(event, phoneNumber)}
-                                                error = {validationFlag && addressForm.phoneNumber.length === 0 ? true : false}
-                                                helperText = {validationFlag && addressForm.phoneNumber.length === 0 ? 'Add phone number' : null} />
-                                        </Box>
+                    <Paper                         
+                        sx = {{
+                            padding : 5, 
+                            backgroundColor : '#f9a620',                             
+                            border : 'solid 2px #110f12', 
+                            borderRadius : 0}} >
+                        <IconButton 
+                            sx = {{
+                                float : 'right', 
+                                position : 'relative', 
+                                bottom : 25, 
+                                left : 20}} 
+                            className = 'text-dark'
+                            onClick = {closeAddressFormHandler} >
+                            <CloseRounded />
+                        </IconButton>
+                        
+                        <form onSubmit = {(event) => addressSubmitHandler(event)}>
+                            <Stack direction = 'column'>
+                                <Stack direction = 'row'>
+                                    <TextField variant='filled' className = 'noInputBorder' 
+                                        sx = {{mr : 2}} 
+                                        size = 'small'
+                                        color = 'blackish' 
+                                        label = {firstName}
+                                        value = {addressForm.firstName}
+                                        onChange = {(event) => changeHandler(event, firstName)}
+                                        error = {validationFlag && addressForm.firstName.length === 0 ? true : false}
+                                        helperText = {validationFlag && addressForm.firstName.length === 0 ? 'Mention first name' : ''} />
+                                    <TextField 
+                                        variant='filled' 
+                                        className = 'noInputBorder' 
+                                        color = 'blackish' 
+                                        label = {lastName} 
+                                        size = 'small'
+                                        onChange={(event) => changeHandler(event, lastName)}
+                                        value = {addressForm.lastName}
+                                        error = {validationFlag && addressForm.lastName.length === 0 ? true : false}
+                                        helperText = {validationFlag && addressForm.lastName.length === 0 ? 'Mention last name' : ''} />
+                                </Stack>
+                                <Box sx = {{mt : 2}}>
+                                    <TextField 
+                                        variant='filled' 
+                                        className = 'noInputBorder' 
+                                        color = 'blackish' 
+                                        type = 'number' 
+                                        label = {phoneNumber} 
+                                        size = 'small'
+                                        value = {addressForm.phoneNumber}
+                                        onChange = {(event) => changeHandler(event, phoneNumber)}
+                                        error = {validationFlag && addressForm.phoneNumber.length === 0 ? true : false}
+                                        helperText = {validationFlag && addressForm.phoneNumber.length === 0 ? 'Add phone number' : null} />
+                                </Box>
+                                <TextField 
+                                    variant='filled' 
+                                    className = 'noInputBorder' 
+                                    color = 'blackish' 
+                                    sx = {{mt : 2}} 
+                                    fullWidth multiline 
+                                    rows={4} 
+                                    size = 'small' 
+                                    label = {address}
+                                    onChange = {event => changeHandler(event, address)}
+                                    value = {addressForm.address}
+                                    error = {validationFlag && addressForm.address.length === 0 ? true : false}
+                                    helperText = {validationFlag && addressForm.address.length === 0 ? 'Mention address' : ''} />
+                                <Stack direction = 'row' sx = {{mt : 2}}>
+                                    <Box sx = {{width : 200, mr : 2}}>
+                                        <TextField 
+                                            fullWidth select 
+                                            variant='filled'  
+                                            className = 'noInputBorder' 
+                                            label = 'Country'
+                                            size = 'small' 
+                                            color = 'blackish' 
+                                            value = {addressForm.selectCountry}
+                                            onChange = {(event) => changeHandler(event, country)}
+                                            error = {validationFlag && addressForm.selectCountry.length === 0 ? true : false}
+                                            helperText = {validationFlag && addressForm.selectCountry.length === 0 ? 'Mention Country' : ''}>
+                                            <MenuItem value = 'India'>India</MenuItem>
+                                            <MenuItem value = 'Philippines'>Philippines</MenuItem>
+                                        </TextField>                                            
+                                    </Box>
+                                    <Box sx = {{width : 200, mr : 2}}>
                                         <TextField 
                                             variant='filled' 
+                                            disabled  = {!Boolean(addressForm.selectCountry)}
+                                            select fullWidth
+                                            value = {addressForm.selectState}
+                                            onChange = {(event) => changeHandler(event, state)}                                         
                                             className = 'noInputBorder' 
+                                            label = {state}
+                                            size = 'small'
                                             color = 'blackish' 
-                                            sx = {{mt : 2}} 
-                                            fullWidth multiline 
-                                            rows={4} 
-                                            size = 'small' 
-                                            label = {address}
-                                            onChange = {event => changeHandler(event, address)}
-                                            value = {addressForm.address}
-                                            error = {validationFlag && addressForm.address.length === 0 ? true : false}
-                                            helperText = {validationFlag && addressForm.address.length === 0 ? 'Mention address' : ''} />
-                                        <Stack direction = 'row' sx = {{mt : 2}}>
-                                            <Box sx = {{width : 200, mr : 2}}>
-                                                <TextField 
-                                                    fullWidth select 
-                                                    variant='filled'  
-                                                    className = 'noInputBorder' 
-                                                    label = 'Country'
-                                                    size = 'small' 
-                                                    color = 'blackish' 
-                                                    value = {addressForm.selectCountry}
-                                                    onChange = {(event) => changeHandler(event, country)}
-                                                    error = {validationFlag && addressForm.selectCountry.length === 0 ? true : false}
-                                                    helperText = {validationFlag && addressForm.selectCountry.length === 0 ? 'Mention Country' : ''}
-                                                >
-                                                    <MenuItem value = 'India'>India</MenuItem>
-                                                    <MenuItem value = 'Philippines'>Philippines</MenuItem>
-                                                </TextField>                                            
-                                            </Box>
-                                            <Box sx = {{width : 200, mr : 2}}>
-                                                <TextField 
-                                                    variant='filled' 
-                                                    disabled  = {!Boolean(addressForm.selectCountry)}
-                                                    select fullWidth
-                                                    value = {addressForm.selectState}
-                                                    onChange = {(event) => changeHandler(event, state)}                                         
-                                                    className = 'noInputBorder' 
-                                                    label = {state}
-                                                    size = 'small'
-                                                    color = 'blackish' 
-                                                    error = {validationFlag && addressForm.selectState.length === 0 ? true : false}
-                                                    helperText = {validationFlag && addressForm.selectState.length === 0 ? 'Mention state' : ''} 
-                                                    SelectProps = {{
-                                                        MenuProps : {
-                                                            sx : {
-                                                                maxHeight : 200
-                                                            }
-                                                        }                                                    
-                                                    }}                                                                                             
-                                                >
-                                                    {statesOfCountry.map(state => {
-                                                        return (
-                                                            <MenuItem sx = {{height : 25}} key = {uniqueId()} value = {state}>{state}</MenuItem>
-                                                        )
-                                                    })}    
-                                                </TextField>
-                                            </Box>
-                                            <TextField 
-                                                variant='filled'
-                                                disabled = {!Boolean(addressForm.selectState)}
-                                                className = 'noInputBorder' 
-                                                label = {city} 
-                                                size = 'small'
-                                                color = 'blackish' 
-                                                onChange={(event) => changeHandler(event, city)}
-                                                value = {addressForm.city}
-                                                error = {validationFlag && addressForm.city.length === 0 ? true : false}
-                                                helperText = {validationFlag && addressForm.city.length === 0 ? 'Mention city' : ''} />
-                                        </Stack>
-                                        <Box>
-                                            <TextField 
-                                                variant='filled' 
-                                                sx = {{mt:2}} 
-                                                label = {pinCode}
-                                                type = 'number' 
-                                                size = 'small'
-                                                color = 'blackish'                                             
-                                                className = 'noInputBorder' 
-                                                value = {addressForm.pinCode}
-                                                onChange = {(event) => changeHandler(event, pinCode)}
-                                                error = {validationFlag && addressForm.pinCode.length === 0 ? true : false}
-                                                helperText = {validationFlag && addressForm.pinCode.length === 0 ? 'Add pincode' : null} />
-                                        </Box>                            
-                                        <FormControl sx = {{mt:2}}>
-                                            <FormLabel 
-                                                id = 'address-type' 
-                                                sx = {{'& .Mui-focused' : {color : 'rgba(0, 0, 0, 0.6)'}}}
-                                                color = 'blackish'
-                                            >
-                                                Address Type
-                                            </FormLabel>
-                                            <RadioGroup row
-                                                aria-labelledby='address-type'  
-                                                value = {addressForm.addressType} 
-                                                onChange = {(event) => changeHandler(event, addressType)}
-                                            >
-                                                <FormControlLabel 
-                                                    label = 'Home' 
-                                                    value = 'Home' 
-                                                    control = {<Radio color = 'blackish' />} />
-                                                <FormControlLabel 
-                                                    label = 'Office' 
-                                                    value = 'Office'
-                                                    control = {<Radio color = 'blackish' />} />
-                                            </RadioGroup>
-                                        </FormControl>
-                                    </Stack>                        
-                                    <CustomButton 
-                                        sx = {{mt : 2, borderRadius : 0, color : '#f9b826'}}
+                                            error = {validationFlag && addressForm.selectState.length === 0 ? true : false}
+                                            helperText = {validationFlag && addressForm.selectState.length === 0 ? 'Mention state' : ''} 
+                                            SelectProps = {{
+                                                MenuProps : {
+                                                    sx : {
+                                                        maxHeight : 200
+                                                    }
+                                                }                                                    
+                                            }}>
+                                            {statesOfCountry.map(state => {
+                                                return (
+                                                    <MenuItem sx = {{height : 25}} key = {uniqueId()} value = {state}>{state}</MenuItem>
+                                                )
+                                            })}    
+                                        </TextField>
+                                    </Box>
+                                    <TextField 
+                                        variant='filled'
+                                        disabled = {!Boolean(addressForm.selectState)}
+                                        className = 'noInputBorder' 
+                                        label = {city} 
+                                        size = 'small'
                                         color = 'blackish' 
-                                        variant = 'contained' type = 'submit'
-                                    >
-                                        <strong>Save</strong>
-                                    </CustomButton>
-                                </ThemeProvider>
-                            </form>
-                        </Paper>
+                                        onChange={(event) => changeHandler(event, city)}
+                                        value = {addressForm.city}
+                                        error = {validationFlag && addressForm.city.length === 0 ? true : false}
+                                        helperText = {validationFlag && addressForm.city.length === 0 ? 'Mention city' : ''} />
+                                </Stack>
+                                <Box>
+                                    <TextField 
+                                        variant='filled' 
+                                        sx = {{mt:2}} 
+                                        label = {pinCode}
+                                        type = 'number' 
+                                        size = 'small'
+                                        color = 'blackish'                                             
+                                        className = 'noInputBorder' 
+                                        value = {addressForm.pinCode}
+                                        onChange = {(event) => changeHandler(event, pinCode)}
+                                        error = {validationFlag && addressForm.pinCode.length === 0 ? true : false}
+                                        helperText = {validationFlag && addressForm.pinCode.length === 0 ? 'Add pincode' : null} />
+                                </Box>                            
+                                <FormControl sx = {{mt:2}}>
+                                    <FormLabel 
+                                        id = 'address-type' 
+                                        sx = {{'& .Mui-focused' : {color : 'rgba(0, 0, 0, 0.6)'}}}
+                                        color = 'blackish'>
+                                        Address Type
+                                    </FormLabel>
+                                    <RadioGroup row
+                                        aria-labelledby='address-type'  
+                                        value = {addressForm.addressType} 
+                                        onChange = {(event) => changeHandler(event, addressType)}>
+                                        <FormControlLabel 
+                                            label = 'Home' 
+                                            value = 'Home' 
+                                            control = {<Radio color = 'blackish' />} />
+                                        <FormControlLabel 
+                                            label = 'Office' 
+                                            value = 'Office'
+                                            control = {<Radio color = 'blackish' />} />
+                                    </RadioGroup>
+                                </FormControl>
+                            </Stack>                        
+                            <CustomButton 
+                                sx = {{mt : 2, borderRadius : 0, color : '#f9b826'}}
+                                color = 'blackish' 
+                                variant = 'contained' 
+                                type = 'submit'>
+                                <strong>Save</strong>
+                            </CustomButton>
+                        </form>
+                    </Paper>
                 </Box>
             </Modal>
         </Backdrop>

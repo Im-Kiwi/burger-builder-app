@@ -19,7 +19,7 @@ export const CustomFormLabel = styled(FormLabel)({
 
 export const CustomFab = styled(Fab)({
     marginTop : 20,
-    borderRadius : 0,
+    borderRadius : 50,
     border : 'solid 3px #110f12', 
     backgroundColor : '#fca311', 
     color : '#110f12',

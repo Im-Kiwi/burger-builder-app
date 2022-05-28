@@ -193,28 +193,28 @@ const Layout = () => {
                 <BuildBurger 
                     title = 'My Cart' 
                     closeDialogHandler = {closeDialogHandler}
-                    priceInfo = {cartInfo.totalPrice() && `Total Price (${cartInfo.totalCartItems} items) : $ ${cartInfo.totalPrice().toFixed(0)}`} />
+                    priceInfo = {cartInfo.totalPrice() && `Total Price (${cartInfo.totalCartItems} items) : $${cartInfo.totalPrice().toFixed(0)}`} />
             )
             break;
         case '/':
             dynamicElement = (
                 <Home                     
                     closeDialogHandler = {closeDialogHandler} 
-                    priceInfo = {cartInfo.totalPrice() && `Total Price (${cartInfo.totalCartItems} items) : $ ${cartInfo.totalPrice().toFixed(0)}`} />
+                    priceInfo = {cartInfo.totalPrice() && `Total Price (${cartInfo.totalCartItems} items) : $${cartInfo.totalPrice().toFixed(0)}`} />
             )
             break; 
         case '/pricing':
             dynamicElement = (
                 <Pricing 
                     closeDialogHandler = {closeDialogHandler}
-                    priceInfo = {cartInfo.totalPrice() && `Total Price (${cartInfo.totalCartItems} items) : $ ${cartInfo.totalPrice().toFixed(0)}`} />
+                    priceInfo = {cartInfo.totalPrice() && `Total Price (${cartInfo.totalCartItems} items) : $${cartInfo.totalPrice().toFixed(0)}`} />
             )
             break;
         case '/about-us':
             dynamicElement = (
                 <AboutUs
                     closeDialogHandler = {closeDialogHandler}
-                    priceInfo = {cartInfo.totalPrice() && `Total Price (${cartInfo.totalCartItems} items) : $ ${cartInfo.totalPrice().toFixed(0)}`}/>
+                    priceInfo = {cartInfo.totalPrice() && `Total Price (${cartInfo.totalCartItems} items) : $${cartInfo.totalPrice().toFixed(0)}`}/>
             )
         default:
             break;     
@@ -226,73 +226,36 @@ const Layout = () => {
                 <NavigationBar />
             </Container>        
             <Routes>
-                <Route 
-                    path = '/' 
-                    element = {<Home />} /> 
-                <Route 
-                    path = 'build-burger' 
+                <Route path = '/' element = {<Home />} /> 
+                <Route path = 'build-burger' 
                     element = {token ? <BuildBurger closeDialogHandler = {closeDialogHandler} /> : null} /> 
-                <Route 
-                    path = 'pricing' 
-                    element = {<Pricing />} />   
-                <Route 
-                    path = 'about-us'
-                    element = {<AboutUs />} />            
+                <Route path = 'pricing' element = {<Pricing />} />   
+                <Route path = 'about-us'element = {<AboutUs />} />            
                 <Route 
                     path = 'buy' 
                     element = {<BuildBurger noTransition = {true} closeDialogHandler = {closeDialogHandler} />}>
-                    <Route 
-                        index 
-                        element = {<BuyBurger />} />
-                    <Route 
-                        path = 'delivery-address' 
-                        element = {<BuyBurger />}>
-                        <Route 
-                            index 
-                            element = {<DeliveryAddress />} />
+                    <Route index element = {<BuyBurger />} />
+                    <Route path = 'delivery-address' element = {<BuyBurger />}>
+                        <Route index element = {<DeliveryAddress />} />
                     </Route>
-                    <Route 
-                        path = 'order-summary' 
-                        element = {<BuyBurger />}>
-                        <Route 
-                            index 
-                            element = {<OrderSummary />} />
+                    <Route path = 'order-summary' element = {<BuyBurger />}>
+                        <Route index element = {<OrderSummary />} />
                     </Route>
-                    <Route 
-                        path = 'payment' 
-                        element = {<BuyBurger />}>
-                        <Route 
-                            index 
-                            element = {<Payment />} />
+                    <Route path = 'payment' element = {<BuyBurger />}>
+                        <Route index element = {<Payment />} />
                     </Route>
                 </Route>
-                <Route 
-                    path = 'cart' 
-                    element = {dynamicElement}>
-                    <Route 
-                        index 
-                        element = {<Cart />} />
+                <Route path = 'cart' element = {dynamicElement}>
+                    <Route index element = {<Cart />} />
                 </Route>
-                <Route  
-                    path = 'your-orders' 
-                    element = {dynamicElement}>
-                    <Route 
-                        index 
-                        element = {<YourOrders />} />
+                <Route  path = 'your-orders' element = {dynamicElement}>
+                    <Route index element = {<YourOrders />} />
                 </Route>
-                <Route  
-                    path = 'manage-addresses' 
-                    element = {dynamicElement}>
-                    <Route 
-                        index 
-                        element = {<ManageAddresses />} />
+                <Route  path = 'manage-addresses' element = {dynamicElement}>
+                    <Route index element = {<ManageAddresses />} />
                 </Route>
-                <Route  
-                    path = 'security-settings' 
-                    element = {dynamicElement}>
-                    <Route 
-                        index 
-                        element = {<Security />} />
+                <Route  path = 'security-settings' element = {dynamicElement}>
+                    <Route index element = {<Security />} />
                 </Route>
             </Routes>
             {/* Below two components are modals */}

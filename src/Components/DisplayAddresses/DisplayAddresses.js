@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Box, Button, Paper, Stack, Typography, IconButton, ThemeProvider } from '@mui/material'
-import { Add, NoEncryption } from '@mui/icons-material'
-import { getDoc, collection, query, where, getDocs, doc, deleteDoc } from 'firebase/firestore'
+import { Box, Button, Stack, Typography, IconButton } from '@mui/material'
+import { Add, Delete, Edit } from '@mui/icons-material'
+import { doc, deleteDoc } from 'firebase/firestore'
 import { v4 as uniqueId } from 'uuid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faMobileRetro, faHouse, faCity, faPlus } from '@fortawesome/free-solid-svg-icons'
@@ -13,7 +13,6 @@ import { db } from '../../firebase-setup'
 import { CustomPaper, addressBox, AddAddress } from './styles'
 import { ordersActions } from '../../Store/reducer/orders'
 import { deliveryAddressActions } from '../../Store/reducer/deliveryAddress'
-import { mainColors } from '../../theme/mui-theme'
 
 
 const DisplayAddresses = (props) => {
@@ -79,102 +78,112 @@ const DisplayAddresses = (props) => {
                         elevation={1}
                         className = {[classes.addressContainer, idForStyling === index ? classes.clickedAddress : null].join(' ')}
                         key = {uniqueId()} 
-                        aria-label= 'select address card button'  
-                    >
+                        aria-label= 'select address card button'>
                         <motion.div 
                             style = {{height : 'inherit', width : '100%', padding : 10}} 
                             initial = 'initial' 
                             whileHover = 'hover'
-                            exit = 'exit'
-                        >
+                            exit = 'exit'>
                             <Box 
                                 className = {classes.addressBox} 
                                 component = 'button'  
-                                onClick = {() => selectAddressHandler(address, index)}
-                            >
+                                onClick = {() => selectAddressHandler(address, index)}>
                                 <Stack 
                                     direction = 'row' 
-                                    spacing = {5}
-                                >
+                                    spacing = {5}>
                                     <Stack 
                                         direction = 'row' 
                                         spacing = {1} 
-                                        alignItems = 'center'
-                                    >
+                                        alignItems = 'center'>
                                         <FontAwesomeIcon 
                                             icon = {faUser} 
-                                            style = {{fontSize : '1.5rem'}} 
-                                        />
-                                        <Typography>{address.firstName} {address.lastName}</Typography>
+                                            style = {{fontSize : '1.5rem'}}/>                                        
+                                        <Typography 
+                                            variant = 'body1' 
+                                            sx = {{
+                                                fontFamily : 'BIZ UDMincho, serif',
+                                                fontSize : '1.1rem'}}>
+                                            {address.firstName} {address.lastName}
+                                        </Typography>
                                     </Stack>
                                     <Stack 
                                         direction = 'row' 
                                         spacing = {1} 
-                                        alignItems = 'center'
-                                    >
+                                        alignItems = 'center'>
                                         <FontAwesomeIcon 
                                             icon = {faMobileRetro} 
                                             style = {{fontSize : '1.5rem'}} />
-                                        <Typography >{address.phoneNumber}</Typography>
+                                        <Typography
+                                            variant = 'body1'
+                                            sx = {{
+                                                fontFamily : 'BIZ UDMincho, serif',
+                                                fontSize : '1.1rem'}}>
+                                            {address.phoneNumber}
+                                        </Typography>
                                     </Stack>
                                 </Stack>
                                 <Stack 
                                     direction = 'row' 
                                     spacing = {2} 
                                     sx = {{mt:2}} 
-                                    alignItems = 'center'
-                                >
+                                    alignItems = 'center'>
                                     <FontAwesomeIcon 
                                         icon = {faHouse} 
-                                        style = {{fontSize : '1.5rem'}} 
-                                    />
-                                    <Typography >{address.address}</Typography>
+                                        style = {{fontSize : '1.5rem'}} />
+                                    <Typography
+                                        variant = 'body1'
+                                        sx = {{
+                                            fontFamily : 'BIZ UDMincho, serif',
+                                            fontSize : '1.1rem'}}>
+                                        {address.address}
+                                    </Typography>
                                 </Stack>
                                 <Stack 
                                     direction = 'row' 
                                     sx = {{mt:2}} 
-                                    spacing = {2}
-                                >
+                                    spacing = {2}>
                                     <FontAwesomeIcon 
                                         icon = {faCity} 
-                                        style = {{fontSize : '1.5rem'}}
-                                    />
-                                    <Typography>{address.city}, {address.state}, {address.country}</Typography>
+                                        style = {{fontSize : '1.5rem'}}/>
+                                    <Typography
+                                        variant = 'body1'
+                                        sx = {{
+                                            fontFamily : 'BIZ UDMincho, serif',
+                                            fontSize : '1.1rem'}}>
+                                        {address.city}, {address.state}, {address.country}
+                                    </Typography>
                                 </Stack>
-                                <Typography>zip code: {address.pinCode} </Typography>
+                                <Typography
+                                    variant = "body1"
+                                    sx = {{
+                                        fontFamily : 'BIZ UDMincho, serif',
+                                        fontSize : '1.1rem'}}>
+                                    zip code: {address.pinCode} 
+                                </Typography>
                             </Box>
                             <AnimatePresence>
                                 <motion.div 
-                                    variants = {animateAddress}
-                                >
+                                    variants = {animateAddress}>
                                     <Box 
                                         id = 'configAddress' 
                                         className = {classes.editBox}
-                                        sx = {{'&:before' : {backgroundColor : index === idForStyling ? '#110f12' : '#f9b826'}}}
-                                    >
+                                        sx = {{'&:before' : {backgroundColor : index === idForStyling ? '#110f12' : '#f9b826'}}}>
                                             <Stack 
                                                 direction = 'row' 
                                                 justifyContent = 'center' 
                                                 alignItems = 'center' 
                                                 sx = {{height : 'inherit', width : '100%'}} 
-                                                spacing = {2}
-                                            >
-                                                <Button 
-                                                    variant = 'outlined' 
-                                                    color = 'success' 
-                                                    size = 'small'
-                                                    onClick = {() => editAddressHandler(index)}
-                                                >
-                                                    Edit
-                                                </Button>
-                                                <Button 
-                                                    variant = 'outlined' 
-                                                    color = 'error' 
-                                                    size = 'small'
-                                                    onClick = {() => deleteAddressHandler(address.id)}
-                                                >
-                                                    Delete
-                                                </Button>
+                                                spacing = {2}>
+                                                <IconButton 
+                                                    color = {index === idForStyling ? 'yellowish' : 'blackish'} 
+                                                    onClick = {() => editAddressHandler(index)}>
+                                                    <Edit />
+                                                </IconButton>
+                                                <IconButton
+                                                    color = {index === idForStyling ? 'yellowish' : 'blackish'} 
+                                                    onClick = {() => deleteAddressHandler(address.id)}>
+                                                    <Delete />
+                                                </IconButton>
                                             </Stack>
                                     </Box>
                                 </motion.div>                    

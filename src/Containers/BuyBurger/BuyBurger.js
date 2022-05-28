@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, Outlet } from 'react-router-dom'
 import { Container, Stepper, Step, StepLabel, Fab } from '@mui/material'
-import { Routes, Route } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
 
 // --------- importing from other files ----------------
 import { stepperActions } from '../../Store/reducer/stepper'
@@ -56,17 +56,25 @@ const BuyBurger = () => {
         <Container sx = {{mt : 10}}>
             <Stepper className='slider' activeStep = {activeStep}>
                 <Step className = 'text-danger '>
-                    <StepLabel>Mention delivery address</StepLabel>
+                    <StepLabel>
+                        <strong>Mention delivery address</strong>    
+                    </StepLabel>
                 </Step>
                 <Step>
-                    <StepLabel>Order Summary</StepLabel>
+                    <StepLabel>
+                        <strong>Order Summary</strong>
+                    </StepLabel>
                 </Step>
                 <Step>
-                    <StepLabel>Payment</StepLabel>
+                    <StepLabel>
+                        <strong>Payment</strong>
+                    </StepLabel>
                 </Step>
             </Stepper>
             <Outlet />
-            {activeStep !== 0 &&
+            <motion.div
+                initial = {{opacity : 0}}
+                animate = {{opacity : activeStep > 0 && activeStep < 3 ? 1 : 0 }}>
                 <Fab 
                     variant = 'extended' size = 'small'
                     color = 'secondary' 
@@ -75,19 +83,21 @@ const BuyBurger = () => {
                 >
                     Back
                 </Fab> 
-            
-            }
-            {activeStep < 2 &&
-                <Fab 
-                    variant = 'extended' size = 'small'
-                    color = 'secondary' 
-                    onClick = {nextHandler}
-                    className = {[classes.both, classes.next].join(' ')}
-                    disabled = {selectedAddressKey.length === 0}
-                >
-                    Next
-                </Fab>                       
-            }
+            </motion.div>            
+            <motion.div
+                initial = {{opacity : 0}}
+                animate = {{opacity : activeStep !== 2 && activeStep < 3 && selectedAddressKey.length !== 0 ? 1 : 0}}
+                transition = {{ease : 'easeOut'}}>
+                <motion.div>
+                    <Fab 
+                        variant = 'extended' size = 'small'
+                        color = 'secondary' 
+                        onClick = {nextHandler}
+                        className = {[classes.both, classes.next].join(' ')}>
+                        Next
+                    </Fab>                       
+                </motion.div>
+            </motion.div>
         </Container>
     )
 }

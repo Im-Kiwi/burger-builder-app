@@ -20,7 +20,8 @@ const Controls = (props) => {
                     gap = {1}
                 >
                     <Image src = {props.icon} fluid width = {40} />
-                    <Typography >
+                    <Typography 
+                        sx = {{fontFamily : 'Comfortaa, cursive'}}>
                         {props.ingredient.name}
                     </Typography>
                 </Grid>
@@ -39,7 +40,7 @@ const Controls = (props) => {
                 <Grid xs = {1} item>
                     <Typography 
                         className = 'text-center'
-                        sx = {{color : '#fef9ef'}}    
+                        sx = {{color : '#fef9ef', fontFamily : 'Josefin Slab, serif'}}    
                     >
                         {props.ingredient.qty}
                     </Typography>

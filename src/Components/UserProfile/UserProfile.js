@@ -104,8 +104,12 @@ const UserProfile = (props) => {
                     horizontal : 'right',
                     vertical : 'top'
                 }}
-                sx = {{ '.MuiList-root':{background : '#f9b826 !important'}}}>
-                <CustomMenuItem onClick = {yourOrdersHandler}>
+                sx = {{ 
+                    '.MuiList-root': {
+                        background : '#f9b826 !important'
+                        },
+                    }}>
+                <CustomMenuItem  onClick = {yourOrdersHandler}>
                     Your Orders
                 </CustomMenuItem>
                 <CustomMenuItem onClick = {yourAddressesHandler}>

@@ -14,6 +14,7 @@ export const addressBox = makeStyles({
 
     addressContainer : {
         backgroundColor : '#110f12',
+        border : 'solid 1px #110f12',
         color : '#f9a620',
         width : 340,
         height : 200, 
@@ -21,7 +22,9 @@ export const addressBox = makeStyles({
 
     clickedAddress : {
         color : '#110f12',
-        backgroundColor : '#f9a620' 
+        backgroundColor : '#f9a620',
+        border : 'solid 1px #110f12'
+
     },
 
     editBox : {

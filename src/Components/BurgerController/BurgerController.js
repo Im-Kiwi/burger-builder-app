@@ -102,6 +102,12 @@ const BurgerController = (props) => {
                 exit = {!props.noTransition && {x : '100vw'}}
                 transition = {!props.noTransition && {duration : 0.7, type : 'spring'}}
             >
+                <Typography 
+                    variant = 'h6' 
+                    className = 'text-center mb-2'
+                    sx = {{color : '#f9b826', fontFamily : 'DM Serif Text, serif'}}>
+                    Add Ingredients
+                </Typography>
                 <Stack spacing = {2} alignItems = 'center'>                   
                     <Controls 
                         ingredient = {ingredients.Lettuce} 
@@ -135,8 +141,8 @@ const BurgerController = (props) => {
                         icon = {BaconIco} /> 
 
                     <Box>
-                        <Typography sx = {{color : '#f9b826'}}>
-                            <strong>Include Extras</strong>
+                        <Typography variant = 'h6' sx = {{color : '#f9b826', fontFamily : 'DM Serif Text, serif'}}>
+                            Include Extras
                         </Typography>                                                             
                         <Stack direction = 'row' alignItems = 'center'>
                             <Checkbox 
@@ -146,7 +152,7 @@ const BurgerController = (props) => {
                                     color : '#fef9ef'
                                 }}}
                             />
-                            <Typography sx = {{color : '#f9b826'}}>Coke</Typography>                                                             
+                            <Typography sx = {{color : '#f9b826', fontFamily : 'Comfortaa, cursive'}}>Coke</Typography>                                                             
                         </Stack>               
                         <Stack direction = 'row' alignItems = 'center'>
                             <Checkbox 
@@ -156,34 +162,42 @@ const BurgerController = (props) => {
                                     color : '#fef9ef'
                                 }}}
                             />
-                            <Typography sx = {{color : '#f9b826'}}>French Fries</Typography>                                                             
+                            <Typography sx = {{color : '#f9b826', fontFamily : 'Comfortaa, cursive'}}>French Fries</Typography>                                                             
                         </Stack>
                     </Box>
 
                     <Box className = 'mt-5'>
                         <Button 
                             onClick = {resetHandler} 
-                            sx = {{borderRadius : 0, mr : 2}} 
+                            sx = {{
+                                borderRadius : 0, 
+                                mr : 2, 
+                                fontFamily : 'DM Serif Text, serif'}} 
                             variant = 'outlined' 
                             size = 'large' 
-                            color = 'warning'
+                            color = 'yellowish'
                         >
                             Reset
                         </Button>
                         <Button 
-                            sx = {{borderRadius : 0, mr : 2}} 
+                            sx = {{
+                                borderRadius : 0, 
+                                mr : 2, 
+                                fontFamily : 'DM Serif Text, serif'}} 
                             variant = 'contained' 
                             size = 'large' 
-                            color = 'warning'
+                            color = 'yellowish'
                             onClick = {buyHandler}
                         >
                             Buy Now
                         </Button>
                         <Button 
-                            sx = {{borderRadius : 0}} 
+                            sx = {{
+                                borderRadius : 0, 
+                                fontFamily : 'DM Serif Text, serif'}} 
                             variant = 'contained' 
                             size = 'large' 
-                            color = 'warning'
+                            color = 'yellowish'
                             onClick = {addToCartHandler}
                         >
                             Add to Cart

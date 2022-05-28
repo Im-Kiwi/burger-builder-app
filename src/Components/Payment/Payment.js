@@ -167,7 +167,6 @@ const Payment = () => {
                         <Box className = 'text-center' sx = {{mt:10}}>
                             <CustomFab 
                                 variant = 'extended' 
-                                color = 'primary'
                                 onClick= {paymentHandler}
                             >
                                 <strong>Click here to pay</strong>
@@ -197,15 +196,13 @@ const Payment = () => {
                 >
                     Your Burger will be deliever shortly
                 </Typography>
-                <Button 
+                <CustomFab 
                     onClick = {backToBuildingHandler} 
-                    sx = {{mt:5, borderRadius : 0}} 
-                    variant = 'contained' 
-                    color = 'success'
-                    size = 'large'                    
-                >
+                    sx = {{mt:5}} 
+                    variant = 'extended' 
+                    size = 'large'>
                     Continue building burger
-                </Button>
+                </CustomFab>
             </Box>
             }
         </>
