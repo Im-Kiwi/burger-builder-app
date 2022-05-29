@@ -157,7 +157,6 @@ const NavigationBar = () => {
                             alignItems = 'center'>
                             <Link 
                                 to = '/' 
-                                state = {pathname} 
                                 className = {[classes.link, 'me-4'].join(' ')}
                                 onClick = {trackingPrevPathHandler}>
                                 <motion.div
@@ -185,7 +184,6 @@ const NavigationBar = () => {
                             {token && 
                                 <Link 
                                     to = '/build-burger' 
-                                    state = {pathname} 
                                     className = {[classes.link, 'me-4'].join(' ')}
                                     onClick = {trackingPrevPathHandler}>
                                     <motion.div

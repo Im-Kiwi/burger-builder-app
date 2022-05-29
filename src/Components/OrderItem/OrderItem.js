@@ -35,7 +35,11 @@ const OrderItem = ({ing, thisIsCart, deleteCartItemHandler}) => {
                     spacing = {2} 
                     sx = {{mb:1}}>
                     <Grid item xs = {pathname === '/buy/order-summary' ? 3 : 2}>
-                        <Typography>
+                        <Typography 
+                            variant = 'body1'
+                            sx = {{
+                                fontFamily : 'Pathway Gothic One, sans-serif', 
+                                fontSize : '1.2rem'}}>
                             <strong>Ingredients:</strong> 
                         </Typography>
                     </Grid>
@@ -71,7 +75,9 @@ const OrderItem = ({ing, thisIsCart, deleteCartItemHandler}) => {
                     alignItems = 'center'
                     spacing = {2}>
                     <Grid item xs = {pathname === '/buy/order-summary' ? 3 : 2}>
-                        <Typography>
+                        <Typography
+                            variant = 'body1'
+                            sx = {{fontFamily : 'Pathway Gothic One, sans-serif', fontSize : '1.2rem'}}>
                             <strong>Extras:</strong>
                         </Typography>
                     </Grid>
