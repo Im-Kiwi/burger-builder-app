@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux'
 import { Typography, Grid, Box, Stack  } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { v4 as uniqueId } from 'uuid'
-import { faUser, faMobileRetro, faHouse, faCity } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faMobileRetro, faHouse, faCity, faPesoSign, faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons'
 
 // -------------- importing from other files ------------
 import Burger from '../../Components/Burger/Burger'
@@ -39,10 +39,7 @@ const OrderSummary = (props) => {
                 className = 'text-center'  
                 display = 'flex' 
                 flexDirection = 'column' 
-                justifyContent = 'flex-start'>
-                <Grid item>
-                    <Typography>Price to Pay : {props.cartPrice}</Typography>
-                </Grid>
+                justifyContent = 'flex-start'>                
                 <Grid item  sx = {{mb:2}}>
                     <Typography
                         variant = 'h6' 
@@ -136,6 +133,28 @@ const OrderSummary = (props) => {
                             </Typography>
                         </Box>
                     </Box>
+                </Grid>
+                <Grid item 
+                    sx = {{mt:3}} 
+                    display = 'flex' 
+                    flexDirection = 'row' 
+                    justifyContent = 'center' 
+                    alignItems = 'center'>
+                    <Typography 
+                        variant = 'body1'
+                        sx = {{mr:2, fontFamily : 'DM Serif Text, serif', fontSize : '1.3rem'}}>
+                        Pay 
+                    </Typography>
+                    {address.country === "Philippines" ?
+                        <FontAwesomeIcon icon = {faPesoSign} style = {{fontSize : '1.3rem'}}/>
+                    : 
+                        <FontAwesomeIcon icon = {faIndianRupeeSign} style = {{fontSize : '1.3rem'}}/>
+                    }
+                    <Typography 
+                        variant = 'body1'
+                        sx = {{fontFamily : 'Comfortaa, cursive', fontWeight : 600, fontSize : '1.3rem'}}>
+                        {instantBuy ? items[0].totalPrice : props.cartPrice}
+                    </Typography>
                 </Grid>
             </Grid>
         </Grid>                

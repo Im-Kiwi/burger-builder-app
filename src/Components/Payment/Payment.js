@@ -4,9 +4,11 @@ import { Box, Button, Divider, FormControl, FormControlLabel, Grid, Paper, Radio
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { collection, addDoc, arrayUnion, setDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore'
-import { db } from '../../firebase-setup.js'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPesoSign, faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons'
 
 // ---------- importing from other files -----------
+import { db } from '../../firebase-setup.js'
 import { CustomRadio, CustomFormLabel, CustomFab } from './style.js'
 import { dialogActions } from '../../Store/reducer/dialog.js'
 import { ingredientsActions } from '../../Store/reducer/ingredients.js'
@@ -22,6 +24,7 @@ const Payment = () => {
     const cartItems = useSelector(state => state.cart.cartItems) 
     const instantBuy = useSelector(state => state.cart.instantBuy)
     const [paymentSuccess, setPaymentSuccess] = useState(false)
+    const address = useSelector(state => state.orders.deliveryAddress)
     
     let totalPrice
 
@@ -156,8 +159,20 @@ const Payment = () => {
                                     <Grid item xs = {8}>
                                         <Typography sx = {{color : '#f9b826', ml:6}}>Total</Typography>
                                     </Grid>
-                                    <Grid item xs = {4}>
-                                        <Typography sx = {{color : '#f9b826', ml:6}}>${totalPrice}</Typography>
+                                    <Grid item xs = {4}
+                                        display = 'flex'
+                                        flexDirection = 'row'
+                                        justifyContent = 'center'>
+                                        {address.country === 'India' ? 
+                                            <FontAwesomeIcon 
+                                                icon = {faIndianRupeeSign} 
+                                                style = {{fontSize : '1.3rem', color : '#f9b826'}}/>
+                                        :
+                                            <FontAwesomeIcon icon = {faPesoSign} style = {{fontSize : '1.3rem', color : '#f9b826'}} />
+                                        }
+                                        <Typography sx = {{color : '#f9b826', ml:1}}>
+                                            {totalPrice}
+                                        </Typography>
                                     </Grid>
                                 </Grid>                
                             </Container>                 

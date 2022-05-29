@@ -2,7 +2,7 @@ import { Stack, Box, Grid, Typography, Button, Container } from '@mui/material';
 import { useDispatch } from 'react-redux'
 import { Outlet, useLocation } from 'react-router-dom';
 import { Image } from 'react-bootstrap'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 // ------------- importing from files -------------------
 import classes from './Home.module.css'
@@ -10,7 +10,6 @@ import { dialogActions } from '../../Store/reducer/dialog';
 import { userFormActions } from '../../Store/reducer/userForm';
 import FullDialogs from '../../Components/FullDialogs/FullDialogs';
 import { Burger, Girl } from '../../path-to-assets/pathToImages'
-import NavigationBar from '../../Components/NavigationBar/NavigationBar';
 
 
 const Home = (props) => {

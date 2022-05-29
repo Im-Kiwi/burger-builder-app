@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate, Outlet } from 'react-router-dom'
+import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import { Container, Stepper, Step, StepLabel, Fab } from '@mui/material'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -8,9 +8,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { stepperActions } from '../../Store/reducer/stepper'
 import useStyle from './style'
 import DeliveryAddress from '../DeliveryAddress/DeliveryAddress'
+import { act } from 'react-dom/test-utils'
 
 const BuyBurger = () => {
-
+    const { pathname } = useLocation()
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const classes = useStyle()
@@ -22,35 +23,47 @@ const BuyBurger = () => {
     // will use to disable or enable the 'NEXT' button depending upon
     const selectedAddressKey = Object.keys(selectedAddress)
 
+    // what stepper value should be on a particular path
     useEffect(() => {
-        switch (activeStep) {
-            case 0:
-                navigate('/buy/delivery-address')
+        switch (pathname) {
+            case '/buy/delivery-address':
+                dispatch(stepperActions.updateActiveStep(0))
                 break;
-            case 1:
-                navigate('/buy/order-summary')
+            case '/buy/order-summary':
+                dispatch(stepperActions.updateActiveStep(1))
                 break;
-            case 2:
-                navigate('/buy/payment')
+            case '/buy/payment':
+                dispatch(stepperActions.updateActiveStep(2))
                 break;
             default:
                 return null
         }        
-    }, [activeStep])
+    }, [activeStep, pathname])
 
     // to handle the progress of stepper 
     const backHandler = () => {
-        if (activeStep >= 1) {
-            dispatch(stepperActions.updateActiveStep(-1))            
+        if (activeStep === 2) {
+            dispatch(stepperActions.updateActiveStep(1))
+            navigate('/buy/order-summary')
+        } else if (activeStep === 1) {
+            dispatch(stepperActions.updateActiveStep(0))
+            navigate('/buy/delivery-address')
         }
     }
     
-    const nextHandler = () => {        
+    const nextHandler = () => { 
+        // this way we make user that when user click on user button it not only navigate to the next page but also set the stepper value, due to which...
+        //.. whenever user try to go back to the previous page, the stepper will also gonna change according to the change in url 
         if (activeStep <= 2) {
-            dispatch(stepperActions.updateActiveStep(1))            
-        }
-        
-    }
+            if (activeStep === 0) {
+                dispatch(stepperActions.updateActiveStep(1))
+                navigate('/buy/order-summary')
+            } else if (activeStep === 1) {
+                dispatch(stepperActions.updateActiveStep(2))
+                navigate('/buy/payment')
+            }
+        }        
+    } 
 
     return (
         <Container sx = {{mt : 10}}>
@@ -79,8 +92,7 @@ const BuyBurger = () => {
                     variant = 'extended' size = 'small'
                     color = 'secondary' 
                     onClick = {backHandler}
-                    className = {[classes.both, classes.back].join(' ')}
-                >
+                    className = {[classes.both, classes.back].join(' ')}>
                     Back
                 </Fab> 
             </motion.div>            

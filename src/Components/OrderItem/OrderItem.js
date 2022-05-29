@@ -70,7 +70,7 @@ const OrderItem = ({ing, thisIsCart, deleteCartItemHandler}) => {
                     display = 'flex'                     
                     alignItems = 'center'
                     spacing = {2}>
-                    <Grid item xs = {2}>
+                    <Grid item xs = {pathname === '/buy/order-summary' ? 3 : 2}>
                         <Typography>
                             <strong>Extras:</strong>
                         </Typography>
