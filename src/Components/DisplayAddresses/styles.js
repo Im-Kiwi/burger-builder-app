@@ -9,7 +9,8 @@ export const addressBox = makeStyles({
         border : 0,
         background : 'none',  
         width : '100%',
-        height : '100%'     
+        height : '100%',  
+        overflowY : 'auto'   
     },
 
     addressContainer : {
@@ -17,7 +18,7 @@ export const addressBox = makeStyles({
         border : 'solid 1px #110f12',
         color : '#f9a620',
         width : 340,
-        height : 200, 
+        height : 200,
     },
 
     clickedAddress : {

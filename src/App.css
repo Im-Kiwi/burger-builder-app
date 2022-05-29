@@ -1,5 +1,6 @@
 ::-webkit-scrollbar {
     width : 4px;
+    border-radius: 10px;
     background-color: #f9b826;
 }
 

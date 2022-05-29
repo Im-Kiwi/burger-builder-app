@@ -61,36 +61,49 @@ const YourOrders = () => {
             return ( 
                 <Box key = {uniqueId()}>
                     <Grid  container spacing = {4} justifyContent = 'center'>
-                        <Grid xs = {12} item display = 'flex' flexWrap = 'wrap' justifyContent = 'space-evenly'>
-                            <Typography variant = 'body1'><strong>Order id :</strong> #{order.id}</Typography>    
-                            <Typography><strong>Price paid :</strong> </Typography>                    
-                            <Stack direction = 'row' alignItems = 'center' spacing = {1}>
-                                <Box position = 'relative'>
-                                    <Box 
-                                        sx = {{
-                                            position : 'absolute',
-                                            width : 10, 
-                                            height : 10, 
+                        <Grid 
+                            xs = {12} item 
+                            sx = {{backgroundColor : '#110f12', color : '#f9b826'}}>
+                            <Box 
+                                display = 'flex'
+                                flexDirection = 'row'
+                                justifyContent = 'space-evenly'
+                                alignItems = 'center'
+                                sx = {{mb:1}}>
+                                <Typography variant = 'body1'>
+                                    <strong>Order id :</strong> #{order.id.slice(0,9)}
+                                </Typography>    
+                                <Typography>
+                                    <strong>Price paid :</strong>
+                                </Typography>                    
+                                <Stack direction = 'row' alignItems = 'center' spacing = {1}>
+                                    <Box position = 'relative'>
+                                        <Box 
+                                            sx = {{
+                                                position : 'absolute',
+                                                width : 10, 
+                                                height : 10, 
+                                                borderRadius : '50%', 
+                                                backgroundColor : 'red',
+                                                filter : 'blur(4px)'
+                                            }}
+                                        ></Box>
+                                        <Box sx = {{
+                                            width : 9, 
+                                            height : 9, 
                                             borderRadius : '50%', 
                                             backgroundColor : 'red',
-                                            filter : 'blur(4px)'
-                                        }}
-                                    ></Box>
-                                    <Box sx = {{
-                                        width : 9, 
-                                        height : 9, 
-                                        borderRadius : '50%', 
-                                        backgroundColor : 'red',
-                                        zIndex : 10
-                                    }}></Box>
-                                </Box>
-                                <Typography variant = 'body1' sx = {{color : 'red'}}>on the way</Typography>
-                            </Stack>
+                                            zIndex : 10
+                                        }}></Box>
+                                    </Box>
+                                    <Typography variant = 'body1' sx = {{color : 'red'}}>on the way</Typography>
+                                </Stack>
+                            </Box>
                         </Grid>
-                        <Grid item container justifyContent = 'center' spacing = {5}>
+                        <Grid item xs = {12} container justifyContent = 'center' spacing = {5}>
                             {filterKeys.map(objKey => {
                                 return (
-                                    <Grid key = {uniqueId()} item>
+                                    <Grid key = {uniqueId()} item xs = {12}>
                                         <OrderItem ing = {order[objKey]} />
                                     </Grid>
                                 )

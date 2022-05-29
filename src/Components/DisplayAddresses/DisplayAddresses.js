@@ -47,7 +47,7 @@ const DisplayAddresses = (props) => {
 
     const animateAddress = {
         initial : {
-            y : 100
+            y : 60
         },
         hover : {
             y : -60

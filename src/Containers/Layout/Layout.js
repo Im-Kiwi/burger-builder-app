@@ -239,7 +239,7 @@ const Layout = () => {
                         <Route index element = {<DeliveryAddress />} />
                     </Route>
                     <Route path = 'order-summary' element = {<BuyBurger />}>
-                        <Route index element = {<OrderSummary />} />
+                        <Route index element = {<OrderSummary cartPrice = {cartInfo.totalPrice()} />} />
                     </Route>
                     <Route path = 'payment' element = {<BuyBurger />}>
                         <Route index element = {<Payment />} />

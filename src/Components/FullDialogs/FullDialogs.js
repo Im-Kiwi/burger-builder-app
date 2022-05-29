@@ -32,6 +32,7 @@ const FullDialogs = (props) => {
         <Modal fullscreen = {true} show = {openDialog}>
             <Box 
                 sx = {{
+                    position : 'fixed',
                     width : '100vw', 
                     height : '100vh', 
                     backgroundColor : '#f9b826'}}>
