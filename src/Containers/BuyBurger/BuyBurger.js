@@ -18,6 +18,7 @@ const BuyBurger = () => {
 
     const activeStep = useSelector(state => state.stepper.activeStep)
     const selectedAddress = useSelector(state => state.orders.deliveryAddress)
+    const paymentSuccess = useSelector(state => state.orders.paymentSuccess)
 
     // fetching the keys of selectedAddress
     // will use to disable or enable the 'NEXT' button depending upon
@@ -33,6 +34,8 @@ const BuyBurger = () => {
                 dispatch(stepperActions.updateActiveStep(1))
                 break;
             case '/buy/payment':
+                paymentSuccess ?
+                dispatch(stepperActions.updateActiveStep(3)) :
                 dispatch(stepperActions.updateActiveStep(2))
                 break;
             default:

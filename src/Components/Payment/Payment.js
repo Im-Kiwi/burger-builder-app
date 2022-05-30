@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Image } from 'react-bootstrap'
-import { Box, Button, Divider, FormControl, FormControlLabel, Grid, Paper, RadioGroup, Stack, Typography, Container, Fab } from '@mui/material'
+import { Box, Divider, FormControl, FormControlLabel, Grid, RadioGroup, Typography, Container } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { collection, addDoc, arrayUnion, setDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore'
@@ -13,6 +13,7 @@ import { CustomRadio, CustomFormLabel, CustomFab } from './style.js'
 import { dialogActions } from '../../Store/reducer/dialog.js'
 import { ingredientsActions } from '../../Store/reducer/ingredients.js'
 import { stepperActions } from '../../Store/reducer/stepper.js'
+import { ordersActions } from '../../Store/reducer/orders.js'
 import { CuteBurger } from '../../path-to-assets/pathToImages'
 
 const Payment = () => {
@@ -23,7 +24,7 @@ const Payment = () => {
     const currentItem = useSelector(state => state.cart.currentItem)
     const cartItems = useSelector(state => state.cart.cartItems) 
     const instantBuy = useSelector(state => state.cart.instantBuy)
-    const [paymentSuccess, setPaymentSuccess] = useState(false)
+    const paymentSuccess = useSelector(state => state.orders.paymentSuccess)
     const address = useSelector(state => state.orders.deliveryAddress)
     
     let totalPrice
@@ -39,7 +40,6 @@ const Payment = () => {
 
     // will sends the orders information to the firebase database
     const paymentHandler = async () => {
-        
         let dataToSend
         try {
             if (instantBuy) {
@@ -54,8 +54,8 @@ const Payment = () => {
                     await deleteDoc(doc(db, 'cart', item.id))
                 }
             }
-            dispatch(stepperActions.updateActiveStep(1))
-            setPaymentSuccess(true)
+            dispatch(stepperActions.updateActiveStep(3))
+            dispatch(ordersActions.updatePaymentSuccess(true))
         } catch (err) {
             console.log(err)
         }
@@ -67,6 +67,7 @@ const Payment = () => {
         navigate('/build-burger')
         dispatch(dialogActions.updateOpen(false))
         dispatch(ingredientsActions.updateReset())
+        dispatch(ordersActions.updatePaymentSuccess(false))
     }
 
     // showing the currency signs dynamically
@@ -97,7 +98,7 @@ const Payment = () => {
                                 }}>
                                 <CustomFormLabel id = 'payment method'>
                                     <Typography
-                                        variant = 'h4'
+                                        variant = 'h5'
                                         sx = {{fontFamily : 'DM Serif Text, serif'}}>
                                         Choose payment method
                                     </Typography>
@@ -113,8 +114,7 @@ const Payment = () => {
                                             }}} 
                                         label = 'Debit Card' 
                                         value = 'Debit Card' 
-                                        control = {<CustomRadio />}
-                                    />
+                                        control = {<CustomRadio />} />
                                     <FormControlLabel  
                                         sx = {{
                                             color : '#110f12',
@@ -125,8 +125,7 @@ const Payment = () => {
                                             }}}
                                         label = 'Credit Card' 
                                         value = 'Credit Card' 
-                                        control = {<CustomRadio />} 
-                                    />
+                                        control = {<CustomRadio />} />
                                     <FormControlLabel  
                                         sx = {{
                                             color : '#110f12',
@@ -137,8 +136,7 @@ const Payment = () => {
                                             }}}
                                         label = 'Paypal' 
                                         value = 'Paypal' 
-                                        control = {<CustomRadio />} 
-                                    />
+                                        control = {<CustomRadio />} />
                                     <FormControlLabel  
                                         sx = {{
                                             color : '#110f12',
@@ -149,8 +147,7 @@ const Payment = () => {
                                             }}}
                                         label = 'Cash on Delivery' 
                                         value = 'Cash on Delivery' 
-                                        control = {<CustomRadio />} 
-                                    />
+                                        control = {<CustomRadio />} />
                                 </RadioGroup>
                             </FormControl>                        
                         </Box>
@@ -162,16 +159,14 @@ const Payment = () => {
                                 backgroundColor : '#110f12', 
                                 borderRadius : '0 10px 10px 0',
                                 height : 300
-                            }}
-                        >
+                            }}>
                             <Typography 
                                 className = 'text-center' 
                                 sx = {{
                                     color : '#f9b826',
                                     fontFamily : 'DM Serif Text, serif'
                                 }} 
-                                variant = 'h4'
-                            >
+                                variant = 'h5'>
                                 Price Details
                             </Typography>  
                             <Container>
@@ -215,8 +210,7 @@ const Payment = () => {
                                     container 
                                     justifyContent = 'center' 
                                     alignItems = 'center'
-                                    sx = {{mb: 2}}
-                                > 
+                                    sx = {{mb: 2}}> 
                                     <Grid item xs = {8}>
                                         <Typography 
                                             variant = 'body1'
@@ -293,8 +287,7 @@ const Payment = () => {
                         <Box className = 'text-center' sx = {{mt:10}}>
                             <CustomFab 
                                 variant = 'extended' 
-                                onClick= {paymentHandler}
-                            >
+                                onClick= {paymentHandler}>
                                 Click here to pay
                             </CustomFab>
                         </Box>
@@ -306,21 +299,29 @@ const Payment = () => {
                 display = 'flex' 
                 justifyContent = 'center' 
                 alignItems = 'center' 
-                flexDirection = 'column'
-            >
+                flexDirection = 'column'>
                 <Image src = {CuteBurger} fluid width = {300} alt = 'a cute burger' />
-                <Typography variant = 'h4' sx = {{mt:3}}>Payment Successful :)</Typography>
                 <Typography 
-                    sx = {{mt:4}} 
-                    variant = 'body1'
-                >
+                    variant = 'h3' 
+                    sx = {{
+                        mt:3,
+                        fontFamily : 'Abril Fatface, cursive'}}>
+                    Payment Successful :)
+                </Typography>
+                <Typography 
+                    sx = {{
+                        mt:4,
+                        fontFamily : 'Concert One, cursive',
+                        fontSize : '1.4rem'}} 
+                    variant = 'body1'>
                     Thanks for purchasing
                 </Typography>
                 <Typography 
-                    sx = {{mt:1}} 
-                    variant = 'body1'
-                >
-                    Your Burger will be deliever shortly
+                    sx = {{mt:1,
+                        fontFamily : 'Concert One, cursive',
+                        fontSize : '1.4rem'}} 
+                    variant = 'body1'>
+                    Your Burger will be deliever within 20 mins and we bet on that XD
                 </Typography>
                 <CustomFab 
                     onClick = {backToBuildingHandler} 

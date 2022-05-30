@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     deliveryAddress : {},
-    orders : []
+    orders : [],
+    paymentSuccess : false
 }
 
 const ordersReducer = createSlice({
@@ -14,6 +15,9 @@ const ordersReducer = createSlice({
         },
         updateOrders (state, action) {
             state.orders = [...action.payload]
+        },
+        updatePaymentSuccess (state, action) {
+            state.paymentSuccess = action.payload
         }
     }
 })
