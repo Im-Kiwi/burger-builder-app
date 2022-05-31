@@ -25,7 +25,6 @@ const Canvas = () => {
                 :   <LogIn />
                 }
             </Box>
-
         </Offcanvas>
     )
 }

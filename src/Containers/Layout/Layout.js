@@ -160,6 +160,7 @@ const Layout = () => {
         dispatch(dialogActions.updateOpen(false))
         dispatch(ordersActions.updateDeliveryAddress({}))
         dispatch(ordersActions.updatePaymentMethod(''))
+        dispatch(ordersActions.updatePaymentSuccess(false))
         localStorage.removeItem('id')
         if (flag && token) { // if user clicked on buy now button then closing the full dialog will navigate to /build-burger
             navigate('/build-burger')

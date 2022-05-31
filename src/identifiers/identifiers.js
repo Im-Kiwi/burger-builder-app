@@ -22,3 +22,11 @@ export const addressType = 'Address Type'
 export const dispatching = 'dispatching . . .'
 export const onTheWay = 'on the way . . .'
 export const delivered = 'delivered'
+
+export const india = 'India'
+export const philippines = 'Philippines'
+
+export const creditCard = 'Credit Card'
+export const debitCard = 'Debit Card'
+export const payPal = 'PayPal'
+export const cashOnDelivery = 'Cash on Delivery'

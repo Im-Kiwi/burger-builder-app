@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Nav, Navbar, Image } from 'react-bootstrap'
 import { Container, Typography, Button, Stack, Badge, IconButton, Box } from '@mui/material'
@@ -14,13 +13,6 @@ import { dialogActions } from '../../Store/reducer/dialog'
 import UserProfile from '../UserProfile/UserProfile'
 import { animationActions } from '../../Store/reducer/animation'
 import { Logo } from '../../path-to-assets/pathToImages'
-
-const paths = {
-    home : {path : '/', id : 0},
-    build : {path : '/build-burger', id : 1},
-    pricing : {path : '/pricing', id : 2},
-    aboutUs : {path : 'about-us', id : 3}
-}
 
 const NavigationBar = () => {
     const dispatch = useDispatch()
@@ -148,7 +140,7 @@ const NavigationBar = () => {
                                     top : 5, 
                                     color : '#110f12',
                                     fontWeight : 600,
-                                    fontFamily : 'Rubik Puddles, cursive'}}>
+                                    fontFamily : 'Yuji Mai, serif'}}>
                                 CLARISH
                             </Typography>                       
                             <Image src = {Logo} fluid width = {90} alt = 'logo' />

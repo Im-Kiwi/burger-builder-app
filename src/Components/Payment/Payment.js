@@ -15,7 +15,7 @@ import { ingredientsActions } from '../../Store/reducer/ingredients.js'
 import { stepperActions } from '../../Store/reducer/stepper.js'
 import { ordersActions } from '../../Store/reducer/orders.js'
 import { CuteBurger } from '../../path-to-assets/pathToImages'
-import { dispatching } from '../../identifiers/identifiers.js'
+import { dispatching, india, philippines } from '../../identifiers/identifiers.js'
 
 const Payment = () => {
     const navigate = useNavigate()
@@ -97,7 +97,7 @@ const Payment = () => {
 
     // showing the currency signs dynamically
     let icon
-    if (address.country === 'India') {
+    if (address.country === india) {
         icon = faIndianRupeeSign
     } else {
         icon = faPesoSign
@@ -231,7 +231,7 @@ const Payment = () => {
                                                 fontWeight : 600,
                                                 fontSize : '1.3rem',
                                                 fontFamily :  'Oswald, sans-serif'}}>
-                                            {totalPrice}
+                                            {deliveryAddress.country === india ? totalPrice : (totalPrice*0.67).toFixed(0)}
                                         </Typography>                    
                                     </Grid>                        
                                 </Grid>
@@ -305,7 +305,7 @@ const Payment = () => {
                                                 fontWeight : 600,
                                                 fontFamily :  'Oswald, sans-serif',
                                                 fontSize : '1.3rem'}}>
-                                            {totalPrice}
+                                            {deliveryAddress.country === india ? totalPrice : (totalPrice*0.67).toFixed(0)}
                                         </Typography>
                                     </Grid>
                                 </Grid>                
@@ -316,8 +316,9 @@ const Payment = () => {
                         <Box className = 'text-center' sx = {{mt:10}}>
                             <CustomFab 
                                 variant = 'extended' 
+                                disabled = {paymentMethod ? false : true}
                                 onClick= {paymentHandler}
-                                sx = {{opacity : paymentMethod ? 1:0.3}}>
+                                sx = {{opacity : paymentMethod ? 1:0.4}}>
                                 Click here to pay
                             </CustomFab>
                         </Box>
@@ -336,7 +337,7 @@ const Payment = () => {
                     sx = {{
                         mt:3,
                         fontFamily : 'Abril Fatface, cursive'}}>
-                    Payment Successful :)
+                    Order placed successfully :)
                 </Typography>
                 <Typography 
                     sx = {{
@@ -344,7 +345,7 @@ const Payment = () => {
                         fontFamily : 'Concert One, cursive',
                         fontSize : '1.4rem'}} 
                     variant = 'body1'>
-                    Thanks for purchasing
+                    Thanks for placing order
                 </Typography>
                 <Typography 
                     sx = {{mt:1,

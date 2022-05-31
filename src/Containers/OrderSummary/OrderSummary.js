@@ -7,6 +7,7 @@ import { faUser, faMobileRetro, faHouse, faCity, faPesoSign, faIndianRupeeSign }
 // -------------- importing from other files ------------
 import Burger from '../../Components/Burger/Burger'
 import OrderItem from '../../Components/OrderItem/OrderItem'
+import { philippines, india } from '../../identifiers/identifiers'
 
 const OrderSummary = (props) => {
     
@@ -74,9 +75,9 @@ const OrderSummary = (props) => {
                             fontSize : '1.3rem',
                             color : '#f9b826'}}>
                         {instantBuy ?
-                            address.country === 'Philippines' ? (items[0].totalPrice*0.67).toFixed(0) : items[0].totalPrice
+                            address.country === philippines ? (items[0].totalPrice*0.67).toFixed(0) : items[0].totalPrice
                             : 
-                            address.country === 'India' ? props.cartPrice : (props.cartPrice*0.67).toFixed(0)}
+                            address.country === india ? props.cartPrice : (props.cartPrice*0.67).toFixed(0)}
                     </Typography>
                 </Grid>                
                 <Grid item  sx = {{mb:2}}>

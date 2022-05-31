@@ -62,6 +62,7 @@ const Pricing = (props) => {
         animate
     }
 
+
     return (
         <Container maxWidth = 'xl'>
             <div className = {classes.pricingContainer}>
@@ -71,7 +72,15 @@ const Pricing = (props) => {
                     initial = 'initial'
                     animate = 'animate'>                    
                 </motion.div>
-                <Box sx = {{zIndex:10, mt:15, position : 'absolute', width : '100%'}}>
+                <motion.div 
+                    style = {{
+                        zIndex:10, 
+                        marginTop:140, 
+                        position : 'absolute', 
+                        width : '100%'}}
+                    initial = {{x:-200, opacity:0}}
+                    animate = {{x:0, opacity:1}}
+                    transition = {{delay:0.1}}>
                     <Grid container display = 'flex' flexDirection = 'column'>
                         <Grid item 
                             display = 'flex' 
@@ -176,7 +185,7 @@ const Pricing = (props) => {
                             </Grid>
                         </Grid>
                     </Grid>
-                </Box>
+                </motion.div>
             </div>
             {pathname === '/your-orders' || pathname === '/manage-addresses' || pathname === '/security-settings' ?
                 <Outlet />

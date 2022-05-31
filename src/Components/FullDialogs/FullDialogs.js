@@ -11,7 +11,6 @@ import { faCartShopping, faPesoSign, faIndianRupeeSign } from '@fortawesome/free
 //  ------------------- importing from files ------------------
 import { cartActions } from '../../Store/reducer/cart'
 import { stepperActions } from '../../Store/reducer/stepper'
-import { mainColors } from '../../theme/mui-theme'
 
 const FullDialogs = (props) => {
     const dispatch = useDispatch()

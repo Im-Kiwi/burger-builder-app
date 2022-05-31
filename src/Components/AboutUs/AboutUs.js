@@ -60,14 +60,19 @@ const AboutUs = (props) => {
                     initial = 'initial'
                     animate = 'animate'>                    
                 </motion.div>
-                <Box 
-                    display = 'flex'
-                    justifyContent = 'center'
+                <Box
+                    component = {motion.div}
+                    initial = {{x:-200, opacity : 0}}
+                    animate = {{x:0, opacity:1}}
+                    transition = {{delay:0.1}}
                     sx = {{
+                        display : 'flex',
+                        justifyContent : 'center',
                         zIndex:10, 
-                        mt:15, 
+                        mt:'150px !important', 
                         width : '100%',
-                        position : 'absolute'}}>                   
+                        position : 'absolute'
+                    }}>                   
                     <Box
                         display = "flex"
                         flexDirection = 'column'
