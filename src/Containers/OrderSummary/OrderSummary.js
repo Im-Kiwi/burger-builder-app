@@ -18,12 +18,13 @@ const OrderSummary = (props) => {
             sx = {{mt : 5, maxHeight : 590, overflowY : 'auto'}} 
             display = 'flex' 
             justifyContent = 'center' 
-            alignItems = 'center'>
+            alignItems = 'flex-start'>
             <Grid xs = {12} md = {8} item  
                 display = 'flex'  
                 flexWrap = 'wrap' 
                 justifyContent = 'center' 
-                gap = {3.5}>
+                gap = {3.5}
+                sx = {{mt:4}}>
                 {items.map(ing => {
                     return (
                         <Box 
@@ -39,7 +40,8 @@ const OrderSummary = (props) => {
                 className = 'text-center'  
                 display = 'flex' 
                 flexDirection = 'column' 
-                justifyContent = 'flex-start'>
+                justifyContent = 'flex-start'
+                sx = {{p:1, backgroundColor : '#110f12', borderRadius : 2}}>
                 <Grid item 
                     sx = {{mb:3}} 
                     display = 'flex' 
@@ -48,17 +50,29 @@ const OrderSummary = (props) => {
                     alignItems = 'center'>
                     <Typography 
                         variant = 'body1'
-                        sx = {{mr:2, fontFamily : 'DM Serif Text, serif', fontSize : '1.3rem'}}>
+                        sx = {{
+                            mr:2, 
+                            fontFamily : 'DM Serif Text, serif', 
+                            fontSize : '1.3rem',
+                            color : '#f9b826'}}>
                         Pay 
                     </Typography>
                     {address.country === "Philippines" ?
-                        <FontAwesomeIcon icon = {faPesoSign} style = {{fontSize : '1.3rem'}}/>
+                        <FontAwesomeIcon 
+                            icon = {faPesoSign} 
+                            style = {{fontSize : '1.3rem', color : '#f9b826'}}/>
                     : 
-                        <FontAwesomeIcon icon = {faIndianRupeeSign} style = {{fontSize : '1.3rem'}}/>
+                        <FontAwesomeIcon 
+                            icon = {faIndianRupeeSign} 
+                            style = {{fontSize : '1.3rem', color : '#f9b826'}}/>
                     }
                     <Typography 
                         variant = 'body1'
-                        sx = {{fontFamily : 'Comfortaa, cursive', fontWeight : 600, fontSize : '1.3rem'}}>
+                        sx = {{
+                            fontFamily : 'Comfortaa, cursive', 
+                            fontWeight : 600, 
+                            fontSize : '1.3rem',
+                            color : '#f9b826'}}>
                         {instantBuy ? items[0].totalPrice : props.cartPrice}
                     </Typography>
                 </Grid>                
@@ -66,23 +80,22 @@ const OrderSummary = (props) => {
                     <Typography
                         variant = 'h6' 
                         sx = {{
-                            color : '#110f12', 
+                            color : '#f9b826', 
                             fontFamily : 'DM Serif Text, serif'}}>
                         Delivery address
                     </Typography>
-                </Grid>
-                
+                </Grid>                
                 <Grid item  display = 'flex' justifyContent = 'center'>
                     <Box 
                         display = 'flex' 
                         flexDirection = 'column' 
                         alignItems = 'center'
-                        sx = {{color : '#110f12', width : '60%'}}>
+                        sx = {{color : '#f9b826', width : '60%'}}>
                         <Stack 
                             direction = 'row' 
                             spacing = {5} 
                             justifyContent = 'flex-start' 
-                            sx = {{width : 300, }}>
+                            sx = {{width : 300}}>
                             <Stack 
                                 direction = 'row' 
                                 justifyContent= 'center' 
