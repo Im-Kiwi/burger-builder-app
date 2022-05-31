@@ -1,14 +1,20 @@
-import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+
+// ----- importing from other files ---------
+import { switchCurrActions } from '../Store/reducer/switchCurrency'
 
 const useSwitchCurrency = () => {
+    const dispatch = useDispatch()
 
-    const [switchCurr, setSwitchCurr] = useState(false)
-
+    const switchCurr = useSelector(state => state.switchCurr.switchCurr)
 
     // this method will control the switch component
     const switchCurrHandler = () => {
-        setSwitchCurr(v => !v)
+        if (switchCurr) {
+            dispatch(switchCurrActions.updateSwitchCurr(false))
+        } else {
+            dispatch(switchCurrActions.updateSwitchCurr(true))
+        }
     }
 
     return [

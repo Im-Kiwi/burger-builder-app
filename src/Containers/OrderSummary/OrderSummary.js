@@ -73,7 +73,10 @@ const OrderSummary = (props) => {
                             fontWeight : 600, 
                             fontSize : '1.3rem',
                             color : '#f9b826'}}>
-                        {instantBuy ? items[0].totalPrice : props.cartPrice}
+                        {instantBuy ?
+                            address.country === 'Philippines' ? (items[0].totalPrice*0.67).toFixed(0) : items[0].totalPrice
+                            : 
+                            address.country === 'India' ? props.cartPrice : (props.cartPrice*0.67).toFixed(0)}
                     </Typography>
                 </Grid>                
                 <Grid item  sx = {{mb:2}}>

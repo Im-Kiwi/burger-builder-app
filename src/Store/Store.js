@@ -6,9 +6,9 @@ import stepperReducer from "./reducer/stepper";
 import cartReducer from "./reducer/cart";
 import ordersReducer from "./reducer/orders";
 import deliveryAddress from "./reducer/deliveryAddress";
-import toggleReducer from './reducer/toggle'
 import securityReducer from "./reducer/security";
 import animationReducer from "./reducer/animation";
+import switchCurrReducer from "./reducer/switchCurrency";
 
 const store = configureStore({
     reducer : {
@@ -19,9 +19,9 @@ const store = configureStore({
         cart : cartReducer.reducer,
         orders : ordersReducer.reducer,
         deliveryAddresses : deliveryAddress.reducer,
-        toggle : toggleReducer.reducer,
         security : securityReducer.reducer,
-        animation : animationReducer.reducer
+        animation : animationReducer.reducer,
+        switchCurr : switchCurrReducer.reducer
     }
 })
 

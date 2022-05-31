@@ -6,7 +6,7 @@ import { Button } from '@mui/material'
 import { CloseRounded } from '@mui/icons-material'
 import { motion } from 'framer-motion'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCartShopping } from '@fortawesome/free-solid-svg-icons'
+import { faCartShopping, faPesoSign, faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons'
 
 //  ------------------- importing from files ------------------
 import { cartActions } from '../../Store/reducer/cart'
@@ -19,6 +19,7 @@ const FullDialogs = (props) => {
     const { pathname } = useLocation()
 
     const openDialog = useSelector(state => state.dialog.open)
+    const switchCurr = useSelector(state => state.switchCurr.switchCurr)
 
     const placeOrderHandler = () => {
         dispatch(cartActions.updateInstantBuy(false))
@@ -59,13 +60,36 @@ const FullDialogs = (props) => {
                                     {props.title}
                                 </Typography>
                             </Stack>
-                            {props.priceInfo ?
-                                <>
+                            {props.totalItems ?
+                                <Stack 
+                                    direction = 'row' 
+                                    spacing = {4}
+                                    alignItems = 'center'>
                                     <Typography 
                                         variant = 'h6'
                                         sx = {{fontFamily : 'Comfortaa, cursive', color : '#f9b826'}}>
-                                        {props.priceInfo}
+                                        Total Price ( {props.totalItems} {props.totalItems === 1 ? 'item' : 'items'} )
                                     </Typography>
+                                    <Stack direction = 'row' alignItems = 'center'>
+                                        {switchCurr ?
+                                            <FontAwesomeIcon 
+                                                icon = {faIndianRupeeSign}
+                                                style = {{
+                                                    fontSize : '1.3rem',
+                                                    color : '#f9b826'}} /> :
+                                            <FontAwesomeIcon 
+                                                icon = {faPesoSign}
+                                                style = {{
+                                                    fontSize : '1.3rem',
+                                                    color : '#f9b826'
+                                                }} />
+                                        }
+                                        <Typography 
+                                            variant = 'h6' 
+                                            sx = {{fontFamily : 'Comfortaa, cursive', color : '#f9b826'}}>
+                                            {switchCurr ? props.cartPrice : (props.cartPrice*0.67).toFixed(0)}
+                                        </Typography>                                        
+                                    </Stack>
                                     <Button 
                                         variant = 'contained'
                                         color = 'yellowish'
@@ -77,7 +101,7 @@ const FullDialogs = (props) => {
                                         onClick = {placeOrderHandler}>
                                         Place Order
                                     </Button>
-                                </>
+                                </Stack>
                                 : null
                             }
                             <motion.div whileHover = {{rotate : 90}} >

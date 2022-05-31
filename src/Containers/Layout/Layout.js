@@ -159,6 +159,7 @@ const Layout = () => {
     const closeDialogHandler = (flag) => {
         dispatch(dialogActions.updateOpen(false))
         dispatch(ordersActions.updateDeliveryAddress({}))
+        dispatch(ordersActions.updatePaymentMethod(''))
         localStorage.removeItem('id')
         if (flag && token) { // if user clicked on buy now button then closing the full dialog will navigate to /build-burger
             navigate('/build-burger')
@@ -197,28 +198,36 @@ const Layout = () => {
                 <BuildBurger 
                     title = 'My Cart' 
                     closeDialogHandler = {closeDialogHandler}
-                    priceInfo = {cartInfo.totalPrice() && `Total Price (${cartInfo.totalCartItems} items) : $${cartInfo.totalPrice().toFixed(0)}`} />
+                    cartPrice = {cartInfo.totalPrice()}
+                    totalItems = {cartInfo.totalCartItems}
+                    priceInfo = {cartInfo.totalPrice() && `Total Price (${cartInfo.totalCartItems} items) : ${cartInfo.totalPrice().toFixed(0)}`} />
             )
             break;
         case '/':
             dynamicElement = (
                 <Home                     
                     closeDialogHandler = {closeDialogHandler} 
-                    priceInfo = {cartInfo.totalPrice() && `Total Price (${cartInfo.totalCartItems} items) : $${cartInfo.totalPrice().toFixed(0)}`} />
+                    cartPrice = {cartInfo.totalPrice()}
+                    totalItems = {cartInfo.totalCartItems}
+                    priceInfo = {cartInfo.totalPrice() && `Total Price (${cartInfo.totalCartItems} items) : ${cartInfo.totalPrice().toFixed(0)}`} />
             )
             break; 
         case '/pricing':
             dynamicElement = (
                 <Pricing 
                     closeDialogHandler = {closeDialogHandler}
-                    priceInfo = {cartInfo.totalPrice() && `Total Price (${cartInfo.totalCartItems} items) : $${cartInfo.totalPrice().toFixed(0)}`} />
+                    cartPrice = {cartInfo.totalPrice()}
+                    totalItems = {cartInfo.totalCartItems}
+                    priceInfo = {cartInfo.totalPrice() && `Total Price (${cartInfo.totalCartItems} items) : ${cartInfo.totalPrice().toFixed(0)}`} />
             )
             break;
         case '/about-us':
             dynamicElement = (
                 <AboutUs
                     closeDialogHandler = {closeDialogHandler}
-                    priceInfo = {cartInfo.totalPrice() && `Total Price (${cartInfo.totalCartItems} items) : $${cartInfo.totalPrice().toFixed(0)}`}/>
+                    cartPrice = {cartInfo.totalPrice()}
+                    totalItems = {cartInfo.totalCartItems}
+                    priceInfo = {cartInfo.totalPrice() && `Total Price (${cartInfo.totalCartItems} items) : ${cartInfo.totalPrice().toFixed(0)}`}/>
             )
         default:
             break;     

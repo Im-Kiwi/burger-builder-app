@@ -90,6 +90,9 @@ const Payment = () => {
         dispatch(dialogActions.updateOpen(false))
         dispatch(ingredientsActions.updateReset())
         dispatch(ordersActions.updatePaymentSuccess(false))
+        dispatch(ordersActions.updatePaymentMethod(''))
+        localStorage.removeItem('id')
+        localStorage.removeItem('prevPath')
     }
 
     // showing the currency signs dynamically
@@ -313,7 +316,8 @@ const Payment = () => {
                         <Box className = 'text-center' sx = {{mt:10}}>
                             <CustomFab 
                                 variant = 'extended' 
-                                onClick= {paymentHandler}>
+                                onClick= {paymentHandler}
+                                sx = {{opacity : paymentMethod ? 1:0.3}}>
                                 Click here to pay
                             </CustomFab>
                         </Box>

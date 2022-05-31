@@ -1,7 +1,8 @@
 import { Grid, Typography, Chip, IconButton} from '@mui/material'
+import { useSelector } from 'react-redux'
 import { DoneRounded } from '@mui/icons-material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { faTrashCan, faPesoSign, faIndianRupee } from '@fortawesome/free-solid-svg-icons'
 import { motion } from 'framer-motion'
 import { useLocation } from 'react-router-dom'
 
@@ -12,6 +13,8 @@ import { styles } from './styles'
 const OrderItem = ({ing, thisIsCart, deleteCartItemHandler}) => {
     const classes = styles()
     const { pathname } = useLocation()
+
+    const switchCurr = useSelector(state => state.switchCurr.switchCurr)
 
     return (
         <Grid container alignItems = 'center' spacing = {2}>
@@ -102,17 +105,25 @@ const OrderItem = ({ing, thisIsCart, deleteCartItemHandler}) => {
                 </Grid>
             </Grid>
             {thisIsCart &&
-                <Grid xs = {1} item display = 'flex' justifyContent = 'center'>
-                    {thisIsCart &&
-                        <Typography 
-                            variant = 'body1'
-                            sx = {{
-                                fontFamily : 'Comfortaa, cursive', 
-                                fontSize : '1.5rem', 
-                                fontWeight : 600}}>
-                            ${ing.totalPrice}
-                        </Typography>
+                <Grid xs = {1} item 
+                    display = 'flex' 
+                    justifyContent = 'center'
+                    alignItems = 'center'>
+                    {!switchCurr ?
+                        <FontAwesomeIcon 
+                            icon = {faPesoSign}
+                            style = {{fontSize : '1.5rem'}} /> :
+                        <FontAwesomeIcon icon = {faIndianRupee}/>
                     }
+                    <FontAwesomeIcon />                        
+                    <Typography 
+                        variant = 'body1'
+                        sx = {{
+                            fontFamily : 'Comfortaa, cursive', 
+                            fontSize : '1.5rem', 
+                            fontWeight : 600}}>
+                        {!switchCurr ? (ing.totalPrice*0.67).toFixed(0) : ing.totalPrice}
+                    </Typography>
                 </Grid>
             }
             {thisIsCart && 

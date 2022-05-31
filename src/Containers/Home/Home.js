@@ -151,7 +151,11 @@ const Home = (props) => {
                 {pathname === '/your-orders' || pathname === '/manage-addresses' || pathname === '/security-settings' ? 
                     <Outlet />
                     : 
-                    <FullDialogs title = 'My Cart' closeDialogHandler = {props.closeDialogHandler} priceInfo = {props.priceInfo}>
+                    <FullDialogs 
+                        title = 'My Cart' 
+                        closeDialogHandler = {props.closeDialogHandler} 
+                        cartPrice = {props.cartPrice}
+                        totalItems = {props.totalItems}>
                         <Outlet />
                     </FullDialogs>
                 }           
