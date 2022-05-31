@@ -39,7 +39,29 @@ const OrderSummary = (props) => {
                 className = 'text-center'  
                 display = 'flex' 
                 flexDirection = 'column' 
-                justifyContent = 'flex-start'>                
+                justifyContent = 'flex-start'>
+                <Grid item 
+                    sx = {{mb:3}} 
+                    display = 'flex' 
+                    flexDirection = 'row' 
+                    justifyContent = 'center' 
+                    alignItems = 'center'>
+                    <Typography 
+                        variant = 'body1'
+                        sx = {{mr:2, fontFamily : 'DM Serif Text, serif', fontSize : '1.3rem'}}>
+                        Pay 
+                    </Typography>
+                    {address.country === "Philippines" ?
+                        <FontAwesomeIcon icon = {faPesoSign} style = {{fontSize : '1.3rem'}}/>
+                    : 
+                        <FontAwesomeIcon icon = {faIndianRupeeSign} style = {{fontSize : '1.3rem'}}/>
+                    }
+                    <Typography 
+                        variant = 'body1'
+                        sx = {{fontFamily : 'Comfortaa, cursive', fontWeight : 600, fontSize : '1.3rem'}}>
+                        {instantBuy ? items[0].totalPrice : props.cartPrice}
+                    </Typography>
+                </Grid>                
                 <Grid item  sx = {{mb:2}}>
                     <Typography
                         variant = 'h6' 
@@ -49,6 +71,7 @@ const OrderSummary = (props) => {
                         Delivery address
                     </Typography>
                 </Grid>
+                
                 <Grid item  display = 'flex' justifyContent = 'center'>
                     <Box 
                         display = 'flex' 
@@ -133,29 +156,7 @@ const OrderSummary = (props) => {
                             </Typography>
                         </Box>
                     </Box>
-                </Grid>
-                <Grid item 
-                    sx = {{mt:3}} 
-                    display = 'flex' 
-                    flexDirection = 'row' 
-                    justifyContent = 'center' 
-                    alignItems = 'center'>
-                    <Typography 
-                        variant = 'body1'
-                        sx = {{mr:2, fontFamily : 'DM Serif Text, serif', fontSize : '1.3rem'}}>
-                        Pay 
-                    </Typography>
-                    {address.country === "Philippines" ?
-                        <FontAwesomeIcon icon = {faPesoSign} style = {{fontSize : '1.3rem'}}/>
-                    : 
-                        <FontAwesomeIcon icon = {faIndianRupeeSign} style = {{fontSize : '1.3rem'}}/>
-                    }
-                    <Typography 
-                        variant = 'body1'
-                        sx = {{fontFamily : 'Comfortaa, cursive', fontWeight : 600, fontSize : '1.3rem'}}>
-                        {instantBuy ? items[0].totalPrice : props.cartPrice}
-                    </Typography>
-                </Grid>
+                </Grid>                
             </Grid>
         </Grid>                
     )

@@ -18,3 +18,7 @@ export const state = 'State'
 export const city = 'City/District/Town'
 export const pinCode = 'Pin Code'
 export const addressType = 'Address Type'
+
+export const dispatching = 'dispatching . . .'
+export const onTheWay = 'on the way . . .'
+export const delivered = 'delivered'

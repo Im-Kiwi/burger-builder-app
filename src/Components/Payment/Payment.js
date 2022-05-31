@@ -15,6 +15,7 @@ import { ingredientsActions } from '../../Store/reducer/ingredients.js'
 import { stepperActions } from '../../Store/reducer/stepper.js'
 import { ordersActions } from '../../Store/reducer/orders.js'
 import { CuteBurger } from '../../path-to-assets/pathToImages'
+import { dispatching } from '../../identifiers/identifiers.js'
 
 const Payment = () => {
     const navigate = useNavigate()
@@ -24,18 +25,24 @@ const Payment = () => {
     const currentItem = useSelector(state => state.cart.currentItem)
     const cartItems = useSelector(state => state.cart.cartItems) 
     const instantBuy = useSelector(state => state.cart.instantBuy)
+    const paymentMethod = useSelector(state => state.orders.paymentMethod)
     const paymentSuccess = useSelector(state => state.orders.paymentSuccess)
     const address = useSelector(state => state.orders.deliveryAddress)
+    const deliveryAddress = useSelector(state => state.orders.deliveryAddress)
     
     let totalPrice
 
     // total price depends upon whether user buying one item or more then 1 items and instandBuy tells us that (if true means buying 1 item)
     // user buying more then 1 items means he/she added those items in cart first, thus using cart items to extract price from each and summed up
     if (instantBuy) {
-        totalPrice = currentItem[0].totalPrice.toFixed(1)
+        totalPrice = currentItem[0].totalPrice.toFixed(0)
     } else {
         const tempData = cartItems.map(item => item.totalPrice)
-        totalPrice = cartItems.length !== 0 ? tempData.reduce((total, price) => total + price).toFixed(1) : 0
+        totalPrice = cartItems.length !== 0 ? tempData.reduce((total, price) => total + price).toFixed(0) : 0
+    }
+
+    const changePaymentMethod = (event) => {
+        dispatch(ordersActions.updatePaymentMethod(event.target.value))
     }
 
     // will sends the orders information to the firebase database
@@ -43,12 +50,27 @@ const Payment = () => {
         let dataToSend
         try {
             if (instantBuy) {
-                dataToSend = {...currentItem, orderedOn : new Date().getTime(), userId : userId, totalPrice : totalPrice}
+                dataToSend = {
+                    ...currentItem, 
+                    orderedOn : new Date().getTime(), 
+                    userId : userId, 
+                    totalPrice : totalPrice,
+                    paymentType : paymentMethod,
+                    status : dispatching,
+                    address : deliveryAddress
+                }
                 await addDoc(collection(db, 'orders'), dataToSend)
             } else {
-                dataToSend = {...cartItems, orderedOn : new Date().getTime(), userId : userId, totalPrice : totalPrice}
-                await addDoc(collection(db, 'orders'), dataToSend) 
-                                
+                dataToSend = {
+                    ...cartItems, 
+                    orderedOn : new Date().getTime(), 
+                    userId : userId, 
+                    totalPrice : totalPrice,
+                    paymentType : paymentMethod,
+                    status : dispatching,
+                    address : deliveryAddress
+                }
+                await addDoc(collection(db, 'orders'), dataToSend)                                 
                 // clearing cart
                 for (let item of cartItems) {
                     await deleteDoc(doc(db, 'cart', item.id))
@@ -103,7 +125,11 @@ const Payment = () => {
                                         Choose payment method
                                     </Typography>
                                 </CustomFormLabel>
-                                <RadioGroup aria-labelledby='payment method' sx = {{mt : 2}}>
+                                <RadioGroup 
+                                    aria-labelledby='payment method' 
+                                    sx = {{mt : 2}}
+                                    value = {paymentMethod}
+                                    onChange = {(event) => changePaymentMethod(event)}>
                                     <FormControlLabel
                                         sx = {{
                                             color : '#110f12',

@@ -141,8 +141,14 @@ const NavigationBar = () => {
                     <Navbar.Brand>
                         <Box sx = {{position : 'absolute', top : 0}}>
                             <Typography 
-                                variant = 'subtitle2'
-                                sx = {{textAlign : 'center', position : 'relative', top : 5, color : 'white'}}>
+                                variant = 'body1'
+                                sx = {{
+                                    textAlign : 'center', 
+                                    position : 'relative', 
+                                    top : 5, 
+                                    color : '#110f12',
+                                    fontWeight : 600,
+                                    fontFamily : 'Rubik Puddles, cursive'}}>
                                 CLARISH
                             </Typography>                       
                             <Image src = {Logo} fluid width = {90} alt = 'logo' />

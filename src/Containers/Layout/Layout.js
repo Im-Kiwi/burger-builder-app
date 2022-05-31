@@ -104,6 +104,10 @@ const Layout = () => {
                         const ordersArrId = ordersArr.findIndex(order => order.id === change.doc.id)
                         ordersArr.splice(ordersArrId, 1)
                     }
+                    if (change.type === 'modified') {
+                        const ordersArrId = ordersArr.findIndex(order => order.id === change.doc.id)
+                        ordersArr.splice(ordersArrId, 1, {...change.doc.data(), id : change.doc.id})
+                    }
                 })
                 dispatch(ordersActions.updateOrders(ordersArr))
             })            
