@@ -1,6 +1,5 @@
 import { Grid, Typography, IconButton, Container } from '@mui/material'
 import { Image } from 'react-bootstrap'
-import { AddCircleRounded } from '@mui/icons-material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCirclePlus, faCircleMinus } from '@fortawesome/free-solid-svg-icons'
 
@@ -12,13 +11,11 @@ const Controls = (props) => {
             <Grid container 
                 justifyContent = 'center' 
                 alignItems = 'center' 
-                sx = {{color : '#f9b826'}}
-            >
+                sx = {{color : '#f9b826'}}>
                 <Grid item 
                     xs = {6}  
                     display = 'flex' 
-                    gap = {1}
-                >
+                    gap = {1}>
                     <Image src = {props.icon} fluid width = {40} />
                     <Typography 
                         sx = {{fontFamily : 'Comfortaa, cursive'}}>
@@ -28,32 +25,39 @@ const Controls = (props) => {
                 <Grid item 
                     xs = {2} 
                     display = 'flex' 
-                    justifyContent= 'center'  
-                >
+                    justifyContent= 'center'>
                     <IconButton 
+                        disabled = {props.ingredient.qty === 0 && true}
                         onClick = {() => props.removeIngredient(props.ingredient.name)} 
-                        sx = {{color : '#fef9ef'}}
-                    >
+                        sx = {{
+                            color : '#fef9ef',
+                            '&.Mui-disabled' : {
+                                color : '#fef9ef',
+                                opacity : 0.3
+                            }}}>
                         <FontAwesomeIcon icon={faCircleMinus} />
                     </IconButton>
                 </Grid>
                 <Grid xs = {1} item>
                     <Typography 
                         className = 'text-center'
-                        sx = {{color : '#fef9ef', fontFamily : 'Josefin Slab, serif'}}    
-                    >
+                        sx = {{color : '#fef9ef', fontFamily : 'Josefin Slab, serif'}}>
                         {props.ingredient.qty}
                     </Typography>
                 </Grid>
                 <Grid item
                     xs = {2}
                     display = 'flex' 
-                    justifyContent = 'center'  
-                >
-                    <IconButton 
+                    justifyContent = 'center'>
+                    <IconButton
+                        disabled = {props.ingredient.qty >= 3 ? true : false} 
                         onClick = {() => props.addIngredient(props.ingredient.name)} 
-                        sx = {{color : '#fef9ef'}}
-                    >
+                        sx = {{
+                            color : '#fef9ef',
+                            '&.Mui-disabled' : {
+                                opacity : 0.3,
+                                color : '#fef9ef'
+                            }}}>
                         <FontAwesomeIcon icon={faCirclePlus} />
                     </IconButton>
                 </Grid>
