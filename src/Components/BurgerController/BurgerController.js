@@ -146,23 +146,39 @@ const BurgerController = (props) => {
                         </Typography>                                                             
                         <Stack direction = 'row' alignItems = 'center'>
                             <Checkbox 
+                                disabled = {!ingredients.totalPrice && true}
                                 checked = {ingredients.Coke.status} 
                                 onChange = {() => checkBoxHandler(ingredients.Coke.name)} 
                                 sx = {{'&.MuiCheckbox-root' : {
-                                    color : '#fef9ef'
-                                }}}
-                            />
-                            <Typography sx = {{color : '#f9b826', fontFamily : 'Comfortaa, cursive'}}>Coke</Typography>                                                             
+                                    color : '#fef9ef',
+                                    '&.Mui-disabled' : {
+                                        opacity : 0.3}}}} />
+                            <Typography 
+                                variant = 'body1'
+                                sx = {{
+                                    color : '#f9b826', 
+                                    fontFamily : 'Comfortaa, cursive',
+                                    opacity : !ingredients.totalPrice ? 0.3 : 1}}>
+                                Coke
+                            </Typography>                                                             
                         </Stack>               
                         <Stack direction = 'row' alignItems = 'center'>
                             <Checkbox 
                                 checked = {ingredients.FrenchFries.status} 
+                                disabled = {!ingredients.totalPrice && true}
                                 onChange = {() => checkBoxHandler(ingredients.FrenchFries.name)}
                                 sx = {{'&.MuiCheckbox-root' : {
-                                    color : '#fef9ef'
-                                }}}
-                            />
-                            <Typography sx = {{color : '#f9b826', fontFamily : 'Comfortaa, cursive'}}>French Fries</Typography>                                                             
+                                    color : '#fef9ef',
+                                    '&.Mui-disabled' : {
+                                        opacity : 0.3}}}} />
+                            <Typography
+                                variant = 'body1' 
+                                sx = {{
+                                    color : '#f9b826', 
+                                    fontFamily : 'Comfortaa, cursive',
+                                    opacity : !ingredients.totalPrice ? 0.3 : 1}}>
+                                French Fries
+                            </Typography>                                                             
                         </Stack>
                     </Box>
 
@@ -175,31 +191,38 @@ const BurgerController = (props) => {
                                 fontFamily : 'DM Serif Text, serif'}} 
                             variant = 'outlined' 
                             size = 'large' 
-                            color = 'yellowish'
-                        >
+                            color = 'yellowish'>
                             Reset
                         </Button>
                         <Button 
                             sx = {{
                                 borderRadius : 0, 
                                 mr : 2, 
-                                fontFamily : 'DM Serif Text, serif'}} 
-                            variant = 'contained' 
+                                fontFamily : 'DM Serif Text, serif',
+                                '&.Mui-disabled' : {
+                                    color : '#110f12',
+                                    backgroundColor : '#f9b826',
+                                    opacity : 0.4}}}
+                            variant = 'contained'
+                            disabled = {ingredients.totalPrice === 0 ? true : false}
                             size = 'large' 
                             color = 'yellowish'
-                            onClick = {buyHandler}
-                        >
+                            onClick = {buyHandler}>
                             Buy Now
                         </Button>
                         <Button 
                             sx = {{
                                 borderRadius : 0, 
-                                fontFamily : 'DM Serif Text, serif'}} 
+                                fontFamily : 'DM Serif Text, serif',
+                                '&.Mui-disabled' : {
+                                    color : '#110f12',
+                                    backgroundColor : '#f9b826',
+                                    opacity : 0.4}}} 
                             variant = 'contained' 
+                            disabled = {ingredients.totalPrice === 0 ? true : false}
                             size = 'large' 
                             color = 'yellowish'
-                            onClick = {addToCartHandler}
-                        >
+                            onClick = {addToCartHandler}>
                             Add to Cart
                         </Button>
                     </Box>
