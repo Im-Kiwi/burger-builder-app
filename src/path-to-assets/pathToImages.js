@@ -26,6 +26,7 @@ import Customers from '../Assets/customers.svg'
 import Fries_Coke from '../Assets/fries&coke.svg'
 import Staff from '../Assets/staff.svg'
 import WorldMap from '../Assets/worldMap.svg'
+import BackgroundBurger from '../Assets/backgroundBurger.svg'
 
 
 export {
@@ -39,5 +40,6 @@ export {
     LettuceIco, CheeseIco, MeatIco, TomatoIco, OnionIco, BaconIco,
     CuteBurger,
     PickBurger, Customers, Fries_Coke,
-    Staff, WorldMap
+    Staff, WorldMap,
+    BackgroundBurger
 }

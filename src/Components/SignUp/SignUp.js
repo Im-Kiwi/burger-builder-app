@@ -1,20 +1,18 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
-import { Container, Stack, TextField, Button, Paper, Typography, MenuItem } from '@mui/material'
+import { Container, Stack, TextField, Button, Box, Typography, MenuItem } from '@mui/material'
 import { Image } from 'react-bootstrap'
 import { useForm  } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup'; 
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase-setup';
 import * as yup from 'yup';
-import { ThemeProvider } from '@mui/material/styles'
 import { db } from '../../firebase-setup'
-import { addDoc, collection, query, where, getDocs, arrayUnion, setDoc, doc } from 'firebase/firestore'
+import { addDoc, collection, query, where, getDocs} from 'firebase/firestore'
 
 //  ----------------- importing from other files ------------------
 import { userFormActions } from '../../Store/reducer/userForm';
-import { userFormTheme } from '../../theme/mui-theme';
 import { dialogActions } from '../../Store/reducer/dialog';
 import { Phili, Ind } from '../../path-to-assets/pathToImages'
 
@@ -27,7 +25,6 @@ const SignUp = props => {
 
     // fetching values from the redux store
     const isUserNameExist = useSelector(state => state.userForm.isUserNameExist)
-    const userId = useSelector(state => state.userForm.currentUser.userId)
 
      // creating schema for sign up validation
     const signUpSchema = yup.object().shape({
@@ -86,86 +83,99 @@ const SignUp = props => {
 
     return (
         <Container maxWidth = 'xs'>
-            <Paper elevation = {2} sx = {{backgroundColor : '#110f12'}}>
-                <Typography className = 'text-center text-light p-3' variant = 'h5'>Sign Up</Typography>
+            <Box>
+                <Typography 
+                    className = 'text-center p-3' 
+                    variant = 'h5'
+                    sx = {{
+                        color : '#110f12',
+                        fontFamily : 'Righteous, cursive'}}>
+                    SIGN UP
+                </Typography>
                 <form className = 'p-3' onSubmit = {handleSubmit(submitForm)}>
-                    <ThemeProvider theme = {userFormTheme}>
-                        <TextField 
-                            error = {Boolean(errors.userName) || isUserNameExist}
-                            helperText = {isUserNameExist ? 'user name taken' : errors.userName?.message}
-                            fullWidth
-                            label = 'User Name'
-                            variant = 'standard'
-                            className = 'mb-4 noInputBorder'
-                            size = 'small'
-                            type = 'text'
-                            {...register('userName')}
-                        />
-                        <TextField 
-                            error = {Boolean(errors.emailAddress)}
-                            helperText = {errors.emailAddress?.message}
-                            fullWidth
-                            label = 'Email Address'
-                            variant = 'standard'
-                            className = 'mb-4 noInputBorder'
-                            size = 'small'
-                            type = 'text'
-                            {...register('emailAddress')}
-                        />
-                        <TextField select
-                            error = {Boolean(errors.nationality)}
-                            helperText = {errors.nationality?.message}
-                            aria-hidden = 'false'
-                            label = 'Nationality'
-                            size = 'small'
-                            variant = 'standard'
-                            className = 'mb-4 noInputBorder w-100'
-                            {...register('nationality')}
-                            onChange = {(event) => setSelectNation(event.target.value)}
-                            value = {selectNation}
-                        >
-                            <MenuItem  value = 'Philippine'>
-                                <Stack direction = 'row' spacing = {1}>
-                                    <Image src = {Phili} alt = 'philippine flag' width = {30} />
-                                    <Typography>Philippine</Typography>
-                                </Stack>
-                            </MenuItem>
-                            <MenuItem value = 'India'>
-                                <Stack direction = 'row' spacing = {1}>
-                                    <Image fluid src = {Ind} alt = 'indian flag' width= {30} />
-                                    <Typography>India</Typography>
-                                </Stack>    
-                            </MenuItem>
-                        </TextField>
-                        <TextField 
-                            error = {Boolean(errors.password)}
-                            helperText = {errors.password?.message}
-                            fullWidth
-                            label = 'Password'
-                            className = 'mb-4 noInputBorder'
-                            variant = 'standard'
-                            size = 'small'
-                            type = 'password'
-                            {...register('password')}
-                        />
-                        <TextField 
-                            error = {Boolean(errors.confirmPassword)}
-                            helperText = {errors.confirmPassword?.message}
-                            fullWidth
-                            label = 'Confirm Password'
-                            className = 'mb-4 noInputBorder'
-                            variant = 'standard'
-                            size = 'small'
-                            type = 'password'
-                            {...register('confirmPassword')}
-                        />
-                        
-                    </ThemeProvider>
-                    <Button className = 'mx-auto' type = 'submit' variant = 'contained' color = 'success'>
+                    <TextField 
+                        error = {Boolean(errors.userName) || isUserNameExist}
+                        helperText = {isUserNameExist ? 'user name taken' : errors.userName?.message}
+                        fullWidth
+                        color = 'blackish'
+                        label = 'User Name'
+                        variant = 'standard'
+                        className = 'mb-4'
+                        size = 'small'
+                        type = 'text'
+                        {...register('userName')}/>
+                    <TextField 
+                        error = {Boolean(errors.emailAddress)}
+                        helperText = {errors.emailAddress?.message}
+                        fullWidth
+                        color = 'blackish'
+                        label = 'Email Address'
+                        variant = 'standard'
+                        className = 'mb-4'
+                        size = 'small'
+                        type = 'text'
+                        {...register('emailAddress')}/>
+                    <TextField select
+                        error = {Boolean(errors.nationality)}
+                        helperText = {errors.nationality?.message}
+                        aria-hidden = 'false'
+                        color = 'blackish'
+                        label = 'Nationality'
+                        size = 'small'
+                        variant = 'standard'
+                        className = 'mb-4 w-100'
+                        {...register('nationality')}
+                        onChange = {(event) => setSelectNation(event.target.value)}
+                        value = {selectNation}>
+                        <MenuItem  value = 'Philippine'>
+                            <Stack direction = 'row' spacing = {1}>
+                                <Image src = {Phili} alt = 'philippine flag' width = {30} />
+                                <Typography>Philippine</Typography>
+                            </Stack>
+                        </MenuItem>
+                        <MenuItem value = 'India'>
+                            <Stack direction = 'row' spacing = {1}>
+                                <Image fluid src = {Ind} alt = 'indian flag' width= {30} />
+                                <Typography>India</Typography>
+                            </Stack>    
+                        </MenuItem>
+                    </TextField>
+                    <TextField 
+                        error = {Boolean(errors.password)}
+                        helperText = {errors.password?.message}
+                        fullWidth
+                        label = 'Password'
+                        className = 'mb-4'
+                        color = 'blackish'
+                        variant = 'standard'
+                        size = 'small'
+                        type = 'password'
+                        {...register('password')}
+                    />
+                    <TextField 
+                        error = {Boolean(errors.confirmPassword)}
+                        helperText = {errors.confirmPassword?.message}
+                        fullWidth
+                        label = 'Confirm Password'
+                        color = 'blackish'
+                        className = 'mb-4'
+                        variant = 'standard'
+                        size = 'small'
+                        type = 'password'
+                        {...register('confirmPassword')}
+                    />
+                    <Button 
+                        type = 'submit' 
+                        variant = 'contained' 
+                        color = 'blackish'
+                        sx = {{
+                            color : '#f9b826',
+                            borderRadius : 0,
+                            fontFamily : 'Montserrat Alternates, sans-serif'}}>
                         Sign Up
                     </Button>
                 </form>            
-            </Paper>
+            </Box>
         </Container>
     )
 }

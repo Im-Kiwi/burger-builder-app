@@ -43,7 +43,12 @@ const BuildBurger = (props) => {
                 {pathname === '/your-orders' || pathname === '/manage-addresses' || pathname === '/security-settings' ? 
                     <Outlet />
                     :
-                    <FullDialogs title = {props.title} priceInfo = {props.priceInfo} isOrderSummary = {true} closeDialogHandler = {props.closeDialogHandler} >
+                    <FullDialogs 
+                        title = {props.title} 
+                        isOrderSummary = {true} 
+                        closeDialogHandler = {props.closeDialogHandler}
+                        cartPrice = {props.cartPrice}
+                        totalItems = {props.totalItems}>
                     <Outlet />
                 </FullDialogs>
                 }

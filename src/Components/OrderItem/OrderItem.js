@@ -113,9 +113,10 @@ const OrderItem = ({ing, thisIsCart, deleteCartItemHandler}) => {
                         <FontAwesomeIcon 
                             icon = {faPesoSign}
                             style = {{fontSize : '1.5rem'}} /> :
-                        <FontAwesomeIcon icon = {faIndianRupee}/>
+                        <FontAwesomeIcon 
+                            icon = {faIndianRupee}
+                            style = {{fontSize : '1.5rem'}} />
                     }
-                    <FontAwesomeIcon />                        
                     <Typography 
                         variant = 'body1'
                         sx = {{

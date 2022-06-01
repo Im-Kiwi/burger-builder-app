@@ -49,70 +49,60 @@ const DisplayBurger = (props) => {
             container
             justifyContent = 'center'
             sx = {{mt : 5}}
-            spacing = {10}
-        >
+            spacing = {10}>
             <Grid item xs = {12} display = 'flex' justifyContent = 'center'>
                 <Stack 
                     sx = {{height : 500}} 
                     direction = 'row'  
-                    alignItems = 'flex-end'
-                >
+                    alignItems = 'flex-end'>
                     <motion.div
                         variants = {animation}
                         initial = 'initial'
                         animate = 'animate'
-                        exit = 'exit'                                                
-                    >
+                        exit = 'exit'>
                         <Burger 
                             ingredients = {ingredients} 
                             width = '200px'
                             plateWidth = '650px' 
                             cokeWidth = {250}
-                            friesWidth = {250}
-                        />                
+                            friesWidth = {250}/>                
                     </motion.div>
                 </Stack>
             </Grid>
             <Grid item xs = {12} 
                 display = 'flex' 
                 flexDirection = 'column' 
-                alignItems = 'center'
-            >
+                alignItems = 'center'>
                 <motion.div
                     variants = {animation}
                     initial = 'initial'
                     animate = 'animate'
-                    exit = 'exit'
-                >
+                    exit = 'exit'>
                     <Stack 
                         direction = 'row' 
                         sx = {{mb:2}} 
                         spacing = {1} 
                         justifyContent = 'center' 
-                        alignItems = 'center'
-                    >
+                        alignItems = 'center'>
                         <FontAwesomeIcon  
                             icon = {switchCurr ? faIndianRupeeSign : faPesoSign}
                             style = {{
                                 color : '#110f12',
                                 fontSize : '1.3rem'
-                            }}
-                        />
+                            }} />
                         <Typography 
                             variant = 'body1'
                             sx={{
                                 color : '#110f12',
                                 fontSize : '1.5rem'
-                            }} 
-                        >
+                            }}>
                             {convertPrice}
                         </Typography>
                     </Stack>
                     <SwitchCurrency
                         switchCurr = {switchCurr}
                         switchCurrHandler = {switchCurrHandler}
-                        convertPrice = {convertPrice}
-                    />                        
+                        convertPrice = {convertPrice} />                        
                 </motion.div>
             </Grid>
         </Grid>

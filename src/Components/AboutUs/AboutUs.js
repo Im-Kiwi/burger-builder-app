@@ -199,7 +199,12 @@ const AboutUs = (props) => {
             {pathname === '/your-orders' || pathname === '/manage-addresses' || pathname === '/security-settings' ?
                 <Outlet />
             :
-                <FullDialogs title = 'My Cart' closeDialogHandler = {props.closeDialogHandler} priceInfo = {props.priceInfo}>
+                <FullDialogs 
+                    title = 'My Cart' 
+                    closeDialogHandler = {props.closeDialogHandler} 
+                    priceInfo = {props.priceInfo}
+                    cartPrice = {props.cartPrice}
+                    totalItems = {props.totalItems}>
                     <Outlet />
                 </FullDialogs>
             }

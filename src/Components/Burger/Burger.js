@@ -55,22 +55,19 @@ const Burger = (props) => {
                             animate = {{x: 0, opacity : 1}}
                             exit = {{x: -150, opacity : 0}}
                             transition = {{type : 'spring', stiffness : 110}}
-                            style ={{zIndex : 10, position : 'absolute', left : props.isOrder ? '5%' :'16%'}} 
-                        >
+                            style ={{zIndex : 10, position : 'absolute', left : props.isOrder ? '5%' :'16%'}}>
                             <Image 
                                 fluid 
                                 src = {Coke} 
                                 alt = 'Coke' 
-                                width = {props.cokeWidth} 
-                            />                
+                                width = {props.cokeWidth} />                
                         </motion.div>
                     }
                 </AnimatePresence>
                 <Stack 
                     direction = 'column' 
                     alignItems = 'center' 
-                    sx = {{zIndex : 11}}
-                >   
+                    sx = {{zIndex : 11}}>   
                     <LayoutGroup>
                         <motion.div layout>
                             <Image src = {burgerTop} width = {props.width} style = {{transform : 'scale(1.2, 1.2)'}} />

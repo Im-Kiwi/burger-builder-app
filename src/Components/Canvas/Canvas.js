@@ -1,4 +1,4 @@
-import { Offcanvas } from 'react-bootstrap'
+import { Offcanvas, Image } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import { Box } from '@mui/material'
 
@@ -6,6 +6,7 @@ import { Box } from '@mui/material'
 import SignUp from '../SignUp/SignUp'
 import LogIn from '../LogIn/LogIn'
 import { dialogActions } from '../../Store/reducer/dialog'
+import { BackgroundBurger } from '../../path-to-assets/pathToImages'
 
 const Canvas = () => {
     const dispatch = useDispatch()
@@ -20,10 +21,14 @@ const Canvas = () => {
     return (
         <Offcanvas placement = 'end' show = {showCanvas} onHide = {closeCanvasHandler}>
             <Box sx = {{height : '100%', width : '100%', backgroundColor : '#f9b826'}} display = 'flex' alignItems = 'center'>
-                {isSignUpForm ?
-                    <SignUp />
-                :   <LogIn />
-                }
+                <Image 
+                    style = {{
+                        position : 'absolute', 
+                        opacity : 0.23}} 
+                    src = {BackgroundBurger} 
+                    fluid 
+                    alt = 'burger' />
+                {isSignUpForm ? <SignUp /> : <LogIn /> }
             </Box>
         </Offcanvas>
     )

@@ -122,7 +122,10 @@ const Home = (props) => {
                                     </Typography>
                                     {!token && 
                                         <Button                                         
-                                            sx = {{mt : 5, width : 200}} 
+                                            sx = {{
+                                                mt : 5, 
+                                                width : 200,
+                                                fontFamily : 'Righteous, cursive'}} 
                                             variant = 'contained' 
                                             className = {classes.register}
                                             color = 'yellowish'

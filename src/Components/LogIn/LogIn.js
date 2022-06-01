@@ -1,16 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { TextField, Container, Button, Paper, Typography } from "@mui/material";
+import { TextField, Container, Button, Box, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { signInWithEmailAndPassword, updateEmail, updatePassword } from "firebase/auth";
 import { yupResolver } from '@hookform/resolvers/yup'
 import { auth } from "../../firebase-setup";
 import * as yup from 'yup';
-import { ThemeProvider } from '@mui/material/styles'
 import { useNavigate } from 'react-router-dom'
 
 //  ------------- importing from other files ----------------
-import { userFormTheme, mainColors } from "../../theme/mui-theme";
-import { userFormActions } from "../../Store/reducer/userForm";
 import { dialogActions } from '../../Store/reducer/dialog';
 import { securityActions } from '../../Store/reducer/security';
 
@@ -67,41 +64,14 @@ const LogIn = props => {
         <Container maxWidth = 'xs' className = 'mt-3'>
             {!props.reAuth ?
                 // login form to log in
-                <Paper elevation = {2} sx = {{backgroundColor : '#110f12'}}>
+                <Box>
                     <form className = 'p-3' onSubmit = {handleSubmit(submitForm)}>
-                        <Typography className = 'text-light text-center' variant = 'h5'>Log In</Typography>
-                        <ThemeProvider theme = {userFormTheme}>
-                            <TextField fullWidth 
-                                error = {Boolean(errors.emailAddress)}
-                                helperText = {errors.emailAddress?.message}
-                                className = 'mb-3 noInputBorder'
-                                type = 'text'
-                                label = 'Email Address'
-                                {...register('emailAddress')}
-                                size = 'small'         
-                                variant = 'standard'           
-                            />
-                            <TextField fullWidth 
-                                error = {Boolean(errors.password)}
-                                helperText = {errors.password?.message}
-                                className = 'mb-3 noInputBorder'
-                                type = 'password'
-                                label = 'Password'
-                                {...register('password')}
-                                size = 'small'     
-                                variant = 'standard'               
-                            />
-                        </ThemeProvider>
-                        <Button className = 'mb-3' type = 'submit' variant = 'contained' color = 'error'>
-                            Log In
-                        </Button>
-                    </form>
-                </Paper>
-            :
-            // this log in form display when user wants to change the security of its account like changing email and password
-                <form className = 'p-3' onSubmit = {handleSubmit(reSubmitForm)}>
-                    <Typography className = 'text-dark text-center' variant = 'h5'>Log In</Typography>
-                    <ThemeProvider theme = {mainColors}>
+                        <Typography 
+                            className = 'text-center' 
+                            variant = 'h5'
+                            sx = {{fontFamily : 'Righteous, cursive'}}>
+                            LOG IN
+                        </Typography>
                         <TextField fullWidth 
                             error = {Boolean(errors.emailAddress)}
                             helperText = {errors.emailAddress?.message}
@@ -110,9 +80,8 @@ const LogIn = props => {
                             label = 'Email Address'
                             {...register('emailAddress')}
                             size = 'small'         
-                            variant = 'standard'  
-                            color = 'blackish'         
-                        />
+                            variant = 'standard'   
+                            color = 'blackish' />
                         <TextField fullWidth 
                             error = {Boolean(errors.password)}
                             helperText = {errors.password?.message}
@@ -121,19 +90,62 @@ const LogIn = props => {
                             label = 'Password'
                             {...register('password')}
                             size = 'small'     
-                            variant = 'standard' 
-                            color = 'blackish'              
-                        />
-                            <Button 
-                                sx = {{borderRadius : 0, color : '#f9b826'}}
-                                className = 'mb-3' 
-                                type = 'submit' 
-                                variant = 'contained' 
-                                color = 'blackish'
-                            >
-                                Log In
-                            </Button>
-                    </ThemeProvider>
+                            variant = 'standard'
+                            color = 'blackish'/>
+                        <Button 
+                            className = 'mb-3' 
+                            type = 'submit' 
+                            variant = 'contained' 
+                            color = 'blackish'
+                            sx = {{
+                                borderRadius : 0, 
+                                color : '#f9b826',
+                                fontFamily : 'Montserrat Alternates, sans-serif'}}>
+                            Log In
+                        </Button>
+                    </form>
+                </Box>
+            :
+            // this log in form display when user wants to change the security of its account like changing email and password
+                <form className = 'p-3' onSubmit = {handleSubmit(reSubmitForm)}>
+                    <Typography 
+                        className = 'text-center' 
+                        variant = 'h5'
+                        sx = {{fontFamily : 'Righteous, cursive'}}>
+                        LOG IN
+                    </Typography>
+                    <TextField fullWidth 
+                        error = {Boolean(errors.emailAddress)}
+                        helperText = {errors.emailAddress?.message}
+                        className = 'mb-3 noInputBorder'
+                        type = 'text'
+                        label = 'Email Address'
+                        {...register('emailAddress')}
+                        size = 'small'         
+                        variant = 'standard'  
+                        color = 'blackish'         
+                    />
+                    <TextField fullWidth 
+                        error = {Boolean(errors.password)}
+                        helperText = {errors.password?.message}
+                        className = 'mb-3 noInputBorder'
+                        type = 'password'
+                        label = 'Password'
+                        {...register('password')}
+                        size = 'small'     
+                        variant = 'standard' 
+                        color = 'blackish'/>
+                    <Button 
+                        sx = {{
+                            borderRadius : 0, 
+                            color : '#f9b826',
+                            fontFamily : 'Montserrat Alternates, sans-serif'}}
+                        className = 'mb-3' 
+                        type = 'submit' 
+                        variant = 'contained' 
+                        color = 'blackish'>
+                        Log In
+                    </Button>
                 </form>
             }
         </Container>

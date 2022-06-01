@@ -62,14 +62,17 @@ const FullDialogs = (props) => {
                             {props.totalItems ?
                                 <Stack 
                                     direction = 'row' 
-                                    spacing = {4}
+                                    spacing = {7}
                                     alignItems = 'center'>
-                                    <Typography 
-                                        variant = 'h6'
-                                        sx = {{fontFamily : 'Comfortaa, cursive', color : '#f9b826'}}>
-                                        Total Price ( {props.totalItems} {props.totalItems === 1 ? 'item' : 'items'} )
-                                    </Typography>
                                     <Stack direction = 'row' alignItems = 'center'>
+                                        <Typography 
+                                            variant = 'h6'
+                                            sx = {{
+                                                mr:1, 
+                                                fontFamily : 'Comfortaa, cursive', 
+                                                color : '#f9b826'}}>
+                                            Total Price ( {props.totalItems} {props.totalItems === 1 ? 'item' : 'items'} )
+                                        </Typography>
                                         {switchCurr ?
                                             <FontAwesomeIcon 
                                                 icon = {faIndianRupeeSign}

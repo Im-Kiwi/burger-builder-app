@@ -268,7 +268,7 @@ const NavigationBar = () => {
                                         size = 'small' 
                                         onClick = {openLogInHandler} 
                                         className = {classes.signIn}>
-                                        Sign In
+                                        Log In
                                     </Button>                            
                                 </motion.div>
                             }
