@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Modal } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate, Link } from 'react-router-dom'
-import { Box, Grid, Divider, Typography, Stack, Fab, ThemeProvider } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
+import { Box, Grid, Divider, Typography, Stack, Fab } from '@mui/material'
 import { CloseRounded } from '@mui/icons-material'
 import { v4 as uniqueId } from 'uuid'
 import { collection, where, query, getDocs, deleteDoc, updateDoc, doc } from 'firebase/firestore'
@@ -29,7 +29,6 @@ const YourOrders = () => {
     useEffect(() => {
         dispatch(dialogActions.updateUserProfModal(true))
     }, [])
-
 
     // to deleting the orders from database which are older and delivered
     useEffect(() => {

@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, Typography, Button } from '@mui/material'
+import { motion } from 'framer-motion'
 
 // -------- importing from other files -------------
 import AddAddress from '../../Components/AddAddress/AddAddress'
@@ -26,12 +27,14 @@ const DeliveryAddress = (props) => {
     }
 
     return (
-        <Box 
+        <Box
+            component = {motion.div}
+            initial = {{x:200, opacity:0}} 
+            animate = {{x:0, opacity:1}}
             sx = {{mt : 5, position : 'relative'}} 
             display = 'flex' 
             flexDirection = 'column' 
-            alignItems = 'center'
-        >
+            alignItems = 'center'>
             <Typography variant = 'h5' sx = {{mb:3, color : '#110f12', fontFamily : 'DM Serif Text, serif'}}>
                 Select Your delivery address
             </Typography>

@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { collection, addDoc, arrayUnion, setDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPesoSign, faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons'
+import { motion } from 'framer-motion'
 
 // ---------- importing from other files -----------
 import { db } from '../../firebase-setup.js'
@@ -106,7 +107,13 @@ const Payment = () => {
     return (
         <>
             {!paymentSuccess ?
-                <Grid container justifyContent = 'center' sx = {{mt : 5}}>
+                <Grid 
+                    container 
+                    component = {motion.div}
+                    initial = {{x:200, opacity:0}}
+                    animate = {{x:0, opacity:1}}
+                    justifyContent = 'center' 
+                    sx = {{mt : 5}}>
                     <Grid item xs = {6}>
                         <Box 
                             sx = {{ 
@@ -326,6 +333,9 @@ const Payment = () => {
             </Grid>
             : 
             <Box 
+                component = {motion.div}
+                initial = {{x:200, opacity:0}}
+                animate = {{x:0, opacity:1}}
                 sx = {{mt:10}} 
                 display = 'flex' 
                 justifyContent = 'center' 

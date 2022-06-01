@@ -83,7 +83,7 @@ const AboutUs = (props) => {
                             <Typography 
                                 className = 'text-center'
                                 variant = 'body1' 
-                                sx = {{fontSize : '2.5rem', fontFamily : 'Abril Fatface, cursive'}}>
+                                sx = {{fontSize : '2.7rem', fontFamily : 'Passion One, cursive'}}>
                                 Following your heart will always lead you to clarish burgers 
                             </Typography>   
                         </Container>
