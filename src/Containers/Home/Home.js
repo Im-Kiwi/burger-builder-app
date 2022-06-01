@@ -3,6 +3,8 @@ import { useDispatch } from 'react-redux'
 import { Outlet, useLocation } from 'react-router-dom';
 import { Image } from 'react-bootstrap'
 import { motion } from 'framer-motion'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faQuoteLeft } from '@fortawesome/free-solid-svg-icons';
 
 // ------------- importing from files -------------------
 import classes from './Home.module.css'
@@ -82,7 +84,19 @@ const Home = (props) => {
                                 animate = {{x : 0,}}
                                 exit = {{x : '-100vw'}}
                                 transition = {{duration : 0.7, type : 'spring'}}>
-                                <Image fluid src = {Burger} />                                          
+                                <Stack 
+                                    direction = 'column'
+                                    alignItems = 'center'>
+                                    <Image fluid src = {Burger} style = {{maxWidth : 700}} />  
+                                    <Typography 
+                                        className = 'text-center'
+                                        variant = 'h5'
+                                        sx = {{mt:2, fontFamily : 'Titan One, cursive'}}>                                        
+                                        "A burger without a cheese
+                                        <br />
+                                        is like a hug without a squeeze"                                        
+                                    </Typography>
+                                </Stack>
                             </motion.div>                                     
                         </Stack>
                     </Grid>
@@ -120,6 +134,16 @@ const Home = (props) => {
                                             fontSize : '5rem'}}>
                                         BURGERS
                                     </Typography>
+                                    <Typography
+                                        variant = 'body1'
+                                        sx = {{
+                                            color : '#f9b826',
+                                            fontSize : '1.7rem',
+                                            fontFamily : 'Amatic SC, cursive'}}>
+                                        Feeling Hungry ? 
+                                        <br />
+                                        Build your perfect burger and get it within 20 min
+                                    </Typography>
                                     {!token && 
                                         <Button                                         
                                             sx = {{
@@ -131,7 +155,7 @@ const Home = (props) => {
                                             color = 'yellowish'
                                             onClick = {dialogHandler}>       
                                                 Sign Up
-                                        </Button>
+                                        </Button>                                            
                                     } 
                                 </Box>
                             </motion.div>

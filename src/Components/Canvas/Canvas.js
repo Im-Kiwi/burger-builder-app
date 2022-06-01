@@ -24,7 +24,7 @@ const Canvas = () => {
                 <Image 
                     style = {{
                         position : 'absolute', 
-                        opacity : 0.23}} 
+                        opacity : 0.2}} 
                     src = {BackgroundBurger} 
                     fluid 
                     alt = 'burger' />
