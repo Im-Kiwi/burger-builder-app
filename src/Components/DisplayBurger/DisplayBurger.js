@@ -55,7 +55,10 @@ const DisplayBurger = (props) => {
             alignItems = 'center'
             sx = {{mt : break_550 ? 1 : 5}}
             spacing = {break_550 ? 1 : 10}>
-            <Grid item xs = {12} display = 'flex' justifyContent = 'center' alignItems = 'center'>
+            <Grid item xs = {12} 
+                display = 'flex' 
+                justifyContent = 'center' 
+                alignItems = 'center'>
                 <Stack 
                     component = {motion.div}
                     variants = {animation}

@@ -6,6 +6,7 @@ import { getDoc, doc, addDoc, collection } from 'firebase/firestore'
 import { motion } from 'framer-motion'
 
 // ------------ importing from files -----------------
+import { styles } from './styles'
 import { db } from '../../firebase-setup'
 import Controls from './Controls/Controls'
 import { ingredientsActions } from '../../Store/reducer/ingredients'
@@ -16,6 +17,7 @@ import { animationActions } from '../../Store/reducer/animation'
 import { LettuceIco, CheeseIco, MeatIco, TomatoIco, OnionIco, BaconIco } from '../../path-to-assets/pathToImages'
 
 const BurgerController = (props) => {
+    const classes = styles()
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { pathname } = useLocation()
@@ -100,139 +102,119 @@ const BurgerController = (props) => {
 
 
     return (
-        <Stack className = 'h-100' direction = 'column' justifyContent = 'center' alignItems = 'center'>
-            <motion.div
-                initial = {!props.noTransition && {x : '100vw'}}
-                animate = {!props.noTransition && {x : 0}}
-                exit = {!props.noTransition && {x : '100vw'}}
-                transition = {!props.noTransition && {duration : 0.7, type : 'spring'}}
-            >
-                <Typography 
-                    variant = 'h6' 
-                    className = 'text-center mb-2'
-                    sx = {{color : '#f9b826', fontFamily : 'DM Serif Text, serif'}}>
-                    Add Ingredients
-                </Typography>
-                <Stack spacing = {2} alignItems = 'center'>                   
-                    <Controls 
-                        ingredient = {ingredients.Lettuce} 
-                        addIngredient = {addIngredient} 
-                        removeIngredient = {removeIngredient}
-                        icon = {LettuceIco} />
-                    <Controls 
-                        ingredient = {ingredients.Cheese} 
-                        addIngredient = {addIngredient} 
-                        removeIngredient = {removeIngredient}
-                        icon = {CheeseIco} />
-                    <Controls 
-                        ingredient = {ingredients.Onion} 
-                        addIngredient = {addIngredient} 
-                        removeIngredient = {removeIngredient}
-                        icon = {OnionIco} />
-                    <Controls 
-                        ingredient = {ingredients.Tomato} 
-                        addIngredient = {addIngredient} 
-                        removeIngredient = {removeIngredient}
-                        icon = {TomatoIco} />
-                    <Controls 
-                        ingredient = {ingredients.Meat} 
-                        addIngredient = {addIngredient} 
-                        removeIngredient = {removeIngredient}
-                        icon = {MeatIco} />
-                    <Controls 
-                        ingredient = {ingredients.Bacon} 
-                        addIngredient = {addIngredient} 
-                        removeIngredient = {removeIngredient}
-                        icon = {BaconIco} /> 
-                    <Box>
-                        <Typography variant = 'h6' sx = {{color : '#f9b826', fontFamily : 'DM Serif Text, serif'}}>
-                            Include Extras
+        <Stack 
+            component = {motion.div}
+            initial = {!props.noTransition && {x : '100vw'}}
+            animate = {!props.noTransition && {x : 0}}
+            exit = {!props.noTransition && {x : '100vw'}}
+            transition = {!props.noTransition && {duration : 0.7, type : 'spring'}}
+            className = 'h-100' 
+            direction = 'column' 
+            justifyContent = 'center' 
+            alignItems = 'center'>            
+            <Typography 
+                variant = 'h6' 
+                className = 'text-center mb-2'
+                sx = {{color : '#f9b826', fontFamily : 'DM Serif Text, serif'}}>
+                Add Ingredients
+            </Typography>
+            <Stack spacing = {2} alignItems = 'center'>                   
+                <Controls 
+                    ingredient = {ingredients.Lettuce} 
+                    addIngredient = {addIngredient} 
+                    removeIngredient = {removeIngredient}
+                    icon = {LettuceIco} />
+                <Controls 
+                    ingredient = {ingredients.Cheese} 
+                    addIngredient = {addIngredient} 
+                    removeIngredient = {removeIngredient}
+                    icon = {CheeseIco} />
+                <Controls 
+                    ingredient = {ingredients.Onion} 
+                    addIngredient = {addIngredient} 
+                    removeIngredient = {removeIngredient}
+                    icon = {OnionIco} />
+                <Controls 
+                    ingredient = {ingredients.Tomato} 
+                    addIngredient = {addIngredient} 
+                    removeIngredient = {removeIngredient}
+                    icon = {TomatoIco} />
+                <Controls 
+                    ingredient = {ingredients.Meat} 
+                    addIngredient = {addIngredient} 
+                    removeIngredient = {removeIngredient}
+                    icon = {MeatIco} />
+                <Controls 
+                    ingredient = {ingredients.Bacon} 
+                    addIngredient = {addIngredient} 
+                    removeIngredient = {removeIngredient}
+                    icon = {BaconIco} /> 
+                <Box>
+                    <Typography 
+                        variant = 'h6' 
+                        sx = {{color : '#f9b826', fontFamily : 'DM Serif Text, serif'}}>
+                        Include Extras
+                    </Typography>                                                             
+                    <Stack direction = 'row' alignItems = 'center'>
+                        <Checkbox
+                            className = {classes.checkbox} 
+                            disabled = {!ingredients.totalPrice && true}
+                            checked = {ingredients.Coke.status} 
+                            onChange = {() => checkBoxHandler(ingredients.Coke.name)} />
+                        <Typography 
+                            variant = 'body1'
+                            className = {classes.extraText}
+                            sx = {{opacity : !ingredients.totalPrice ? 0.3 : 1}}>
+                            Coke
                         </Typography>                                                             
-                        <Stack direction = 'row' alignItems = 'center'>
-                            <Checkbox 
-                                disabled = {!ingredients.totalPrice && true}
-                                checked = {ingredients.Coke.status} 
-                                onChange = {() => checkBoxHandler(ingredients.Coke.name)} 
-                                sx = {{'&.MuiCheckbox-root' : {
-                                    color : '#fef9ef',
-                                    '&.Mui-disabled' : {
-                                        opacity : 0.3}}}} />
-                            <Typography 
-                                variant = 'body1'
-                                sx = {{
-                                    color : '#f9b826', 
-                                    fontFamily : 'Comfortaa, cursive',
-                                    opacity : !ingredients.totalPrice ? 0.3 : 1}}>
-                                Coke
-                            </Typography>                                                             
-                        </Stack>               
-                        <Stack direction = 'row' alignItems = 'center'>
-                            <Checkbox 
-                                checked = {ingredients.FrenchFries.status} 
-                                disabled = {!ingredients.totalPrice && true}
-                                onChange = {() => checkBoxHandler(ingredients.FrenchFries.name)}
-                                sx = {{'&.MuiCheckbox-root' : {
-                                    color : '#fef9ef',
-                                    '&.Mui-disabled' : {
-                                        opacity : 0.3}}}} />
-                            <Typography
-                                variant = 'body1' 
-                                sx = {{
-                                    color : '#f9b826', 
-                                    fontFamily : 'Comfortaa, cursive',
-                                    opacity : !ingredients.totalPrice ? 0.3 : 1}}>
-                                French Fries
-                            </Typography>                                                             
-                        </Stack>
-                    </Box>
-                    <Box 
-                        className = 'mt-5' 
-                        display = 'flex' 
-                        flexDirection = {break_330 ? 'column' : 'row'}
-                        gap = {1}>
-                        <Button 
-                            onClick = {resetHandler} 
-                            sx = {{
-                                borderRadius : 0, 
-                                fontFamily : 'DM Serif Text, serif'}} 
-                            variant = 'outlined' 
-                            size = {break_900 || break_550 ? 'medium' : 'large' } 
-                            color = 'yellowish'>
-                            Reset
-                        </Button>
-                        <Button 
-                            sx = {{
-                                borderRadius : 0, 
-                                fontFamily : 'DM Serif Text, serif',
-                                '&.Mui-disabled' : {
-                                    color : '#110f12',
-                                    backgroundColor : '#f9b826',
-                                    opacity : 0.4}}}
-                            variant = 'contained'
-                            disabled = {ingredients.totalPrice === 0 ? true : false}
-                            size = {break_900 || break_550 ? 'medium' : 'large' }
-                            color = 'yellowish'
-                            onClick = {buyHandler}>
-                            Buy Now
-                        </Button>
-                        <Button 
-                            sx = {{
-                                borderRadius : 0, 
-                                fontFamily : 'DM Serif Text, serif',
-                                '&.Mui-disabled' : {
-                                    color : '#110f12',
-                                    backgroundColor : '#f9b826',
-                                    opacity : 0.4}}} 
-                            variant = 'contained' 
-                            disabled = {ingredients.totalPrice === 0 ? true : false}
-                            size = {break_900 || break_550 ? 'medium' : 'large' }
-                            color = 'yellowish'
-                            onClick = {addToCartHandler}>
-                            Add to Cart
-                        </Button>
-                    </Box>
-                </Stack>
-            </motion.div>
+                    </Stack>               
+                    <Stack direction = 'row' alignItems = 'center'>
+                        <Checkbox
+                            className = {classes.checkbox} 
+                            checked = {ingredients.FrenchFries.status} 
+                            disabled = {!ingredients.totalPrice && true}
+                            onChange = {() => checkBoxHandler(ingredients.FrenchFries.name)} />
+                        <Typography
+                            variant = 'body1' 
+                            className = {classes.extraText}
+                            sx = {{opacity : !ingredients.totalPrice ? 0.3 : 1}}>
+                            French Fries
+                        </Typography>                     
+                    </Stack>
+                </Box>
+                <Box 
+                    className = 'mt-5' 
+                    display = 'flex' 
+                    flexDirection = {break_330 ? 'column' : 'row'}
+                    gap = {1}>
+                    <Button 
+                        className = {classes.button}
+                        onClick = {resetHandler} 
+                        variant = 'outlined' 
+                        size = {break_900 || break_550 ? 'medium' : 'large' } 
+                        color = 'yellowish'>
+                        Reset
+                    </Button>
+                    <Button 
+                        className = {[classes.button, classes.disableButton].join(' ')}
+                        variant = 'contained'
+                        disabled = {ingredients.totalPrice === 0 ? true : false}
+                        size = {break_900 || break_550 ? 'medium' : 'large' }
+                        color = 'yellowish'
+                        onClick = {buyHandler}>
+                        Buy Now
+                    </Button>
+                    <Button 
+                        className = {[classes.button, classes.disableButton].join(' ')}
+                        variant = 'contained' 
+                        disabled = {ingredients.totalPrice === 0 ? true : false}
+                        size = {break_900 || break_550 ? 'medium' : 'large' }
+                        color = 'yellowish'
+                        onClick = {addToCartHandler}>
+                        Add to Cart
+                    </Button>
+                </Box>
+            </Stack>
         </Stack>
     )
 }

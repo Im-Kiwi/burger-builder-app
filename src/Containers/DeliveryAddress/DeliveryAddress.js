@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { Box, Typography, Button } from '@mui/material'
+import { Box, Typography, useMediaQuery } from '@mui/material'
 import { motion } from 'framer-motion'
 
 // -------- importing from other files -------------
@@ -14,6 +14,9 @@ const DeliveryAddress = (props) => {
     // fetching values from the redux store
     const editZone = useSelector(state => state.deliveryAddresses.editZone)
     const addressStore = useSelector(state => state.deliveryAddresses.addressStore)
+
+    // creating responsive breakpoints
+    const break_550 = useMediaQuery('(max-width : 550px)')
     
     // to open address form
     const openAddressForm = () => {
@@ -31,16 +34,13 @@ const DeliveryAddress = (props) => {
             component = {motion.div}
             initial = {{x: props.manageAddressFlag ? 0 : 200, opacity:props.manageAddressFlag ? 1 : 0}} 
             animate = {{x:0, opacity:1}}
-            sx = {{mt : 5, position : 'relative'}} 
+            sx = {{
+                mt : break_550 ? 1 : 5, 
+                position : 'relative'}}
             display = 'flex' 
             flexDirection = 'column' 
             alignItems = 'center'>
-            <Typography variant = 'h5' sx = {{mb:3, color : '#110f12', fontFamily : 'DM Serif Text, serif'}}>
-                {props.manageAddressFlag ? 
-                    'Manage your addresses' :
-                    'Select Your delivery address'
-                }
-            </Typography>
+            
             <DisplayAddresses 
                 openForm = {openAddressForm} 
                 manageAddressFlag = {props.manageAddressFlag} />            

@@ -1,20 +1,24 @@
-import { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
-import { Box, Container, Grid, Paper, Stack, Typography, Chip, Button, IconButton } from '@mui/material'
-import { Close, Delete, DeleteOutline } from '@mui/icons-material'
+import { Box, Container, Stack, Typography, useMediaQuery, Divider } from '@mui/material'
 import { Image } from 'react-bootstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
-import { getDocs, query, where, doc, collection, deleteDoc } from 'firebase/firestore'
-import { useSelector, useDispatch } from 'react-redux'
+import { doc, deleteDoc } from 'firebase/firestore'
+import { useSelector } from 'react-redux'
 import { motion, AnimatePresence } from 'framer-motion'
 
 // ------ importing from other files --------
+import { styles } from './styles'
+import { cartBreakpoints } from '../../theme/mui-theme'
 import { db } from '../../firebase-setup'
 import OrderItem from '../OrderItem/OrderItem'
 import { EmptyCart } from '../../path-to-assets/pathToImages'
 
 const Cart = () => {
+    const classes = styles()
+
+    // creating breakpoints
+    const break_940 = useMediaQuery('(max-width : 940px)')
+    const break_700 = useMediaQuery('(max-width : 700px')
+    const break_500 = useMediaQuery('(max-width : 500px)')
+    const break_420 = useMediaQuery('(max-width : 420px)')
 
     // getting values from the redux store
     const cartItems = useSelector(state => state.cart.cartItems)
@@ -32,13 +36,10 @@ const Cart = () => {
         <Container>
             {cartItems.length === 0 &&
                 <Stack
-                    initial = {{opacity : 0}}
-                    animate = {{opacity : 1}}
+                    className = {classes.emptyCart}
                     component = {motion.div}
-                    sx = {{
-                        mt:12,
-                        width : '100%',
-                        height : '100%'}} 
+                    initial = {{opacity : 0}}
+                    animate = {{opacity : 1}}                    
                     alignItems = 'center'
                     justifyContent = 'center'
                     spacing = {5}>
@@ -54,26 +55,30 @@ const Cart = () => {
                     </Typography>
                 </Stack>
             }
-            <Box sx = {{mt : 12,  height: '650px', overflowY : 'auto'}}>
-                <Box position = 'relative' sx = {{mt:6}} >
+            <Box className = {classes.cart}>
+                <Box position = 'relative' sx = {{mt: break_500 ? 15:6}}>
                     <AnimatePresence>
                         {cartItems.map((item) => {
                             return (
-                                <motion.div 
-                                    layout
-                                    key = {item.id}
-                                    exit = {{
-                                        x : -100, 
-                                        opacity : 0,
-                                        transition : {
-                                            ease : 'easeOut'
-                                        }}}
-                                    style = {{marginBottom : 100}}>
-                                    <OrderItem 
-                                        ing = {item} 
-                                        thisIsCart = {true}
-                                        deleteCartItemHandler = {deleteCartItemHandler} />                                    
-                                </motion.div>
+                                <div key = {item.id}>
+                                    <motion.div 
+                                        layout
+                                        exit = {{
+                                            x : -100, 
+                                            opacity : 0,
+                                            transition : {ease : 'easeOut'}
+                                        }}
+                                        style = {{marginBottom : 100}}>
+                                        <OrderItem 
+                                            ing = {item} 
+                                            thisIsCart = {true}
+                                            deleteCartItemHandler = {deleteCartItemHandler}
+                                            firstBreak = {break_940}
+                                            secondBreak = {break_700}
+                                            thirdBreak = {break_420} />                                    
+                                    </motion.div>
+                                    {break_940 && <Divider sx = {{mt:-9, mb:6}} />}
+                                </div>
                             )
                         })}
                     </AnimatePresence>

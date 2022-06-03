@@ -4,6 +4,7 @@ import { Fab } from '@mui/material'
 const useStyle = makeStyles({
 
     both : {
+        zIndex : 20,
         position : 'fixed',
         paddingLeft : 15,
         paddingRight : 15,
@@ -19,6 +20,13 @@ const useStyle = makeStyles({
     },
     next : {
         right : '15%'
+    },
+
+    // --------- responsive ----------
+    '@media (max-width : 550px)' : {
+        both : {
+            bottom : 15
+        }
     }
 
 

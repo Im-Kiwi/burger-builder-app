@@ -3,6 +3,11 @@ import { Paper, Box } from '@mui/material'
 import { CenterFocusStrong } from '@mui/icons-material'
 
 export const addressBox = makeStyles({
+    main : {
+        position : 'absolute',
+        height : '70vh',
+        overflowY : 'auto'
+    },
     addressBox : {
         color : 'inherit', 
         cursor : 'pointer',
@@ -40,6 +45,14 @@ export const addressBox = makeStyles({
             opacity : 0.95
         }
     },
+
+    // ------ responsive ------------
+    '@media (max-width : 550px)' : {
+        main : {
+            height : '60vh'
+        }
+    }
+    
 })
 
 export const CustomPaper = styled(Paper)({

@@ -1,20 +1,21 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, Outlet, useLocation } from 'react-router-dom'
-import { Container, Stepper, Step, StepLabel, Fab } from '@mui/material'
-import { motion, AnimatePresence } from 'framer-motion'
+import { Container, Stepper, Step, StepLabel, Fab, useMediaQuery, Box } from '@mui/material'
+import { motion } from 'framer-motion'
 
 // --------- importing from other files ----------------
 import { stepperActions } from '../../Store/reducer/stepper'
 import useStyle from './style'
-import DeliveryAddress from '../DeliveryAddress/DeliveryAddress'
-import { act } from 'react-dom/test-utils'
 
 const BuyBurger = () => {
     const { pathname } = useLocation()
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const classes = useStyle()
+
+    // creating responsive breakpoints
+    const break_550 = useMediaQuery('(max-width : 550px)')
 
     const activeStep = useSelector(state => state.stepper.activeStep)
     const selectedAddress = useSelector(state => state.orders.deliveryAddress)
@@ -70,7 +71,10 @@ const BuyBurger = () => {
 
     return (
         <Container sx = {{mt : 10}}>
-            <Stepper className='slider' activeStep = {activeStep}>
+            <Stepper 
+                className = 'slider' 
+                activeStep = {activeStep}
+                orientation = {break_550 ? 'vertical' : 'horizontal'}>
                 <Step className = 'text-danger '>
                     <StepLabel>
                         <strong>Mention delivery address</strong>    

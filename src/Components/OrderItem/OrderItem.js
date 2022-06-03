@@ -1,4 +1,4 @@
-import { Grid, Typography, Chip, IconButton} from '@mui/material'
+import { Grid, Typography, Chip, IconButton, useMediaQuery, ThemeProvider, Box} from '@mui/material'
 import { useSelector } from 'react-redux'
 import { DoneRounded } from '@mui/icons-material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -10,15 +10,18 @@ import { useLocation } from 'react-router-dom'
 import Burger from '../Burger/Burger'
 import { styles } from './styles'
 
-const OrderItem = ({ing, thisIsCart, deleteCartItemHandler}) => {
+const OrderItem = ({ing, thisIsCart, deleteCartItemHandler, firstBreak, secondBreak, thirdBreak}) => {
     const classes = styles()
     const { pathname } = useLocation()
 
     const switchCurr = useSelector(state => state.switchCurr.switchCurr)
 
     return (
-        <Grid container alignItems = 'center' spacing = {2}>
-            <Grid item xs = {2} display = 'flex' justifyContent = 'center'>                        
+        <Grid container 
+            alignItems = 'center' 
+            justifyContent = 'center' 
+            spacing = {2}>
+            <Grid item xs = {secondBreak ? 12 : 2} display = 'flex' justifyContent = 'center'>                        
                 <Burger
                     ingredients = {ing} 
                     width = {45} 
@@ -29,14 +32,16 @@ const OrderItem = ({ing, thisIsCart, deleteCartItemHandler}) => {
                     moveLeft = '5%'
                     moveRight = '7%' />
             </Grid>
-            <Grid item container xs = {7}
-                display = 'flex' 
-                flexDirection = 'column' 
+            <Grid item container xs = {secondBreak ? 12 : 7 }
+                display = 'flex'
+                justifyContent = 'center'
                 sx = {{color : '#110f12'}}
                 spacing ={1}>
-                <Grid item container
+                <Grid item container 
+                    xs = {firstBreak? 6 : 12}           
                     display = 'flex'
-                    alignItems = 'center'                     
+                    flexDirection = {thirdBreak ? 'column' : 'row'}
+                    alignItems = {firstBreak? 'flex-start' : 'center'}                    
                     spacing = {2} 
                     sx = {{mb:1}}>
                     <Grid item xs = {pathname === '/buy/order-summary' ? 3 : 2}>
@@ -48,7 +53,11 @@ const OrderItem = ({ing, thisIsCart, deleteCartItemHandler}) => {
                             <strong>Ingredients:</strong> 
                         </Typography>
                     </Grid>
-                    <Grid item xs = {8} display = 'flex' gap = {1}>
+                    <Grid item xs = {8} 
+                        display = 'flex'
+                        flexDirection = {firstBreak? 'column' : 'row'}
+                        alignItems = 'flex-end' 
+                        gap = {1}>
                         <Chip
                             className = {classes.ingredientChip}                                     
                             label = {`${ing.Lettuce.name} ${ing.Lettuce.qty}`} 
@@ -76,8 +85,10 @@ const OrderItem = ({ing, thisIsCart, deleteCartItemHandler}) => {
                     </Grid>
                 </Grid>
                 <Grid item container
-                    display = 'flex'                     
-                    alignItems = 'center'
+                    xs = {firstBreak? 6 : 12}
+                    display = 'flex'
+                    flexDirection = {thirdBreak ? 'column' : 'row'}                     
+                    alignItems = {firstBreak? 'flex-start' : 'center'}
                     spacing = {2}>
                     <Grid item xs = {pathname === '/buy/order-summary' ? 3 : 2}>
                         <Typography
@@ -88,6 +99,8 @@ const OrderItem = ({ing, thisIsCart, deleteCartItemHandler}) => {
                     </Grid>
                     <Grid item xs = {9}
                         display = 'flex'
+                        flexDirection = {firstBreak? 'column' : 'row'}
+                        alignItems = 'flex-end'
                         gap = {1}>
                         {ing.Coke.status &&
                             <Chip
@@ -107,7 +120,8 @@ const OrderItem = ({ing, thisIsCart, deleteCartItemHandler}) => {
                 </Grid>
             </Grid>
             {thisIsCart &&
-                <Grid xs = {1} item 
+                <Grid item
+                    xs = {secondBreak ? 3 : 1}  
                     display = 'flex' 
                     justifyContent = 'center'
                     alignItems = 'center'>
@@ -130,10 +144,13 @@ const OrderItem = ({ing, thisIsCart, deleteCartItemHandler}) => {
                 </Grid>
             }
             {thisIsCart && 
-                <Grid xs = {1} item display = 'flex' justifyContent = 'center'>
-                        <motion.div
-                            whileTap = {{transform : 'translateY(5px)'}}
-                            transition = {{ease : 'easeOut', duration : 0.1}}>
+                <Grid item
+                    xs = {secondBreak ? 3 : 1}
+                    component = {motion.div} 
+                    whileTap = {{transform : 'translateY(5px)'}}
+                    transition = {{ease : 'easeOut', duration : 0.1}}
+                    display = 'flex' 
+                    justifyContent = 'center'>                        
                             <IconButton
                                 onClick = {() => deleteCartItemHandler(ing.id)} 
                                 size = 'small'>
@@ -141,7 +158,6 @@ const OrderItem = ({ing, thisIsCart, deleteCartItemHandler}) => {
                                     style = {{color : '#011627', fontSize : '1.2rem'}}
                                     icon = {faTrashCan} />                
                             </IconButton>
-                        </motion.div>
                 </Grid>                    
             }
         </Grid>
