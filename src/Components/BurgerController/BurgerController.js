@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from  'react-router-dom'
-import { Typography, Stack, Box, Checkbox, Button } from '@mui/material'
+import { Typography, Stack, Box, Checkbox, Button, useMediaQuery } from '@mui/material'
 import { getDoc, doc, addDoc, collection } from 'firebase/firestore'
 import { motion } from 'framer-motion'
 
@@ -19,6 +19,11 @@ const BurgerController = (props) => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { pathname } = useLocation()
+
+    // creating css breakpoints
+    const break_900 = useMediaQuery('(min-width : 900px) and (max-width : 938px)')
+    const break_550 = useMediaQuery('(max-width : 550px)')
+    const break_330 = useMediaQuery('(max-width : 330px)')
 
     const [basePrice, setBasePrice] = useState({}) // It contains the base prices of the ingredients
 
@@ -139,7 +144,6 @@ const BurgerController = (props) => {
                         addIngredient = {addIngredient} 
                         removeIngredient = {removeIngredient}
                         icon = {BaconIco} /> 
-
                     <Box>
                         <Typography variant = 'h6' sx = {{color : '#f9b826', fontFamily : 'DM Serif Text, serif'}}>
                             Include Extras
@@ -181,23 +185,24 @@ const BurgerController = (props) => {
                             </Typography>                                                             
                         </Stack>
                     </Box>
-
-                    <Box className = 'mt-5'>
+                    <Box 
+                        className = 'mt-5' 
+                        display = 'flex' 
+                        flexDirection = {break_330 ? 'column' : 'row'}
+                        gap = {1}>
                         <Button 
                             onClick = {resetHandler} 
                             sx = {{
                                 borderRadius : 0, 
-                                mr : 2, 
                                 fontFamily : 'DM Serif Text, serif'}} 
                             variant = 'outlined' 
-                            size = 'large' 
+                            size = {break_900 || break_550 ? 'medium' : 'large' } 
                             color = 'yellowish'>
                             Reset
                         </Button>
                         <Button 
                             sx = {{
                                 borderRadius : 0, 
-                                mr : 2, 
                                 fontFamily : 'DM Serif Text, serif',
                                 '&.Mui-disabled' : {
                                     color : '#110f12',
@@ -205,7 +210,7 @@ const BurgerController = (props) => {
                                     opacity : 0.4}}}
                             variant = 'contained'
                             disabled = {ingredients.totalPrice === 0 ? true : false}
-                            size = 'large' 
+                            size = {break_900 || break_550 ? 'medium' : 'large' }
                             color = 'yellowish'
                             onClick = {buyHandler}>
                             Buy Now
@@ -220,7 +225,7 @@ const BurgerController = (props) => {
                                     opacity : 0.4}}} 
                             variant = 'contained' 
                             disabled = {ingredients.totalPrice === 0 ? true : false}
-                            size = 'large' 
+                            size = {break_900 || break_550 ? 'medium' : 'large' }
                             color = 'yellowish'
                             onClick = {addToCartHandler}>
                             Add to Cart

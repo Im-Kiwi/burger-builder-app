@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import { Stack, Typography, Grid, Box } from '@mui/material'
+import { Stack, Typography, Grid, useMediaQuery } from '@mui/material'
 import { motion } from 'framer-motion'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPesoSign, faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons'
@@ -14,6 +14,10 @@ const DisplayBurger = (props) => {
     const ingredients = useSelector(state => state.ingredients) 
     const totalPrice = useSelector(state => state.ingredients.totalPrice)
 
+    // creating css breakpoints
+    const break_550 = useMediaQuery('(max-width : 550px)')
+
+    // using custom hook
     const [switchCurr, switchCurrHandler] = useSwitchCurrency()
     
     let convertPrice
@@ -48,62 +52,64 @@ const DisplayBurger = (props) => {
             position = 'absolute'
             container
             justifyContent = 'center'
-            sx = {{mt : 5}}
-            spacing = {10}>
-            <Grid item xs = {12} display = 'flex' justifyContent = 'center'>
+            alignItems = 'center'
+            sx = {{mt : break_550 ? 1 : 5}}
+            spacing = {break_550 ? 1 : 10}>
+            <Grid item xs = {12} display = 'flex' justifyContent = 'center' alignItems = 'center'>
                 <Stack 
-                    sx = {{height : 500}} 
-                    direction = 'row'  
-                    alignItems = 'flex-end'>
-                    <motion.div
-                        variants = {animation}
-                        initial = 'initial'
-                        animate = 'animate'
-                        exit = 'exit'>
-                        <Burger 
-                            ingredients = {ingredients} 
-                            width = '200px'
-                            plateWidth = '650px' 
-                            cokeWidth = {250}
-                            friesWidth = {250}/>                
-                    </motion.div>
-                </Stack>
-            </Grid>
-            <Grid item xs = {12} 
-                display = 'flex' 
-                flexDirection = 'column' 
-                alignItems = 'center'>
-                <motion.div
+                    component = {motion.div}
                     variants = {animation}
                     initial = 'initial'
                     animate = 'animate'
-                    exit = 'exit'>
-                    <Stack 
-                        direction = 'row' 
-                        sx = {{mb:2}} 
-                        spacing = {1} 
-                        justifyContent = 'center' 
-                        alignItems = 'center'>
-                        <FontAwesomeIcon  
-                            icon = {switchCurr ? faIndianRupeeSign : faPesoSign}
-                            style = {{
-                                color : '#110f12',
-                                fontSize : '1.3rem'
-                            }} />
-                        <Typography 
-                            variant = 'body1'
-                            sx={{
-                                color : '#110f12',
-                                fontSize : '1.5rem'
-                            }}>
-                            {convertPrice}
-                        </Typography>
-                    </Stack>
-                    <SwitchCurrency
-                        switchCurr = {switchCurr}
-                        switchCurrHandler = {switchCurrHandler}
-                        convertPrice = {convertPrice} />                        
-                </motion.div>
+                    exit = 'exit'
+                    sx = {{height : 500}} 
+                    direction = 'row'  
+                    alignItems = 'flex-end'>                    
+                    <Burger 
+                        ingredients = {ingredients} 
+                        width = {break_550 ? '150px' : '200px'}
+                        plateWidth = '650px' 
+                        cokeWidth = {break_550 ? 180 : 250}
+                        friesWidth = {break_550 ? 180 : 250}
+                        moveRight = {break_550 ? '24%' : '16%'}
+                        moveLeft = {break_550 ? '24%' : '16%'} />                
+                </Stack>
+            </Grid>
+            <Grid item xs = {12}
+                component = {motion.div}
+                variants = {animation}
+                initial = 'initial'
+                animate = 'animate'
+                exit = 'exit'
+                display = 'flex' 
+                flexDirection = {break_550 ? 'row' : 'column'} 
+                justifyContent = 'space-evenly'
+                alignItems = 'center'>                
+                <Stack 
+                    direction = 'row' 
+                    sx = {{mb:break_550 ? 0 : 2}} 
+                    spacing = {1} 
+                    justifyContent = 'center' 
+                    alignItems = 'center'>
+                    <FontAwesomeIcon  
+                        icon = {switchCurr ? faIndianRupeeSign : faPesoSign}
+                        style = {{
+                            color : '#110f12',
+                            fontSize : '1.3rem'
+                        }} />
+                    <Typography 
+                        variant = 'body1'
+                        sx={{
+                            color : '#110f12',
+                            fontSize : '1.5rem'
+                        }}>
+                        {convertPrice}
+                    </Typography>
+                </Stack>
+                <SwitchCurrency
+                    switchCurr = {switchCurr}
+                    switchCurrHandler = {switchCurrHandler}
+                    convertPrice = {convertPrice} />                        
             </Grid>
         </Grid>
     )

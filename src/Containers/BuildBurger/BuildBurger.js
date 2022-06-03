@@ -17,23 +17,25 @@ const BuildBurger = (props) => {
     const break_899 = useMediaQuery('(max-width : 899px)')
 
     return (
-        <Container disableGutters maxWidth = 'xl'>
+        <Container disableGutters = {break_899 && true} maxWidth = 'xl'>
             <Box className = {classes.main} sx = {{overflow : 'hidden'}}>
                 <Grid container>
                     <Grid item
-                        id = 'section1' 
                         xs = {12} md = {7}  
                         className = {classes.firstItem}>
                         <motion.div 
                             className = {classes.backgroundCover}
                             initial = {{width : prevPath === '/pricing' || prevPath === '/about-us' ? '100vw' : '100%'}}
                             animate = {{width : '100%'}}></motion.div>
-                        <Box display = 'flex' justifyContent = 'center'>
+                        <Box 
+                            display = 'flex' 
+                            justifyContent = 'center' 
+                            alignItems = 'center'
+                            sx = {{height : '100%'}}>
                             <DisplayBurger noTransition = {props.noTransition} /> {/* burger will display here */}
                         </Box>
                     </Grid>
                     <Grid item
-                        id = 'section2' 
                         xs = {12} md = {5}  
                         className = {classes.secondItem}>
                         <BurgerController noTransition = {props.noTransition} /> {/* this will display the burger controller with the help of which user can add ingredients on the burger */}

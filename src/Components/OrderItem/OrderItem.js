@@ -25,7 +25,9 @@ const OrderItem = ({ing, thisIsCart, deleteCartItemHandler}) => {
                     plateWidth = {120} 
                     cokeWidth = {60}
                     friesWidth = {60}
-                    isOrder = {true} />
+                    isOrder = {true}
+                    moveLeft = '5%'
+                    moveRight = '7%' />
             </Grid>
             <Grid item container xs = {7}
                 display = 'flex' 

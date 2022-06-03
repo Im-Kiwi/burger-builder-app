@@ -55,7 +55,7 @@ const Burger = (props) => {
                             animate = {{x: 0, opacity : 1}}
                             exit = {{x: -150, opacity : 0}}
                             transition = {{type : 'spring', stiffness : 110}}
-                            style ={{zIndex : 10, position : 'absolute', left : props.isOrder ? '5%' :'16%'}}>
+                            style ={{zIndex : 10, position : 'absolute', left : props.moveLeft}}>
                             <Image 
                                 fluid 
                                 src = {Coke} 
@@ -96,7 +96,7 @@ const Burger = (props) => {
                 <AnimatePresence>
                     {checkFries &&
                         <motion.div 
-                            style = {{zIndex : 9, position : 'absolute', right : props.isOrder ? '7%' : '16%'}}
+                            style = {{zIndex : 9, position : 'absolute', right : props.moveRight}}
                             initial = {{x: beginAnime ? 150 : 0, opacity : 0}}
                             animate = {{x: 0, opacity : 1}}
                             exit = {{x: 150, opacity : 0}}

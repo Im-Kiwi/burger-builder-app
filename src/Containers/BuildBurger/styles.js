@@ -10,7 +10,7 @@ export const styles = makeStyles({
         backgroundColor : '#110f12',
         position : 'relative',
         height : '100vh',
-        overflow : 'hidden'
+        overflow : 'hidden',
     },
     backgroundCover : {
         position : 'absolute',
@@ -26,7 +26,6 @@ export const styles = makeStyles({
 
     // ------ responsive --------
     '@media (max-width : 899px)' : {
-        
         backgroundCover : {
             display : 'none'
         },
@@ -35,7 +34,21 @@ export const styles = makeStyles({
             height : '100vh'
         },
         secondItem : {
-            height : '100vh'
+            height : '100vh',
+            width : '100vw'
+        }
+    },
+    '@media (max-height : 600px)' : {
+        secondItem : {
+            height : 700
+        }
+    },
+    '@media (max-height : 565px)' : {
+        firstItem : {
+            height : 900
+        },
+        secondItem : {
+            height : 700
         }
     }
 })
