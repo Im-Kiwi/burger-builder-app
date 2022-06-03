@@ -72,7 +72,7 @@ const SignUp = props => {
                 // document is the information of the user
                 await addDoc(collection(db, 'users'), userData)
                 dispatch(dialogActions.updateShowCanvas(false))
-                navigate('/build-burger')
+                navigate(`/build-burger`)
             } catch (err) {
                 console.log(err)
             }

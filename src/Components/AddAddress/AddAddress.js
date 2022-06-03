@@ -92,7 +92,7 @@ const AddAddress = () => {
     const closeAddressFormHandler = () => {
         dispatch(dialogActions.updateOpenModal(false))
         dispatch(deliveryAddressActions.updateEditZone({flag : false, id : null}))
-        dispatch(deliveryAddressActions.updateResetAddressForm(''))
+        dispatch(deliveryAddressActions.updateResetAddressForm())
         dispatch(deliveryAddressActions.updateValidationFlag(false))
     }
 

@@ -25,10 +25,12 @@ const DisplayAddresses = (props) => {
 
     // method to select an address from bunch of addresses
     const selectAddressHandler = (address, id) => {
-        localStorage.setItem('id', id)
-        setToggle(v => !v)
-        if (addressStore[id] === address) {
-            dispatch(ordersActions.updateDeliveryAddress(address))
+        if (!props.manageAddressFlag) {
+            localStorage.setItem('id', id)
+            setToggle(v => !v)
+            if (addressStore[id] === address) {
+                dispatch(ordersActions.updateDeliveryAddress(address))
+            }
         }
     }
 

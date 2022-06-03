@@ -17,5 +17,18 @@ export const styles = makeStyles({
         height : '100vh',
         position : 'fixed',
         transform : 'scaleY(1.5)'
-    }
+    },
+    pricingMain : {
+        zIndex : 10,
+        marginTop : 140,
+        position : 'absolute',
+        width : '100%'
+    },
+    verticalLine : {
+        marginLeft : 10,
+        marginRight : 10,
+        width : 1,
+        height: 100,
+        backgroundColor : '#495057'
+    },
 })

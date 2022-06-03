@@ -33,7 +33,7 @@ const YourOrders = () => {
     // to deleting the orders from database which are older and delivered
     useEffect(() => {
         (async () => {
-            const time = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 4).getTime()
+            const time = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1).getTime()
             const ordersRef = query(collection(db, 'orders'), where('orderedOn', '<=', time))
             const getOrders = await getDocs(ordersRef)
             let temp = []

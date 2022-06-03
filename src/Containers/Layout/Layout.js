@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Container } from '@mui/material'
-import { Routes, Route, useNavigate, useLocation } from 'react-router'
+import { Routes, Route, useNavigate, useLocation, Navigate } from 'react-router'
 import { onAuthStateChanged } from 'firebase/auth'
 import { query, where, collection, onSnapshot, getDocs } from 'firebase/firestore'
 
@@ -45,6 +45,7 @@ const Layout = () => {
     let addressesArr = []
     let itemsInCart = []
     let ordersArr = []
+    let fallBack
 
     // listening to addresses, cart, orders collection of firestore database 
     // this will autmaticaly run when there is a change in the collections of the firebase database
@@ -136,14 +137,16 @@ const Layout = () => {
     // making sure user stays logged in once it logs in
     onAuthStateChanged(auth, (currentUser) => {
         if (currentUser) {
-            let userDbId
+            let userDbId, userName
             (async () => {
                 const q = query(collection(db, 'users'), where('userId', '==', currentUser.uid))
                 const getUser = await getDocs(q)
                 getUser.forEach(user => {
                     userDbId = user.id
+                    userName = user.data().userName
                 })
                 const userData = { // data is stored in a seperate object to avoid storing non seriealizable data inside redux store
+                    userName : userName,
                     email : currentUser.email,
                     token : currentUser.accessToken,
                     userId : currentUser.uid,
@@ -154,6 +157,17 @@ const Layout = () => {
             })();
         }
     })
+
+    // this will redirect the user to the home page if user try to visit below paths without authentication
+    if (!localStorage.getItem('token') && (
+        pathname === '/build-burger' || 
+        pathname === '/cart' ||
+        pathname === '/buy/delivery-address' ||
+        pathname === '/buy/order-summary' ||
+        pathname === '/buy/payment'
+    )) {
+        fallBack = <Navigate to = '/' />
+    }
 
     // to close the fullscreen dialog box
     const closeDialogHandler = (flag) => {
@@ -194,7 +208,7 @@ const Layout = () => {
     // dynamically displaying components depending upon the pathname
     // below localStorage contains the previous path from where user navigate from, this will help in rendering the component assign to 'dynamicElement'
     switch (localStorage.getItem('prevPath')) {
-        case '/build-burger':
+        case `/build-burger`:
             dynamicElement = (
                 <BuildBurger 
                     title = 'My Cart' 
@@ -238,9 +252,10 @@ const Layout = () => {
         <>  
             <Container maxWidth = 'xl'>
                 <NavigationBar />
-            </Container>        
+            </Container>
+            {fallBack}
             <Routes>
-                <Route path = '/' element = {<Home />} /> 
+                <Route path = '/' element = {<Home />} />
                 <Route path = 'build-burger' 
                     element = {token ? <BuildBurger closeDialogHandler = {closeDialogHandler} /> : null} /> 
                 <Route path = 'pricing' element = {<Pricing />} />   
@@ -271,7 +286,9 @@ const Layout = () => {
                 <Route  path = 'security-settings' element = {dynamicElement}>
                     <Route index element = {<Security />} />
                 </Route>
+                <Route path = '*' element = {<Navigate to = '/' />} />
             </Routes>
+
             {/* Below two components are modals */}
             <DeleteAccount />
             <Canvas />

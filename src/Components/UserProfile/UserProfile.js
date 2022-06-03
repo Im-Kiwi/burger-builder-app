@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { IconButton, Avatar, Menu } from '@mui/material'
+import { IconButton, Avatar, Menu, Divider, Typography, Box } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { signOut } from 'firebase/auth'
@@ -17,6 +17,9 @@ const UserProfile = (props) => {
     const navigate = useNavigate() 
     const dispatch = useDispatch()
     const { pathname } = useLocation()
+
+    // fetching data from redux store
+    const userName = useSelector(state => state.userForm.currentUser.userName)
 
     const [anchorEl, setAnchorEl] = useState(null) // to control the popover
 
@@ -109,6 +112,14 @@ const UserProfile = (props) => {
                         background : '#f9b826 !important'
                         },
                     }}>
+                <Box sx = {{p:1}}>
+                    <Typography 
+                        variant = 'body1' 
+                        sx = {{fontSize : '1.2rem', textAlign : 'center'}}>
+                        {userName}
+                    </Typography>                    
+                </Box>
+                <Divider />
                 <CustomMenuItem  onClick = {yourOrdersHandler}>
                     Your Orders
                 </CustomMenuItem>

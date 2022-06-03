@@ -32,7 +32,7 @@ const ManageAddresses = () => {
                     height : 'inherit', 
                     backgroundColor : '#f9b826'
                 }}>
-                <DeliveryAddress />
+                <DeliveryAddress manageAddressFlag = {true} />
             </Box>
         </Modal>
     )

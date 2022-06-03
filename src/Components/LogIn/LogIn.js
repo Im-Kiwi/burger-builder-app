@@ -19,6 +19,7 @@ const LogIn = props => {
     const navigationIndex = useSelector(state => state.security.navigationIndex)
     const newEmailOrPass = useSelector(state => state.security.newEmailOrPass)
 
+
     // creating schema for input validation
     const logInSchema = yup.object().shape({
         emailAddress : yup.string().required('email address is not mentioned'),

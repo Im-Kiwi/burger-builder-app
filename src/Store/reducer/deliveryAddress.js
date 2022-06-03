@@ -56,15 +56,15 @@ const deliveryAddress = createSlice({
             }
         },
         updateResetAddressForm(state, action) {
-            state.addressForm.firstName = action.payload
-            state.addressForm.lastName = action.payload
-            state.addressForm.phoneNumber = action.payload
-            state.addressForm.address = action.payload
-            state.addressForm.selectCountry = action.payload
-            state.addressForm.selectState = action.payload
-            state.addressForm.city = action.payload
-            state.addressForm.addressType = action.payload
-            state.addressForm.pinCode = action.payload
+            state.addressForm.firstName = ''
+            state.addressForm.lastName = ''
+            state.addressForm.phoneNumber = ''
+            state.addressForm.address = ''
+            state.addressForm.selectCountry = ''
+            state.addressForm.selectState = ''
+            state.addressForm.city = ''
+            state.addressForm.addressType = 'Home'
+            state.addressForm.pinCode = ''
         },
         updateAddressStore (state, action) {
             state.addressStore = [...action.payload] 

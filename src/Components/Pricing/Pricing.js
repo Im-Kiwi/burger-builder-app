@@ -1,4 +1,5 @@
-import { Box, Container, Grid, Stack, Typography } from '@mui/material'
+import { Container, Grid, Stack, Typography } from '@mui/material'
+import { useMediaQuery } from '@mui/material'
 import { Image } from 'react-bootstrap'
 import { Outlet, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
@@ -7,7 +8,7 @@ import { v4 as uniqueId } from 'uuid'
 // ------- importing from other files ------------
 import FullDialogs from '../FullDialogs/FullDialogs'
 import { styles } from './styles'
-import { BaconIco, CheeseIco, MeatIco, TomatoIco, OnionIco, LettuceIco, Coke, Fries, PickBurger, Fries_Coke, Customers  } from '../../path-to-assets/pathToImages'
+import { BaconIco, CheeseIco, MeatIco, TomatoIco, OnionIco, LettuceIco, Coke, Fries, PickBurger, Fries_Coke, Customers } from '../../path-to-assets/pathToImages'
 import useSwitchCurrency from '../../Hooks/useSwitchCurrency'
 import SwitchCurrency from '../SwitchCurrency/SwitchCurrency'
 
@@ -16,6 +17,10 @@ const Pricing = (props) => {
     const { pathname } = useLocation()
     const classes = styles()
     const prevPath = localStorage.getItem('prevPath')
+
+    // creating @media breakpoints
+    const break_800 = useMediaQuery('(min-width : 800px)')
+    const break_410 = useMediaQuery('(min-width : 410px)')
 
     const [switchCurr, switchCurrHandler] = useSwitchCurrency()
 
@@ -72,21 +77,21 @@ const Pricing = (props) => {
                     initial = 'initial'
                     animate = 'animate'>                    
                 </motion.div>
-                <motion.div 
-                    style = {{
-                        zIndex:10, 
-                        marginTop:140, 
-                        position : 'absolute', 
-                        width : '100%'}}
+                <motion.div
+                    className = {classes.pricingMain}                     
                     initial = {{x:-200, opacity:0}}
                     animate = {{x:0, opacity:1}}
                     transition = {{delay:0.1}}>
-                    <Grid container display = 'flex' flexDirection = 'column'>
-                        <Grid item 
-                            display = 'flex' 
+                    <Grid 
+                        container 
+                        display = 'flex' 
+                        flexDirection = 'column'>
+                        <Grid item xs = {12} 
+                            display = 'flex'
+                            flexDirection = {break_800 ? 'row' : 'column'}
                             justifyContent = 'space-evenly' 
                             alignItems = 'center'
-                            sx = {{}}>
+                            gap ={1}>
                             <Stack 
                                 alignItems = 'center' 
                                 justifyContent = 'center'
@@ -102,7 +107,7 @@ const Pricing = (props) => {
                                     We let our customers to chose what ingredients they want inside the burger by which they can control the price
                                 </Typography>
                             </Stack> 
-                            <div style = {{width : 1, height : 100, backgroundColor : '#495057'}}></div>                           
+                            {break_800 && <div className = {classes.verticalLine}></div>}
                             <Stack
                                 alignItems = 'center'
                                 justifyContent = 'center'
@@ -118,7 +123,7 @@ const Pricing = (props) => {
                                     Each ingredient of burger has a fixed price, depends what and what quantity of ingredient customer want inside their burger
                                 </Typography>
                             </Stack>
-                            <div style = {{width : 1, height : 100, backgroundColor : '#495057'}}></div>                           
+                            {break_800 && <div className = {classes.verticalLine}></div>}
                             <Stack
                                 justifyContent = 'center'
                                 alignItems = 'center'
@@ -135,12 +140,15 @@ const Pricing = (props) => {
                                 </Typography>
                             </Stack>                                
                         </Grid>
-                        <Grid item 
+                        <Grid item xs = {12}
                             display = 'flex' 
                             flexDirection = 'column' 
                             justifyContent = 'center' 
                             alignItems = 'center'>
-                            <Typography variant = 'h6' sx = {{mt:5, mb:2, fontFamily : 'Fjalla One, sans-serif'}}>
+                            <Typography 
+                                variant = 'h6'
+                                className = 'text-center'
+                                sx = {{mt:5, mb:2, fontFamily : 'Fjalla One, sans-serif'}}>
                                 Below are the price details of the slices and extra items
                             </Typography>
                             <SwitchCurrency
@@ -153,11 +161,12 @@ const Pricing = (props) => {
                                 sx = {{width : '100%', mt:4, mb:3}}>
                                     {priceDetails.map(item => {
                                         return (                                            
-                                            <Grid item container 
+                                            <Grid item xs = {!break_410 && 12}
+                                                container 
                                                 key = {uniqueId()}
                                                 alignItems = 'center' 
                                                 justifyContent = 'space-between'
-                                                gap = {3}
+                                                gap = {1}
                                                 sx = {{width : '50%'}}>
                                                 <Grid item 
                                                     display = 'flex' 

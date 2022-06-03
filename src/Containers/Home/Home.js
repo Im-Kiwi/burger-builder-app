@@ -1,13 +1,11 @@
-import { Stack, Box, Grid, Typography, Button, Container } from '@mui/material';
+import { Stack, Box, Grid, Typography, Button, Container, useMediaQuery } from '@mui/material';
 import { useDispatch } from 'react-redux'
 import { Outlet, useLocation } from 'react-router-dom';
 import { Image } from 'react-bootstrap'
 import { motion } from 'framer-motion'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faQuoteLeft } from '@fortawesome/free-solid-svg-icons';
 
 // ------------- importing from files -------------------
-import classes from './Home.module.css'
+import { styles } from './styles'
 import { dialogActions } from '../../Store/reducer/dialog';
 import { userFormActions } from '../../Store/reducer/userForm';
 import FullDialogs from '../../Components/FullDialogs/FullDialogs';
@@ -15,10 +13,14 @@ import { Burger, Girl } from '../../path-to-assets/pathToImages'
 
 
 const Home = (props) => {
+    const classes = styles()
     const dispatch = useDispatch()
     const { pathname } = useLocation()
     const prevPath = localStorage.getItem('prevPath') // stores the previous path from where user navigated from
     const token = localStorage.getItem('token')
+
+    // creating css breakpoints
+    const break_899 = useMediaQuery('(max-width : 899px)')
 
     // this method will open the login and signup modal
     const dialogHandler = () => {
@@ -59,20 +61,18 @@ const Home = (props) => {
     }
 
     return (
-        <Container maxWidth = 'xl'>
+        <Container disableGutters = {break_899 && true} maxWidth = 'xl'>
             <Box className = {classes.main} sx = {{overflow : 'hidden'}}>
                 <Grid container sx = {{overflow : 'hidden'}}>
-                    <Grid xs = {7} item className = {classes.firstItem}>
+                    <Grid 
+                        xs = {12} md = {7} item 
+                        order = {{xs:2, md:1}}
+                        className = {classes.firstItem}>
+                        {/* the curvy yellow background */}
                         <motion.div 
+                            className = {classes.backgroundCover}
                             initial = {{width : prevPath === '/pricing' || prevPath === '/about-us' ? '100vw' : '100%'}}
-                            animate = {{width : '100%'}}
-                            style = {{
-                                position : 'absolute',
-                                backgroundColor : '#f9b826',
-                                height : '100%',
-                                borderRadius : '0 50% 50% 0/0 100% 100% 0',
-                                transform : 'scaleY(1.5)'                                
-                            }}>
+                            animate = {{width : '100%'}}>
                         </motion.div>                        
                         <Stack 
                             direction = 'row' 
@@ -87,7 +87,7 @@ const Home = (props) => {
                                 <Stack 
                                     direction = 'column'
                                     alignItems = 'center'>
-                                    <Image fluid src = {Burger} style = {{maxWidth : 700}} />  
+                                    <Image fluid src = {Burger} style = {{width : '100%'}} />  
                                     <Typography 
                                         className = 'text-center'
                                         variant = 'h5'
@@ -101,74 +101,53 @@ const Home = (props) => {
                         </Stack>
                     </Grid>
                     <Grid 
-                        xs = {5} item 
+                        xs = {12} md = {5} item 
+                        order = {{xs:1,md:2}}
                         className = {classes.secondItem}>
                         <Box 
+                            component = {motion.div}
+                            variants = {secondColAnime}
+                            initial = 'initial'
+                            animate = 'animate'
+                            exit = 'exit'
+                            className = {classes.mainTitleContainer}
                             display = 'flex'
                             flexDirection = 'column'
-                            justifyContent = 'center'
-                            sx = {{
-                            position : 'relative',
-                            width : '100%',
-                            height : '100%'                
-                            }}>
-                            <motion.div className = 'text-center'
-                                variants = {secondColAnime}
-                                initial = 'initial'
-                                animate = 'animate'
-                                exit = 'exit'>
-                                <Box sx = {{zIndex : 10}}>
-                                    <Typography 
-                                        variant = 'h2' 
-                                        sx = {{
-                                            color : '#f9b826', 
-                                            fontFamily : 'Bebas Neue, cursive',
-                                            fontSize : '5rem'}}>
-                                        CLARISH
-                                    </Typography> 
-                                    <Typography 
-                                        variant = 'h2' 
-                                        sx = {{
-                                            color : '#f9b826', 
-                                            fontFamily : 'Bebas Neue, cursive',
-                                            fontSize : '5rem'}}>
-                                        BURGERS
-                                    </Typography>
-                                    <Typography
-                                        variant = 'body1'
-                                        sx = {{
-                                            color : '#f9b826',
-                                            fontSize : '1.7rem',
-                                            fontFamily : 'Amatic SC, cursive'}}>
-                                        Feeling Hungry ? 
-                                        <br />
-                                        Build your perfect burger and get it within 20 min
-                                    </Typography>
-                                    {!token && 
-                                        <Button                                         
-                                            sx = {{
-                                                mt : 5, 
-                                                width : 200,
-                                                fontFamily : 'Righteous, cursive'}} 
-                                            variant = 'contained' 
-                                            className = {classes.register}
-                                            color = 'yellowish'
-                                            onClick = {dialogHandler}>       
-                                                Sign Up
-                                        </Button>                                            
-                                    } 
-                                </Box>
-                            </motion.div>
+                            justifyContent = 'center'>                            
+                            <Box sx = {{zIndex : 10}}>
+                                <Typography 
+                                    variant = 'h2' 
+                                    className = {classes.mainTitle}>
+                                    CLARISH
+                                </Typography> 
+                                <Typography 
+                                    variant = 'h2' 
+                                    className = {classes.mainTitle}>
+                                    BURGERS
+                                </Typography>
+                                <Typography
+                                    variant = 'body1'
+                                    className = {classes.textContent}>
+                                    Feeling Hungry ? 
+                                    <br />
+                                    Build your perfect burger and get it within 20 min
+                                </Typography>
+                                {!token && 
+                                    <Button                                         
+                                        className = {classes.register}                                            
+                                        variant = 'contained' 
+                                        color = 'yellowish'
+                                        onClick = {dialogHandler}>       
+                                            Sign Up
+                                    </Button>                                            
+                                } 
+                            </Box>
                             <motion.img
+                                className = {classes.girlImg}
                                 variants = {secondColAnime}
                                 initial = 'initial'
                                 animate = 'animateGirl'
                                 exit = 'exit'
-                                style = {{
-                                    position : 'absolute',
-                                    zIndex : 5,                                    
-                                    opacity : 0.1
-                                    }} 
                                 src = {Girl} 
                                 width = {'100%'} 
                                 alt = 'girl eating burger' />

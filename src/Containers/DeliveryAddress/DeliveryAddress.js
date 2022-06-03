@@ -29,16 +29,21 @@ const DeliveryAddress = (props) => {
     return (
         <Box
             component = {motion.div}
-            initial = {{x:200, opacity:0}} 
+            initial = {{x: props.manageAddressFlag ? 0 : 200, opacity:props.manageAddressFlag ? 1 : 0}} 
             animate = {{x:0, opacity:1}}
             sx = {{mt : 5, position : 'relative'}} 
             display = 'flex' 
             flexDirection = 'column' 
             alignItems = 'center'>
             <Typography variant = 'h5' sx = {{mb:3, color : '#110f12', fontFamily : 'DM Serif Text, serif'}}>
-                Select Your delivery address
+                {props.manageAddressFlag ? 
+                    'Manage your addresses' :
+                    'Select Your delivery address'
+                }
             </Typography>
-            <DisplayAddresses openForm = {openAddressForm} />            
+            <DisplayAddresses 
+                openForm = {openAddressForm} 
+                manageAddressFlag = {props.manageAddressFlag} />            
             <AddAddress />      
         </Box>
     )

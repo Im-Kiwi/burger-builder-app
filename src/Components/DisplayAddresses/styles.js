@@ -12,7 +12,6 @@ export const addressBox = makeStyles({
         height : '100%',  
         overflowY : 'auto'   
     },
-
     addressContainer : {
         backgroundColor : '#110f12',
         border : 'solid 1px #110f12',
@@ -20,14 +19,11 @@ export const addressBox = makeStyles({
         width : 340,
         height : 200,
     },
-
     clickedAddress : {
         color : '#110f12',
         backgroundColor : '#f9a620',
         border : 'solid 1px #110f12'
-
     },
-
     editBox : {
         cursor : 'default',
         display : 'none',
@@ -44,7 +40,6 @@ export const addressBox = makeStyles({
             opacity : 0.95
         }
     },
-
 })
 
 export const CustomPaper = styled(Paper)({

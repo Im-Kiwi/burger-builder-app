@@ -20,6 +20,6 @@ export const mainColors = createTheme({
         blackish : {
             main : '#110f12'            
         }
-    }
+    },
 })
 
