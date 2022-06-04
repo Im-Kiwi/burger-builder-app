@@ -40,7 +40,6 @@ const DeliveryAddress = (props) => {
             display = 'flex' 
             flexDirection = 'column' 
             alignItems = 'center'>
-            
             <DisplayAddresses 
                 openForm = {openAddressForm} 
                 manageAddressFlag = {props.manageAddressFlag} />            

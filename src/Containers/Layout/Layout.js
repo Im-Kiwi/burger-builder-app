@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Container } from '@mui/material'
 import { Routes, Route, useNavigate, useLocation, Navigate } from 'react-router'
 import { onAuthStateChanged } from 'firebase/auth'
-import { query, where, collection, onSnapshot, getDocs } from 'firebase/firestore'
+import { query, where, collection, onSnapshot, getDocs, deleteDoc, updateDoc, doc } from 'firebase/firestore'
 
 // ----------------- importing other components -----------------
 import Home from "../Home/Home"
@@ -31,6 +31,7 @@ import { cartActions } from '../../Store/reducer/cart'
 
 // ----------- importing others ------------
 import { auth, db } from '../../firebase-setup'
+import { onTheWay, delivered, dispatching } from '../../identifiers/identifiers'
 
 const Layout = () => {
     const dispatch = useDispatch()
@@ -40,7 +41,7 @@ const Layout = () => {
     const token = useSelector(state => state.userForm.currentUser.token)
     const userId = useSelector(state => state.userForm.currentUser.userId)
     const cartItems = useSelector(state => state.cart.cartItems)
-
+    const orders = useSelector(state => state.orders.orders)
 
     let addressesArr = []
     let itemsInCart = []
@@ -110,7 +111,9 @@ const Layout = () => {
                         ordersArr.splice(ordersArrId, 1, {...change.doc.data(), id : change.doc.id})
                     }
                 })
-                dispatch(ordersActions.updateOrders(ordersArr))
+                // sorting orders according to the order place time
+                const sortedOrders = [...ordersArr].sort((a,b) => b.orderedOn - a.orderedOn)
+                dispatch(ordersActions.updateOrders(sortedOrders))
             })            
         }
     }, [userId])
@@ -122,15 +125,15 @@ const Layout = () => {
 
         const checkCartPath = pathname.match(cartPath)
         const checkBuyPath = pathname.match(buyPath) 
-
-        if (Boolean(checkCartPath)) {
-            dispatch(dialogActions.updateOpen(true))
+        
+        if (checkBuyPath) {
+            navigate('/build-burger')
+            // dispatch(dialogActions.updateOpen(false))
         } else if (checkBuyPath && localStorage.getItem('nextPath') === '/cart') {
             dispatch(dialogActions.updateOpen(true))
             navigate('/cart')
-        } else if (checkBuyPath) {
-            navigate('/build-burger')
-            dispatch(dialogActions.updateOpen(false))
+        } else if (Boolean(checkCartPath)) {
+            dispatch(dialogActions.updateOpen(true))
         }
     }, [])
 
@@ -157,6 +160,42 @@ const Layout = () => {
             })();
         }
     })
+
+    // to deleting the orders from database which are older and delivered
+    useEffect(() => {
+        (async () => {
+            const time = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1).getTime()
+            const ordersRef = query(collection(db, 'orders'), where('orderedOn', '<=', time))
+            const getOrders = await getDocs(ordersRef)
+            let temp = []
+            getOrders.forEach(doc => {
+                temp.push({...doc.data(), id : doc.id})
+            })
+            
+            for (let order of temp) {
+                await deleteDoc(doc(db, 'orders', order.id))
+            }
+        })();
+        
+    }, [])
+
+    // to change the order status
+    useEffect(() => {
+        const currentTime = new Date().getTime()
+        orders.forEach(order => {
+            if (order.status !== 'delivered') {
+                (async () => {
+                    const dispatchTime = order.orderedOn + 300000
+                    const deliverTime = order.orderedOn + 1200000
+                    if (currentTime >= dispatchTime && currentTime < deliverTime) {
+                        await updateDoc(doc(db, 'orders', order.id), {status : onTheWay})
+                    } else if (currentTime >= deliverTime) {
+                        await updateDoc(doc(db, 'orders', order.id), {status : delivered})
+                    }                    
+                })();            
+            }
+        })
+    }, [])
 
     // this will redirect the user to the home page if user try to visit below paths without authentication
     if (!localStorage.getItem('token') && (

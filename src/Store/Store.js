@@ -9,6 +9,7 @@ import deliveryAddress from "./reducer/deliveryAddress";
 import securityReducer from "./reducer/security";
 import animationReducer from "./reducer/animation";
 import switchCurrReducer from "./reducer/switchCurrency";
+import basePriceReducer from "./reducer/basePrice";
 
 const store = configureStore({
     reducer : {
@@ -21,7 +22,8 @@ const store = configureStore({
         deliveryAddresses : deliveryAddress.reducer,
         security : securityReducer.reducer,
         animation : animationReducer.reducer,
-        switchCurr : switchCurrReducer.reducer
+        switchCurr : switchCurrReducer.reducer,
+        basePrice : basePriceReducer.reducer
     }
 })
 

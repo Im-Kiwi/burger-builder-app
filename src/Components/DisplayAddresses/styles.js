@@ -5,7 +5,7 @@ import { CenterFocusStrong } from '@mui/icons-material'
 export const addressBox = makeStyles({
     main : {
         position : 'absolute',
-        height : '70vh',
+        height : '66vh',
         overflowY : 'auto'
     },
     addressBox : {
@@ -49,7 +49,7 @@ export const addressBox = makeStyles({
     // ------ responsive ------------
     '@media (max-width : 550px)' : {
         main : {
-            height : '60vh'
+            height : '44vh'
         }
     }
     

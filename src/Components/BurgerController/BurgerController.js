@@ -14,6 +14,7 @@ import { dialogActions } from '../../Store/reducer/dialog'
 import { cartActions } from '../../Store/reducer/cart'
 import { stepperActions } from '../../Store/reducer/stepper'
 import { animationActions } from '../../Store/reducer/animation'
+import { basePriceActions } from '../../Store/reducer/basePrice'
 import { LettuceIco, CheeseIco, MeatIco, TomatoIco, OnionIco, BaconIco } from '../../path-to-assets/pathToImages'
 
 const BurgerController = (props) => {
@@ -27,17 +28,17 @@ const BurgerController = (props) => {
     const break_550 = useMediaQuery('(max-width : 550px)')
     const break_330 = useMediaQuery('(max-width : 330px)')
 
-    const [basePrice, setBasePrice] = useState({}) // It contains the base prices of the ingredients
 
+    // fetching values from the redux store
     const ingredients = useSelector(state => state.ingredients) // contains the ingredients object
     const userId = useSelector(state => state.userForm.currentUser.userId)
-
+    const basePrice = useSelector(state => state.basePrice.basePrice) // It contains the base prices of the ingredients
     // fetching the base prices of ingredients from the database
     useEffect(() => {
         (async () => {
             const basePriceRef = doc(db, 'basePrice', 'ZvNaPbzoxkh6dwxJfzJR')
             const getBasePrice = await getDoc(basePriceRef)
-            setBasePrice({...getBasePrice.data()})
+            dispatch(basePriceActions.updateBasePrice({...getBasePrice.data()}))
         })();
     }, [])
 

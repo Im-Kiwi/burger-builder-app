@@ -22,53 +22,11 @@ const YourOrders = () => {
     const orders = useSelector(state => state.orders.orders)
     const showModal = useSelector(state => state.dialog.openUserProfModal)
 
-    // sorting orders according to the order place time
-    const sortedOrders = [...orders].sort((a,b) => b.orderedOn - a.orderedOn)
-    
     // this will stay the modal open even when user reload the page
     useEffect(() => {
         dispatch(dialogActions.updateUserProfModal(true))
     }, [])
 
-    // to deleting the orders from database which are older and delivered
-    useEffect(() => {
-        (async () => {
-            const time = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1).getTime()
-            const ordersRef = query(collection(db, 'orders'), where('orderedOn', '<=', time))
-            const getOrders = await getDocs(ordersRef)
-            let temp = []
-            getOrders.forEach(doc => {
-                temp.push({...doc.data(), id : doc.id})
-            })
-            
-            for (let order of temp) {
-                await deleteDoc(doc(db, 'orders', order.id))
-            }
-        })();
-        
-    }, [])
-
-    // to change the order status
-    useEffect(() => {
-        const currentTime = new Date().getTime()
-        sortedOrders.forEach(order => {
-            if (order.status !== 'delivered') {
-                (async () => {
-                    const dispatchTime = order.orderedOn + 300000
-                    const deliverTime = order.orderedOn + 1200000
-                    if (currentTime >= dispatchTime && currentTime < deliverTime) {
-                        await updateDoc(doc(db, 'orders', order.id), {status : onTheWay})
-                    } else if (currentTime >= deliverTime) {
-                        await updateDoc(doc(db, 'orders', order.id), {status : delivered})
-                    }                    
-                })();            
-            }
-        })
-    }, [])
-
-    
-
-    
     // method to close modal
     const closeModalHandler = () => {
         navigate(localStorage.getItem('prevPath')) // it will navigate to the previous path from where user came from before opening the 'Your orders' modal
@@ -77,7 +35,7 @@ const YourOrders = () => {
     }
     
     const ordersDisplayMethod = () => {
-        return sortedOrders.map(order => {
+        return orders.map(order => {
             // trying to get the order item from the order object
             // this can be done by filtering the keys of that object, as last 4 properties of this object are extra info of the order
             // instead of that rest are order items

@@ -51,7 +51,7 @@ const FullDialogs = (props) => {
                                     display = 'flex'
                                     justifyContent = 'center'
                                     alignItems = 'center'
-                                    spacing = {1}
+                                    gap = {1}
                                     sx = {{color : '#f9b826'}}>
                                     {props.title &&
                                         <FontAwesomeIcon 
