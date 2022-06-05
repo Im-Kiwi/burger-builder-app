@@ -31,7 +31,7 @@ export const addressBox = makeStyles({
         color : '#110f12',
         backgroundColor : '#f9a620',
         border : 'solid 1px #110f12'
-    },
+    },    
     editBox : {
         cursor : 'default',
         position : 'absolute',

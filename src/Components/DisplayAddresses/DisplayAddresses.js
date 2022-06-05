@@ -29,16 +29,17 @@ const DisplayAddresses = (props) => {
     // method to select an address from bunch of addresses
     const selectAddressHandler = (address, id) => {
         selectAddress = id
+        localStorage.setItem('id', id)
+        const addressId = parseInt(localStorage.getItem('id'))
+        setSelectedAddressId(addressId)
         if (!props.manageAddressFlag) {
-            localStorage.setItem('id', id)
-            const addressId = parseInt(localStorage.getItem('id'))
-            setSelectedAddressId(addressId)
             if (addressStore[id] === address) {
                 dispatch(ordersActions.updateDeliveryAddress(address))
             }
         }
     }
 
+    // to delete an address card
     const deleteAddressHandler = async (addressId) => {
         try {
             await deleteDoc(doc(db, 'addresses', addressId))
@@ -47,6 +48,7 @@ const DisplayAddresses = (props) => {
         }
     }
 
+    // this method will help to edit address
     const editAddressHandler = (id) => {
         props.openForm()
         dispatch(deliveryAddressActions.updateEditZone({flag : true, id : id}))
@@ -91,7 +93,9 @@ const DisplayAddresses = (props) => {
                                 transition = {{ease : 'easeOut'}}
                                 layout
                                 elevation={1}
-                                className = {[classes.addressContainer, selectedAddressId === index ? classes.clickedAddress : null].join(' ')}
+                                className = {[
+                                    classes.addressContainer, 
+                                    selectedAddressId === index && !props.manageAddressFlag ? classes.clickedAddress : null].join(' ')}
                                 key = {address.id} 
                                 aria-label= 'select address card button'>
                                 <motion.div 
@@ -174,7 +178,7 @@ const DisplayAddresses = (props) => {
                                             className = {classes.editBox}
                                             sx = {{
                                                 '&:before' : {
-                                                    backgroundColor : index === selectedAddressId ? '#110f12' : '#f9b826'
+                                                    backgroundColor : index === selectedAddressId && !props.manageAddressFlag ? '#110f12' : '#f9b826'
                                                 }}}>
                                                 <Stack 
                                                     direction = 'row' 
@@ -183,12 +187,12 @@ const DisplayAddresses = (props) => {
                                                     sx = {{height : 'inherit', width : '100%'}} 
                                                     spacing = {2}>
                                                     <IconButton 
-                                                        color = {index === selectedAddressId ? 'yellowish' : 'blackish'} 
+                                                        color = {index === selectedAddressId && !props.manageAddressFlag ? 'yellowish' : 'blackish'} 
                                                         onClick = {() => editAddressHandler(index)}>
                                                         <Edit />
                                                     </IconButton>
                                                     <IconButton
-                                                        color = {index === selectedAddressId ? 'yellowish' : 'blackish'} 
+                                                        color = {index === selectedAddressId && !props.manageAddressFlag ? 'yellowish' : 'blackish'} 
                                                         onClick = {() => deleteAddressHandler(address.id)}>
                                                         <Delete />
                                                     </IconButton>

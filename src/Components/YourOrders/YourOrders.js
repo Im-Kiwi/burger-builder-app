@@ -10,12 +10,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPesoSign, faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons'
 
 // ----------- importing from other files --------------
+import { styles } from './styles'
 import { dialogActions } from '../../Store/reducer/dialog'
 import OrderItem from '../OrderItem/OrderItem'
 import { db } from '../../firebase-setup'
 import { onTheWay, delivered, dispatching } from '../../identifiers/identifiers'
 
 const YourOrders = () => {
+    const classes = styles()
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
@@ -24,6 +26,7 @@ const YourOrders = () => {
     const break_991 = useMediaQuery('(max-width : 991px)')
     const break_441 = useMediaQuery('(max-width : 441px)')
 
+    // fetching value from redux store
     const orders = useSelector(state => state.orders.orders)
     const showModal = useSelector(state => state.dialog.openUserProfModal)
 
@@ -98,7 +101,7 @@ const YourOrders = () => {
                     <Grid  container spacing = {4} justifyContent = 'center'>
                         <Grid 
                             xs = {12} item 
-                            sx = {{backgroundColor : '#110f12', color : '#f9b826'}}>
+                            className = {classes.header}>
                             <Box 
                                 display = 'flex'
                                 flexDirection = {break_991 ? 'column' : 'row'}
@@ -140,22 +143,11 @@ const YourOrders = () => {
                                 <Stack direction = 'row' alignItems = 'center' spacing = {1}>
                                     <Box position = 'relative'>
                                         <Box 
-                                            sx = {{
-                                                position : 'absolute',
-                                                width : 10, 
-                                                height : 10, 
-                                                borderRadius : '50%', 
-                                                backgroundColor : statusColor,
-                                                filter : 'blur(4px)'
-                                            }}
-                                        ></Box>
-                                        <Box sx = {{
-                                            width : 9, 
-                                            height : 9, 
-                                            borderRadius : '50%', 
-                                            backgroundColor : statusColor,
-                                            zIndex : 10
-                                        }}></Box>
+                                            className = {classes.dotShadow}
+                                            sx = {{backgroundColor : statusColor}}></Box>
+                                        <Box
+                                            className = {classes.dot}
+                                            sx = {{backgroundColor : statusColor}}></Box>
                                     </Box>
                                     <Typography 
                                         variant = 'body1' 
@@ -236,28 +228,10 @@ const YourOrders = () => {
                 size = 'small' 
                 aria-label = 'close button'
                 onClick = {closeModalHandler}
-                sx = {{
-                    position : 'absolute', 
-                    right : -15, 
-                    top : -20, 
-                    zIndex : 10,
-                    backgroundColor : '#ffb600',
-                    '&:hover' : {
-                        backgroundColor : '#ffb600'
-                    }
-                }}
-            >
+                className = {classes.closeButton}>
                 <CloseRounded />
             </Fab>
-            <Box 
-                sx = {{
-                    width : 'inherit', 
-                    height : 700, 
-                    backgroundColor : '#f9b826', 
-                    py : 1.5, 
-                    overflowY: 'auto',
-                    position : 'relative',
-                }}>
+            <Box className = {classes.orders}>
                 <Box sx = {{mt:2}}>
                     {displayOrders}
                 </Box>

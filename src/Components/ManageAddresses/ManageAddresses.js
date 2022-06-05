@@ -1,7 +1,8 @@
 import { Modal } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { Box } from '@mui/material'
+import { Box, Fab, useMediaQuery } from '@mui/material'
+import { CloseRounded } from '@mui/icons-material'
 // ---------- importing from other files --------
 import { dialogActions } from '../../Store/reducer/dialog'
 import DeliveryAddress from '../../Containers/DeliveryAddress/DeliveryAddress'
@@ -9,6 +10,9 @@ import DeliveryAddress from '../../Containers/DeliveryAddress/DeliveryAddress'
 const ManageAddresses = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    // creating css breakpoints
+    const break_575 = useMediaQuery('(max-width : 575px)')
 
     // values fetched from the redux store
     const showModal = useSelector(state => state.dialog.openUserProfModal)
@@ -26,10 +30,26 @@ const ManageAddresses = () => {
             centered 
             show = {showModal} 
             onHide = {closeModalHandler}>
+            <Fab
+                size = 'small' 
+                aria-label = 'close button'
+                onClick = {closeModalHandler}
+                sx = {{
+                    position : 'absolute', 
+                    right : break_575 ? -8 : -15, 
+                    top : break_575 ? -8 : -20, 
+                    zIndex : 10,
+                    backgroundColor : '#ffb600',
+                    '&:hover' : {
+                        backgroundColor : '#ffb600'
+                    }}}>
+                <CloseRounded />
+            </Fab>
             <Box 
                 sx = {{
                     width : 'inherit', 
                     height : 'inherit', 
+                    overflowX : 'hidden',
                     backgroundColor : '#f9b826'
                 }}>
                 <DeliveryAddress manageAddressFlag = {true} />
