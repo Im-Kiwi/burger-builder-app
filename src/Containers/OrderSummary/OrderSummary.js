@@ -16,6 +16,7 @@ const OrderSummary = (props) => {
     // creating breakpoints
     const break_855 = useMediaQuery('(max-width : 855px)')
     const break_740 = useMediaQuery('(max-width : 740px)')
+    const break_760 = useMediaQuery('(max-width : 760px)')
     const break_431 = useMediaQuery('(max-width : 431px)')
 
     const instantBuy = useSelector(state => state.cart.instantBuy)
@@ -44,7 +45,7 @@ const OrderSummary = (props) => {
                                 <OrderItem 
                                     ing = {ing}
                                     firstBreak = {break_855}
-                                    secondBreak = {break_740}
+                                    secondBreak = {break_760}
                                     thirdBreak = {break_431} />    
                             </Box>
                         )

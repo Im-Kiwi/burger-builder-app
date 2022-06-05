@@ -20,7 +20,7 @@ const OrderItem = ({ing, thisIsCart, deleteCartItemHandler, firstBreak, secondBr
         <Grid container 
             alignItems = 'center' 
             justifyContent = 'center' 
-            spacing = {2}>
+            spacing = {6}>
             <Grid item xs = {secondBreak ? 12 : 2} display = 'flex' justifyContent = 'center'>                        
                 <Burger
                     ingredients = {ing} 
@@ -38,7 +38,7 @@ const OrderItem = ({ing, thisIsCart, deleteCartItemHandler, firstBreak, secondBr
                 sx = {{color : '#110f12'}}
                 spacing ={1}>
                 <Grid item container 
-                    xs = {firstBreak ? 5 : 12}           
+                    xs = {firstBreak ? thisIsCart ? 6 : 5 : 12}           
                     display = 'flex'
                     flexDirection = {thirdBreak ? 'column' : 'row'}
                     alignItems = {firstBreak ? 'flex-start' : 'center'}                    
@@ -84,7 +84,7 @@ const OrderItem = ({ing, thisIsCart, deleteCartItemHandler, firstBreak, secondBr
                     </Grid>
                 </Grid>
                 <Grid item container
-                    xs = {firstBreak? 7 : 12}
+                    xs = {firstBreak ? thisIsCart ? 6 : 7 : 12}
                     display = 'flex'
                     flexDirection = {thirdBreak ? 'column' : 'row'}                     
                     alignItems = {firstBreak ? 'flex-start' : 'center'}

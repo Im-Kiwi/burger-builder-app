@@ -8,7 +8,7 @@ import { motion } from 'framer-motion'
 
 // ---------- importing from other files -----------
 import { db } from '../../firebase-setup.js'
-import { CustomFab } from './styles.js'
+import { CustomFab, styles } from './styles.js'
 import { dialogActions } from '../../Store/reducer/dialog.js'
 import { ingredientsActions } from '../../Store/reducer/ingredients.js'
 import { stepperActions } from '../../Store/reducer/stepper.js'
@@ -19,11 +19,13 @@ import PaymentMethods from './PaymentMethod/PaymentMethod.js'
 import PriceDetails from './PriceDetails/PriceDetails.js'
 
 const Payment = () => {
+    const classes = styles()
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
     // creating break points
     const break_705 = useMediaQuery('(max-width : 705px)')
+    const break_326 = useMediaQuery('(max-width : 326px)')
 
     const userId = useSelector(state => state.userForm.currentUser.userId)
     const currentItem = useSelector(state => state.cart.currentItem)
@@ -140,7 +142,7 @@ const Payment = () => {
                 component = {motion.div}
                 initial = {{x:200, opacity:0}}
                 animate = {{x:0, opacity:1}}
-                sx = {{mt:10}} 
+                sx = {{mt:10, textAlign : 'center'}} 
                 display = 'flex' 
                 justifyContent = 'center' 
                 alignItems = 'center' 
@@ -151,34 +153,27 @@ const Payment = () => {
                     width = {300} 
                     alt = 'a cute burger' />
                 <Typography 
-                    variant = 'h3' 
-                    sx = {{
-                        mt:3,
-                        fontFamily : 'Abril Fatface, cursive'}}>
+                    variant = {break_326 ? 'h4' : 'h3'}
+                    className = {classes.success}>
                     Order placed successfully :)
                 </Typography>
-                <Typography 
-                    sx = {{
-                        mt:4,
-                        fontFamily : 'Concert One, cursive',
-                        fontSize : '1.4rem'}} 
-                    variant = 'body1'>
-                    Thanks for placing order
-                </Typography>
-                <Typography 
-                    sx = {{mt:1,
-                        fontFamily : 'Concert One, cursive',
-                        fontSize : '1.4rem'}} 
-                    variant = 'body1'>
-                    Your Burger will be deliever within 20 mins and we bet on that XD
-                </Typography>
-                <CustomFab 
-                    onClick = {backToBuildingHandler} 
-                    sx = {{mt:5}} 
-                    variant = 'extended' 
-                    size = 'large'>
-                    Continue building burger
-                </CustomFab>
+                    <Typography 
+                        variant = 'body1'
+                        className = {['mt-3', classes.successMsg].join(' ')}>
+                        Thanks for placing order
+                    </Typography>
+                    <Typography 
+                        variant = 'body1'
+                        className = {['mt-1', classes.successMsg].join(' ')}>
+                        Your Burger will be deliver within 20 mins and we bet on that XD
+                    </Typography>
+                    <CustomFab 
+                        onClick = {backToBuildingHandler} 
+                        sx = {{mt:5}} 
+                        variant = 'extended' 
+                        size = 'large'>
+                        Continue building burger
+                    </CustomFab>
             </Box>
             }
         </Box>

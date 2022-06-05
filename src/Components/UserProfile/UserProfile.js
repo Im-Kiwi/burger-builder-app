@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { IconButton, Avatar, Menu, Divider, Typography, Box } from '@mui/material'
@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { signOut } from 'firebase/auth'
 import { auth } from '../../firebase-setup'
+import { db } from '../../firebase-setup'
+import { query, collection, where, getDocs, deleteDoc, doc } from 'firebase/firestore'
 import { motion } from 'framer-motion'
 
 // -------- importing from other files ---------------

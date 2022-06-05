@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { Modal } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { Box, Grid, Divider, Typography, Stack, Fab } from '@mui/material'
+import { Box, Grid, Divider, Typography, Stack, Fab, useMediaQuery } from '@mui/material'
 import { CloseRounded } from '@mui/icons-material'
 import { v4 as uniqueId } from 'uuid'
 import { collection, where, query, getDocs, deleteDoc, updateDoc, doc } from 'firebase/firestore'
@@ -19,6 +19,11 @@ const YourOrders = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
+    // creating css breakpoints
+    const break_1199 = useMediaQuery('(max-width : 1199px)')
+    const break_991 = useMediaQuery('(max-width : 991px)')
+    const break_441 = useMediaQuery('(max-width : 441px)')
+
     const orders = useSelector(state => state.orders.orders)
     const showModal = useSelector(state => state.dialog.openUserProfModal)
 
@@ -26,6 +31,42 @@ const YourOrders = () => {
     useEffect(() => {
         dispatch(dialogActions.updateUserProfModal(true))
     }, [])
+
+    // to change the order status
+    useEffect(() => {
+        const currentTime = new Date().getTime()
+        orders.forEach(order => {
+            if (order.status !== 'delivered') {
+                (async () => {
+                    const dispatchTime = order.orderedOn + 300000
+                    const deliverTime = order.orderedOn + 1200000
+                    if (currentTime >= dispatchTime && currentTime < deliverTime) {
+                        await updateDoc(doc(db, 'orders', order.id), {status : onTheWay})
+                    } else if (currentTime >= deliverTime) {
+                        await updateDoc(doc(db, 'orders', order.id), {status : delivered})
+                    }                    
+                })();            
+            }
+        })
+    }, [orders])
+
+    // to deleting the orders from database which are older and delivered
+    useEffect(() => {
+        (async () => {
+            const time = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1).getTime()
+            const ordersRef = query(collection(db, 'orders'), where('orderedOn', '<=', time))
+            const getOrders = await getDocs(ordersRef)
+            let temp = []
+            getOrders.forEach(doc => {
+                temp.push({...doc.data(), id : doc.id})
+            })
+            
+            for (let order of temp) {
+                await deleteDoc(doc(db, 'orders', order.id))
+            }
+        })();
+        
+    }, [orders])
 
     // method to close modal
     const closeModalHandler = () => {
@@ -60,7 +101,7 @@ const YourOrders = () => {
                             sx = {{backgroundColor : '#110f12', color : '#f9b826'}}>
                             <Box 
                                 display = 'flex'
-                                flexDirection = 'row'
+                                flexDirection = {break_991 ? 'column' : 'row'}
                                 justifyContent = 'space-evenly'
                                 alignItems = 'center'
                                 sx = {{mb:1}}>
@@ -129,11 +170,20 @@ const YourOrders = () => {
                         <Grid item xs = {12} 
                             container 
                             justifyContent = 'center' 
+                            alignItems = 'center'
+                            sx = {{width : '100%'}}
                             spacing = {4}>
                             {filterKeys.map(objKey => {
                                 return (
-                                    <Grid key = {uniqueId()} item xs = {9} >
-                                        <OrderItem ing = {order[objKey]} />
+                                    <Grid 
+                                        key = {uniqueId()} 
+                                        item xs = {12}
+                                        sx = {{ml : break_991 ? break_441 ? 1 : 3 : 0}} >
+                                        <OrderItem 
+                                            ing = {order[objKey]} 
+                                            firstBreak = {break_1199}
+                                            secondBreak = {break_991}
+                                            thirdBreak = {break_441}/>
                                     </Grid>
                                 )
                             })}                            

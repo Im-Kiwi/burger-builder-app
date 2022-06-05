@@ -1,19 +1,14 @@
-import { styled } from "@mui/styles"
-import { Radio, FormLabel, Fab } from '@mui/material'
+import { styled, makeStyles } from "@mui/styles"
+import { Fab } from '@mui/material'
 
-// css style for radio button
-export const CustomRadio = styled(Radio)({
-    color : '#110f12',
-    '&.Mui-checked' : {
-        color : '#110f12'
-    }
-})
-
-// css style for label of radio group
-export const CustomFormLabel = styled(FormLabel)({
-    color : '#110f12',
-    '&.Mui-focused' : {
-        color : '#110f12'
+export const styles = makeStyles({
+    success : {
+        marginTop : 30,
+        fontFamily : 'Abril Fatface, cursive'
+    },
+    successMsg : {
+        fontFamily : 'Concert One, cursive',
+        fontSize : '1.4rem'
     }
 })
 
