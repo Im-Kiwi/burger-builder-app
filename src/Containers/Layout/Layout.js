@@ -177,7 +177,7 @@ const Layout = () => {
             }
         })();
         
-    }, [])
+    }, [orders])
 
     // to change the order status
     useEffect(() => {
@@ -195,7 +195,7 @@ const Layout = () => {
                 })();            
             }
         })
-    }, [])
+    }, [orders])
 
     // this will redirect the user to the home page if user try to visit below paths without authentication
     if (!localStorage.getItem('token') && (

@@ -8,6 +8,11 @@ export const addressBox = makeStyles({
         height : '66vh',
         overflowY : 'auto'
     },
+    transitionContainer : {
+        height : 'inherit', 
+        width : '100%', 
+        padding : 10
+    },
     addressBox : {
         color : 'inherit', 
         cursor : 'pointer',
@@ -31,7 +36,6 @@ export const addressBox = makeStyles({
     },
     editBox : {
         cursor : 'default',
-        display : 'none',
         position : 'absolute',
         width : 200,
         height : 55,

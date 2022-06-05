@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Box, Grid, Container, useMediaQuery } from '@mui/material'
 import { Outlet, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
@@ -15,6 +16,11 @@ const BuildBurger = (props) => {
 
     // creating css breakpoints
     const break_899 = useMediaQuery('(max-width : 899px)')
+
+    // this will display the page from very top
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [pathname])
 
     return (
         <Container disableGutters = {break_899 && true} maxWidth = 'xl'>

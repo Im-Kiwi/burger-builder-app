@@ -23,13 +23,16 @@ const DisplayAddresses = (props) => {
     const break_768 = useMediaQuery('(max-width : 768px)')
 
     const addressStore = useSelector(state => state.deliveryAddresses.addressStore)
-    const [toggle, setToggle] = useState(false) // helps to re-render the component after value get stores in local storage
-    const idForStyling = parseInt(localStorage.getItem('id')) // the value by default stores as a string in local storage
-
+    const [selectedAddressId, setSelectedAddressId] = useState(null) // helps to re-render the component after value get stores in local storage
+     // the value by default stores as a string in local storage
+    let selectAddress
     // method to select an address from bunch of addresses
     const selectAddressHandler = (address, id) => {
+        selectAddress = id
         if (!props.manageAddressFlag) {
             localStorage.setItem('id', id)
+            const addressId = parseInt(localStorage.getItem('id'))
+            setSelectedAddressId(addressId)
             if (addressStore[id] === address) {
                 dispatch(ordersActions.updateDeliveryAddress(address))
             }
@@ -51,23 +54,19 @@ const DisplayAddresses = (props) => {
 
     const animateAddress = {
         initial : {
-            y : break_768 ? -60 : 60
+            y : 60
         },
-        hover : {
-            y : -60 
-        },
-        tap : {
-            y : break_768 ? -60 : 60
-        },
-        animate : {
+        initial_B : {
             y : -60
         },
-        
+        hover : {
+            y :  -60 
+        },
     }
 
     return (
         <>
-            <Typography variant = 'h6' sx = {{fontFamily : ''}}>
+            <Typography variant = 'h6' sx = {{fontFamily : 'DM Serif Text, serif'}}>
                 {props.manageAddressFlag ?
                     'Manage your addresses' : 
                     'Select your delivery address'}
@@ -83,120 +82,124 @@ const DisplayAddresses = (props) => {
                         <Add style = {{fontSize : '5rem', color : '#f9b826'}} icon = {faPlus} />
                     </AddAddress>
                 </CustomPaper>
-                {addressStore.map((address, index) => {
-                    return (
-                        <CustomPaper
-                            component = {motion.div}
-                            layout
-                            elevation={1}
-                            className = {[classes.addressContainer, idForStyling === index ? classes.clickedAddress : null].join(' ')}
-                            key = {uniqueId()} 
-                            aria-label= 'select address card button'>
-                            <motion.div 
-                                style = {{height : 'inherit', width : '100%', padding : 10}} 
-                                initial = 'initial' 
-                                whileHover = 'hover'
-                                whileTap = 'tap'
-                                exit = 'exit'>
-                                <Box 
-                                    className = {classes.addressBox} 
-                                    component = 'button'  
-                                    onClick = {() => selectAddressHandler(address, index)}>
-                                    <Stack direction = 'row' spacing = {5}>
-                                        <Stack 
-                                            direction = 'row' 
-                                            spacing = {1} 
-                                            alignItems = 'center'>
-                                            <FontAwesomeIcon icon = {faUser} style = {{fontSize : '1.5rem'}}/>                                        
-                                            <Typography variant = 'body1' 
-                                                sx = {{
-                                                    fontFamily : 'BIZ UDMincho, serif',
-                                                    fontSize : '1.1rem'}}>
-                                                {address.firstName} {address.lastName}
-                                            </Typography>
+                <AnimatePresence>
+                    {addressStore.map((address, index) => {
+                        return (
+                            <CustomPaper
+                                component = {motion.div}
+                                exit = {{scale : 0}}
+                                transition = {{ease : 'easeOut'}}
+                                layout
+                                elevation={1}
+                                className = {[classes.addressContainer, selectedAddressId === index ? classes.clickedAddress : null].join(' ')}
+                                key = {address.id} 
+                                aria-label= 'select address card button'>
+                                <motion.div 
+                                    className = {classes.transitionContainer}
+                                    initial = 'initial'
+                                    whileHover = 'hover'>
+                                    <Box 
+                                        className = {classes.addressBox} 
+                                        component = 'button'                                     
+                                        onClick = {() => selectAddressHandler(address, index)}>
+                                        <Stack direction = 'row' spacing = {5}>
+                                            <Stack 
+                                                direction = 'row' 
+                                                spacing = {1} 
+                                                alignItems = 'center'>
+                                                <FontAwesomeIcon icon = {faUser} style = {{fontSize : '1.5rem'}}/>                                        
+                                                <Typography variant = 'body1' 
+                                                    sx = {{
+                                                        fontFamily : 'BIZ UDMincho, serif',
+                                                        fontSize : '1.1rem'}}>
+                                                    {address.firstName} {address.lastName}
+                                                </Typography>
+                                            </Stack>
+                                            <Stack 
+                                                direction = 'row' 
+                                                spacing = {1} 
+                                                alignItems = 'center'>
+                                                <FontAwesomeIcon icon = {faMobileRetro} style = {{fontSize : '1.5rem'}} />
+                                                <Typography
+                                                    variant = 'body1'
+                                                    sx = {{
+                                                        fontFamily : 'BIZ UDMincho, serif',
+                                                        fontSize : '1.1rem'}}>
+                                                    {address.phoneNumber}
+                                                </Typography>
+                                            </Stack>
                                         </Stack>
                                         <Stack 
                                             direction = 'row' 
-                                            spacing = {1} 
+                                            spacing = {2} 
+                                            sx = {{mt:2}} 
                                             alignItems = 'center'>
-                                            <FontAwesomeIcon icon = {faMobileRetro} style = {{fontSize : '1.5rem'}} />
+                                            <FontAwesomeIcon icon = {faHouse} style = {{fontSize : '1.5rem'}} />
                                             <Typography
                                                 variant = 'body1'
                                                 sx = {{
                                                     fontFamily : 'BIZ UDMincho, serif',
                                                     fontSize : '1.1rem'}}>
-                                                {address.phoneNumber}
+                                                {address.address}
                                             </Typography>
                                         </Stack>
-                                    </Stack>
-                                    <Stack 
-                                        direction = 'row' 
-                                        spacing = {2} 
-                                        sx = {{mt:2}} 
-                                        alignItems = 'center'>
-                                        <FontAwesomeIcon icon = {faHouse} style = {{fontSize : '1.5rem'}} />
+                                        <Stack 
+                                            direction = 'row' 
+                                            sx = {{mt:2}} 
+                                            spacing = {2}>
+                                            <FontAwesomeIcon icon = {faCity} style = {{fontSize : '1.5rem'}}/>
+                                            <Typography
+                                                variant = 'body1'
+                                                sx = {{
+                                                    fontFamily : 'BIZ UDMincho, serif',
+                                                    fontSize : '1.1rem'}}>
+                                                {address.city}, {address.state}, {address.country}
+                                            </Typography>
+                                        </Stack>
                                         <Typography
-                                            variant = 'body1'
+                                            variant = "body1"
                                             sx = {{
                                                 fontFamily : 'BIZ UDMincho, serif',
                                                 fontSize : '1.1rem'}}>
-                                            {address.address}
+                                            zip code: {address.pinCode} 
                                         </Typography>
-                                    </Stack>
-                                    <Stack 
-                                        direction = 'row' 
-                                        sx = {{mt:2}} 
-                                        spacing = {2}>
-                                        <FontAwesomeIcon icon = {faCity} style = {{fontSize : '1.5rem'}}/>
-                                        <Typography
-                                            variant = 'body1'
-                                            sx = {{
-                                                fontFamily : 'BIZ UDMincho, serif',
-                                                fontSize : '1.1rem'}}>
-                                            {address.city}, {address.state}, {address.country}
-                                        </Typography>
-                                    </Stack>
-                                    <Typography
-                                        variant = "body1"
-                                        sx = {{
-                                            fontFamily : 'BIZ UDMincho, serif',
-                                            fontSize : '1.1rem'}}>
-                                        zip code: {address.pinCode} 
-                                    </Typography>
-                                </Box>
-                                <AnimatePresence>
-                                    <Box
-                                        component = {motion.div} 
-                                        variants = {animateAddress}
-                                        id = 'configAddress' 
-                                        className = {classes.editBox}
-                                        sx = {{
-                                            '&:before' : {
-                                                backgroundColor : index === idForStyling ? '#110f12' : '#f9b826'
-                                            }}}>
-                                            <Stack 
-                                                direction = 'row' 
-                                                justifyContent = 'center' 
-                                                alignItems = 'center' 
-                                                sx = {{height : 'inherit', width : '100%'}} 
-                                                spacing = {2}>
-                                                <IconButton 
-                                                    color = {index === idForStyling ? 'yellowish' : 'blackish'} 
-                                                    onClick = {() => editAddressHandler(index)}>
-                                                    <Edit />
-                                                </IconButton>
-                                                <IconButton
-                                                    color = {index === idForStyling ? 'yellowish' : 'blackish'} 
-                                                    onClick = {() => deleteAddressHandler(address.id)}>
-                                                    <Delete />
-                                                </IconButton>
-                                            </Stack>
                                     </Box>
-                                </AnimatePresence>
-                            </motion.div>                        
-                        </CustomPaper>
-                    )
-                })}
+                                    <AnimatePresence>
+                                        <Box
+                                            component = {motion.div} 
+                                            //below animate is for mobile version, user can click on address card to see edit and delete button                                            
+                                            animate = {{y : index === selectedAddressId ? -60 : 60}} 
+                                            variants = {animateAddress}
+                                            id = 'configAddress' 
+                                            className = {classes.editBox}
+                                            sx = {{
+                                                '&:before' : {
+                                                    backgroundColor : index === selectedAddressId ? '#110f12' : '#f9b826'
+                                                }}}>
+                                                <Stack 
+                                                    direction = 'row' 
+                                                    justifyContent = 'center' 
+                                                    alignItems = 'center' 
+                                                    sx = {{height : 'inherit', width : '100%'}} 
+                                                    spacing = {2}>
+                                                    <IconButton 
+                                                        color = {index === selectedAddressId ? 'yellowish' : 'blackish'} 
+                                                        onClick = {() => editAddressHandler(index)}>
+                                                        <Edit />
+                                                    </IconButton>
+                                                    <IconButton
+                                                        color = {index === selectedAddressId ? 'yellowish' : 'blackish'} 
+                                                        onClick = {() => deleteAddressHandler(address.id)}>
+                                                        <Delete />
+                                                    </IconButton>
+                                                </Stack>
+                                        </Box>
+                                    </AnimatePresence>
+                                </motion.div>                        
+                            </CustomPaper>
+                        )
+                    })}
+                </AnimatePresence>
             </Box>
         </>
     )

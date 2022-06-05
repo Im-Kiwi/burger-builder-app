@@ -23,7 +23,7 @@ const OrderSummary = (props) => {
                 display = 'flex' 
                 justifyContent = 'center' 
                 alignItems = 'flex-start'>
-                <Grid xs = {12} md = {8} item  
+                <Grid xs = {12} item  
                     display = 'flex'  
                     flexWrap = 'wrap' 
                     justifyContent = 'center' 
@@ -40,11 +40,11 @@ const OrderSummary = (props) => {
                     })}
                 </Grid>
                 <Grid item container 
-                    xs = {12} md = {4} 
+                    xs = {12} 
                     className = 'text-center'  
                     display = 'flex' 
-                    flexDirection = 'column' 
-                    justifyContent = 'flex-start'
+                    flexDirection = 'row' 
+                    justifyContent = 'space-around'
                     sx = {{p:1, backgroundColor : '#110f12', borderRadius : 2}}>
                     <Grid item 
                         sx = {{mb:3}} 
@@ -82,8 +82,8 @@ const OrderSummary = (props) => {
                                 : 
                                 address.country === india ? props.cartPrice : (props.cartPrice*0.67).toFixed(0)}
                         </Typography>
-                    </Grid>                
-                    <Grid item  sx = {{mb:2}}>
+                    </Grid>                                                   
+                    <Grid item  display = 'flex' flexDirection = 'column' justifyContent = 'center'>
                         <Typography
                             variant = 'h6' 
                             sx = {{
@@ -91,13 +91,11 @@ const OrderSummary = (props) => {
                                 fontFamily : 'DM Serif Text, serif'}}>
                             Delivery address
                         </Typography>
-                    </Grid>                
-                    <Grid item  display = 'flex' justifyContent = 'center'>
                         <Box 
                             display = 'flex' 
                             flexDirection = 'column' 
                             alignItems = 'center'
-                            sx = {{color : '#f9b826', width : '60%'}}>
+                            sx = {{color : '#f9b826',}}>
                             <Stack 
                                 direction = 'row' 
                                 spacing = {5} 
