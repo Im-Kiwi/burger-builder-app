@@ -1,26 +1,29 @@
-import { useState } from 'react'
 import { Image } from 'react-bootstrap'
-import { Box, Divider, FormControl, FormControlLabel, Grid, RadioGroup, Typography, Container } from '@mui/material'
+import { Box, Grid, Typography, useMediaQuery } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { collection, addDoc, arrayUnion, setDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { collection, addDoc, doc, deleteDoc } from 'firebase/firestore'
 import { faPesoSign, faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons'
 import { motion } from 'framer-motion'
 
 // ---------- importing from other files -----------
 import { db } from '../../firebase-setup.js'
-import { CustomRadio, CustomFormLabel, CustomFab } from './style.js'
+import { CustomFab } from './styles.js'
 import { dialogActions } from '../../Store/reducer/dialog.js'
 import { ingredientsActions } from '../../Store/reducer/ingredients.js'
 import { stepperActions } from '../../Store/reducer/stepper.js'
 import { ordersActions } from '../../Store/reducer/orders.js'
 import { CuteBurger } from '../../path-to-assets/pathToImages'
-import { dispatching, india, philippines } from '../../identifiers/identifiers.js'
+import { dispatching, india } from '../../identifiers/identifiers.js'
+import PaymentMethods from './PaymentMethod/PaymentMethod.js'
+import PriceDetails from './PriceDetails/PriceDetails.js'
 
 const Payment = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+
+    // creating break points
+    const break_705 = useMediaQuery('(max-width : 705px)')
 
     const userId = useSelector(state => state.userForm.currentUser.userId)
     const currentItem = useSelector(state => state.cart.currentItem)
@@ -40,10 +43,6 @@ const Payment = () => {
     } else {
         const tempData = cartItems.map(item => item.totalPrice)
         totalPrice = cartItems.length !== 0 ? tempData.reduce((total, price) => total + price).toFixed(0) : 0
-    }
-
-    const changePaymentMethod = (event) => {
-        dispatch(ordersActions.updatePaymentMethod(event.target.value))
     }
 
     // will sends the orders information to the firebase database
@@ -105,219 +104,23 @@ const Payment = () => {
     }
 
     return (
-        <>
+        <Box sx = {{mb:5}}>
             {!paymentSuccess ?
                 <Grid 
                     container 
                     component = {motion.div}
                     initial = {{x:200, opacity:0}}
                     animate = {{x:0, opacity:1}}
+                    direction = {break_705 ? 'column' : 'row'}
                     justifyContent = 'center' 
                     sx = {{mt : 5}}>
                     <Grid item xs = {6}>
-                        <Box 
-                            sx = {{ 
-                                padding : 3, 
-                                backgroundColor : '#f9b826', 
-                                height : 300,
-                                borderRadius : '10px 0 0 10px',
-                                border : 'solid 2px #110f12'}}>
-                            <FormControl
-                                sx = {{
-                                    display : 'flex',
-                                    flexDirection : 'column',
-                                    alignItems : 'center',
-                                }}>
-                                <CustomFormLabel id = 'payment method'>
-                                    <Typography
-                                        variant = 'h5'
-                                        sx = {{fontFamily : 'DM Serif Text, serif'}}>
-                                        Choose payment method
-                                    </Typography>
-                                </CustomFormLabel>
-                                <RadioGroup 
-                                    aria-labelledby='payment method' 
-                                    sx = {{mt : 2}}
-                                    value = {paymentMethod}
-                                    onChange = {(event) => changePaymentMethod(event)}>
-                                    <FormControlLabel
-                                        sx = {{
-                                            color : '#110f12',
-                                            '& .MuiFormControlLabel-label' : {
-                                                fontWeight : 400,
-                                                fontSize : '1.2rem',
-                                                fontFamily : 'Karla, sans-serif'                                            
-                                            }}} 
-                                        label = 'Debit Card' 
-                                        value = 'Debit Card' 
-                                        control = {<CustomRadio />} />
-                                    <FormControlLabel  
-                                        sx = {{
-                                            color : '#110f12',
-                                            '& .MuiFormControlLabel-label' : {
-                                                fontWeight : 400,
-                                                fontSize : '1.2rem',
-                                                fontFamily : 'Karla, sans-serif'                                            
-                                            }}}
-                                        label = 'Credit Card' 
-                                        value = 'Credit Card' 
-                                        control = {<CustomRadio />} />
-                                    <FormControlLabel  
-                                        sx = {{
-                                            color : '#110f12',
-                                            '& .MuiFormControlLabel-label' : {
-                                                fontWeight : 400,
-                                                fontSize : '1.2rem',
-                                                fontFamily : 'Karla, sans-serif'                                            
-                                            }}}
-                                        label = 'Paypal' 
-                                        value = 'Paypal' 
-                                        control = {<CustomRadio />} />
-                                    <FormControlLabel  
-                                        sx = {{
-                                            color : '#110f12',
-                                            '& .MuiFormControlLabel-label' : {
-                                                fontWeight : 400,
-                                                fontSize : '1.2rem',
-                                                fontFamily : 'Karla, sans-serif'                                            
-                                            }}}
-                                        label = 'Cash on Delivery' 
-                                        value = 'Cash on Delivery' 
-                                        control = {<CustomRadio />} />
-                                </RadioGroup>
-                            </FormControl>                        
-                        </Box>
+                        <PaymentMethods  />
                     </Grid>
                     <Grid item xs = {6}>
-                        <Box 
-                            sx = {{ 
-                                padding : 3, 
-                                backgroundColor : '#110f12', 
-                                borderRadius : '0 10px 10px 0',
-                                height : 300
-                            }}>
-                            <Typography 
-                                className = 'text-center' 
-                                sx = {{
-                                    color : '#f9b826',
-                                    fontFamily : 'DM Serif Text, serif'
-                                }} 
-                                variant = 'h5'>
-                                Price Details
-                            </Typography>  
-                            <Container>
-                                <Grid 
-                                    sx = {{mt : 2, mb : 2}} 
-                                    container 
-                                    justifyContent = 'space-evenly'
-                                    alignItems = 'center'>
-                                    <Grid item xs = {8}>
-                                        <Typography 
-                                            variant = 'body1'
-                                            sx = {{
-                                                color : '#f9b826', 
-                                                ml : 6, 
-                                                fontFamily :  'Oswald, sans-serif',
-                                                fontWeight : 600,
-                                                fontSize : '1.3rem'}}>
-                                            {instantBuy ? `${currentItem.length} Item` : `${cartItems.length} Items`}
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs = {4}
-                                        display = 'flex'                                        
-                                        justifyContent = 'center'
-                                        alignItems = 'center'>
-                                        <FontAwesomeIcon 
-                                            icon = {icon} 
-                                            style = {{fontSize : '1.3rem', color : '#f9b826'}}/>  
-                                        <Typography 
-                                            variant = 'body1'
-                                            sx = {{
-                                                color : '#f9b826', 
-                                                ml : 1,
-                                                fontWeight : 600,
-                                                fontSize : '1.3rem',
-                                                fontFamily :  'Oswald, sans-serif'}}>
-                                            {deliveryAddress.country === india ? totalPrice : (totalPrice*0.67).toFixed(0)}
-                                        </Typography>                    
-                                    </Grid>                        
-                                </Grid>
-                                <Grid 
-                                    container 
-                                    justifyContent = 'center' 
-                                    alignItems = 'center'
-                                    sx = {{mb: 2}}> 
-                                    <Grid item xs = {8}>
-                                        <Typography 
-                                            variant = 'body1'
-                                            sx = {{
-                                                color : '#f9b826', 
-                                                ml:6,
-                                                fontWeight : 600,
-                                                fontSize : '1.3rem',
-                                                fontFamily :  'Oswald, sans-serif'}}>
-                                            Delivery Charges
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs = {4}
-                                        display = 'flex'
-                                        flexDirection = 'row'
-                                        justifyContent = 'center'
-                                        alignItems = 'center'>
-                                        <FontAwesomeIcon 
-                                            icon = {icon} 
-                                            style = {{fontSize : '1.3rem', color : '#f9b826'}}/>
-                                        <Typography 
-                                            variant = 'body1'
-                                            sx = {{
-                                                color : '#f9b826', 
-                                                ml:1,
-                                                fontWeight : 600,
-                                                fontFamily :  'Oswald, sans-serif',
-                                                fontSize : '1.3rem'}}>
-                                            0
-                                        </Typography>
-                                    </Grid>
-                                </Grid>     
-                                <Divider sx = {{borderColor : '#f9b826', mb : 2}} />
-                                <Grid 
-                                    container 
-                                    justifyContent = 'center'
-                                    alignItems = 'center'> 
-                                    <Grid item xs = {8}>
-                                        <Typography 
-                                            variant = 'body1'
-                                            sx = {{
-                                                color : '#f9b826', 
-                                                ml:6,
-                                                fontWeight : 600,
-                                                fontFamily :  'Oswald, sans-serif',
-                                                fontSize : '1.3rem'}}>
-                                            Total
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs = {4}
-                                        display = 'flex'
-                                        flexDirection = 'row'
-                                        justifyContent = 'center'
-                                        alignItems = 'center'>
-                                        <FontAwesomeIcon 
-                                            icon = {icon} 
-                                            style = {{fontSize : '1.3rem', color : '#f9b826'}}/>                                        
-                                        <Typography 
-                                            variant = 'body1'
-                                            sx = {{
-                                                color : '#f9b826', 
-                                                ml:1,
-                                                fontWeight : 600,
-                                                fontFamily :  'Oswald, sans-serif',
-                                                fontSize : '1.3rem'}}>
-                                            {deliveryAddress.country === india ? totalPrice : (totalPrice*0.67).toFixed(0)}
-                                        </Typography>
-                                    </Grid>
-                                </Grid>                
-                            </Container>                 
-                        </Box>
+                        <PriceDetails 
+                            icon = {icon} 
+                            totalPrice = {totalPrice} />                        
                     </Grid>
                     <Grid item xs = {12}>
                         <Box className = 'text-center' sx = {{mt:10}}>
@@ -332,6 +135,7 @@ const Payment = () => {
                     </Grid>                     
             </Grid>
             : 
+            // below to display "order successfuly placed" message
             <Box 
                 component = {motion.div}
                 initial = {{x:200, opacity:0}}
@@ -341,7 +145,11 @@ const Payment = () => {
                 justifyContent = 'center' 
                 alignItems = 'center' 
                 flexDirection = 'column'>
-                <Image src = {CuteBurger} fluid width = {300} alt = 'a cute burger' />
+                <Image 
+                    src = {CuteBurger} 
+                    fluid 
+                    width = {300} 
+                    alt = 'a cute burger' />
                 <Typography 
                     variant = 'h3' 
                     sx = {{
@@ -373,7 +181,7 @@ const Payment = () => {
                 </CustomFab>
             </Box>
             }
-        </>
+        </Box>
     )
 }
 

@@ -11,7 +11,8 @@ const Controls = (props) => {
             <Grid container 
                 justifyContent = 'center' 
                 alignItems = 'center' 
-                sx = {{color : '#f9b826'}}>
+                sx = {{color : '#f9b826'}}
+                spacing = {2}>
                 <Grid item 
                     xs = {6}  
                     display = 'flex' 
