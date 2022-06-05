@@ -62,6 +62,7 @@ const Cart = () => {
                             return (
                                 <div key = {item.id}>
                                     <motion.div 
+                                        className = 'mx-auto'
                                         layout
                                         exit = {{
                                             x : -100, 

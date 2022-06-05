@@ -126,7 +126,9 @@ const FullDialogs = (props) => {
                         </Grid>
                     </Toolbar>
                 </AppBar>
-                {props.children}
+                <Box sx = {{overflowY : 'auto', height : '100%'}}>
+                    {props.children}
+                </Box>
             </Box>
         </Modal>           
     )

@@ -38,13 +38,12 @@ const OrderItem = ({ing, thisIsCart, deleteCartItemHandler, firstBreak, secondBr
                 sx = {{color : '#110f12'}}
                 spacing ={1}>
                 <Grid item container 
-                    xs = {firstBreak? 6 : 12}           
+                    xs = {firstBreak ? 5 : 12}           
                     display = 'flex'
                     flexDirection = {thirdBreak ? 'column' : 'row'}
-                    alignItems = {firstBreak? 'flex-start' : 'center'}                    
-                    spacing = {2} 
-                    sx = {{mb:1}}>
-                    <Grid item xs = {pathname === '/buy/order-summary' ? 3 : 2}>
+                    alignItems = {firstBreak ? 'flex-start' : 'center'}                    
+                    spacing = {firstBreak && !thirdBreak ? 10 : 2} >
+                    <Grid item xs = {2}>
                         <Typography 
                             variant = 'body1'
                             sx = {{
@@ -56,7 +55,7 @@ const OrderItem = ({ing, thisIsCart, deleteCartItemHandler, firstBreak, secondBr
                     <Grid item xs = {8} 
                         display = 'flex'
                         flexDirection = {firstBreak? 'column' : 'row'}
-                        alignItems = 'flex-end' 
+                        alignItems = 'flex-start' 
                         gap = {1}>
                         <Chip
                             className = {classes.ingredientChip}                                     
@@ -85,22 +84,22 @@ const OrderItem = ({ing, thisIsCart, deleteCartItemHandler, firstBreak, secondBr
                     </Grid>
                 </Grid>
                 <Grid item container
-                    xs = {firstBreak? 6 : 12}
+                    xs = {firstBreak? 7 : 12}
                     display = 'flex'
                     flexDirection = {thirdBreak ? 'column' : 'row'}                     
-                    alignItems = {firstBreak? 'flex-start' : 'center'}
-                    spacing = {2}>
-                    <Grid item xs = {pathname === '/buy/order-summary' ? 3 : 2}>
+                    alignItems = {firstBreak ? 'flex-start' : 'center'}
+                    spacing = {firstBreak && !thirdBreak ? 6 : 2}>
+                    <Grid item xs = {2}>
                         <Typography
                             variant = 'body1'
                             sx = {{fontFamily : 'Pathway Gothic One, sans-serif', fontSize : '1.2rem'}}>
                             <strong>Extras:</strong>
                         </Typography>
                     </Grid>
-                    <Grid item xs = {9}
+                    <Grid item xs = {8}
                         display = 'flex'
                         flexDirection = {firstBreak? 'column' : 'row'}
-                        alignItems = 'flex-end'
+                        alignItems = 'flex-start'
                         gap = {1}>
                         {ing.Coke.status &&
                             <Chip

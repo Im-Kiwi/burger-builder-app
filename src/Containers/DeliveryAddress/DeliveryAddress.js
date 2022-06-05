@@ -36,7 +36,8 @@ const DeliveryAddress = (props) => {
             animate = {{x:0, opacity:1}}
             sx = {{
                 mt : break_550 ? 1 : 5, 
-                position : 'relative'}}
+                position : 'relative', 
+                mb : 1}}
             display = 'flex' 
             flexDirection = 'column' 
             alignItems = 'center'>

@@ -100,7 +100,7 @@ const BuyBurger = () => {
                     color = 'secondary' 
                     onClick = {backHandler}
                     className = {[classes.both, classes.back].join(' ')}>
-                    Back
+                    <strong>Back</strong>
                 </Fab> 
             </motion.div>            
             <motion.div
@@ -113,7 +113,7 @@ const BuyBurger = () => {
                         color = 'secondary' 
                         onClick = {nextHandler}
                         className = {[classes.both, classes.next].join(' ')}>
-                        Next
+                        <strong>Next</strong>
                     </Fab>                       
                 </motion.div>
             </motion.div>

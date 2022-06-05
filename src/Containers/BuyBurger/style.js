@@ -4,15 +4,15 @@ import { Fab } from '@mui/material'
 const useStyle = makeStyles({
 
     both : {
-        zIndex : 20,
+        zIndex : 2000,
         position : 'fixed',
+        top : 20,
         paddingLeft : 15,
         paddingRight : 15,
-        bottom : 50,
-        color : '#f9b826',
-        backgroundColor : '#110f12',
+        color : '#110f12',
+        backgroundColor : '#f9b826',
         '&:hover' : {
-            backgroundColor : '#110f12'
+            backgroundColor : '#f9b826'
         }
     },
     back : {

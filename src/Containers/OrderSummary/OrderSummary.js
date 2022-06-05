@@ -1,28 +1,35 @@
 import { useSelector } from 'react-redux'
-import { Typography, Grid, Box, Stack  } from '@mui/material'
+import { Typography, Grid, Box, Stack, useMediaQuery  } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { v4 as uniqueId } from 'uuid'
 import { faUser, faMobileRetro, faHouse, faCity, faPesoSign, faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons'
 import { motion } from 'framer-motion'
 
 // -------------- importing from other files ------------
+import { styles } from './styles'
 import OrderItem from '../../Components/OrderItem/OrderItem'
 import { philippines, india } from '../../identifiers/identifiers'
 
 const OrderSummary = (props) => {
-    
+    const classes = styles()
+
+    // creating breakpoints
+    const break_855 = useMediaQuery('(max-width : 855px)')
+    const break_740 = useMediaQuery('(max-width : 740px)')
+    const break_431 = useMediaQuery('(max-width : 431px)')
+
     const instantBuy = useSelector(state => state.cart.instantBuy)
     const items = useSelector(state => !instantBuy ? state.cart.cartItems : state.cart.currentItem)
     const address = useSelector(state => state.orders.deliveryAddress)
     return (  
         <motion.div
             initial = {{x:200, opacity:0}}
-            animate = {{x:0, opacity:1}}>
+            animate = {{x:0, opacity:1}}
+            style = {{marginBottom : 10}}>
             <Grid container 
-                sx = {{mt : 5, maxHeight : 590, overflowY : 'auto'}} 
-                display = 'flex' 
+                className = {classes.orderSummary}
                 justifyContent = 'center' 
-                alignItems = 'flex-start'>
+                alignItems = 'center'>
                 <Grid xs = {12} item  
                     display = 'flex'  
                     flexWrap = 'wrap' 
@@ -34,19 +41,23 @@ const OrderSummary = (props) => {
                             <Box 
                                 key = {uniqueId()}
                                 sx = {{mb:2, width : '100%'}}>
-                                <OrderItem ing = {ing} />    
+                                <OrderItem 
+                                    ing = {ing}
+                                    firstBreak = {break_855}
+                                    secondBreak = {break_740}
+                                    thirdBreak = {break_431} />    
                             </Box>
                         )
                     })}
                 </Grid>
                 <Grid item container 
                     xs = {12} 
-                    className = 'text-center'  
+                    className = {classes.deliveryAddress}  
                     display = 'flex' 
-                    flexDirection = 'row' 
-                    justifyContent = 'space-around'
-                    sx = {{p:1, backgroundColor : '#110f12', borderRadius : 2}}>
-                    <Grid item 
+                    flexDirection = {break_740 ? 'column' : 'row'} 
+                    alignItems = 'center'
+                    justifyContent = 'space-around'>
+                    <Grid item xs = {break_740 ? 12 : 3}
                         sx = {{mb:3}} 
                         display = 'flex' 
                         flexDirection = 'row' 
@@ -54,52 +65,47 @@ const OrderSummary = (props) => {
                         alignItems = 'center'>
                         <Typography 
                             variant = 'body1'
-                            sx = {{
-                                mr:2, 
-                                fontFamily : 'DM Serif Text, serif', 
-                                fontSize : '1.3rem',
-                                color : '#f9b826'}}>
+                            className = {classes.pay}>
                             Pay 
                         </Typography>
                         {address.country === "Philippines" ?
                             <FontAwesomeIcon 
-                                icon = {faPesoSign} 
-                                style = {{fontSize : '1.3rem', color : '#f9b826'}}/>
+                                icon = {faPesoSign}
+                                className = {classes.currencyIcon} />
                         : 
                             <FontAwesomeIcon 
                                 icon = {faIndianRupeeSign} 
-                                style = {{fontSize : '1.3rem', color : '#f9b826'}}/>
+                                className = {classes.currencyIcon} />
                         }
                         <Typography 
                             variant = 'body1'
-                            sx = {{
-                                fontFamily : 'Comfortaa, cursive', 
-                                fontWeight : 600, 
-                                fontSize : '1.3rem',
-                                color : '#f9b826'}}>
+                            className = {classes.price}>
                             {instantBuy ?
                                 address.country === philippines ? (items[0].totalPrice*0.67).toFixed(0) : items[0].totalPrice
                                 : 
                                 address.country === india ? props.cartPrice : (props.cartPrice*0.67).toFixed(0)}
                         </Typography>
                     </Grid>                                                   
-                    <Grid item  display = 'flex' flexDirection = 'column' justifyContent = 'center'>
+                    <Grid item xs = {break_740 ? 12 : 9} 
+                        display = 'flex' 
+                        flexDirection = 'column' 
+                        justifyContent = 'center'
+                        alignItems = 'center'>
                         <Typography
                             variant = 'h6' 
-                            sx = {{
-                                color : '#f9b826', 
-                                fontFamily : 'DM Serif Text, serif'}}>
+                            className = {classes.addressHeading}>
                             Delivery address
                         </Typography>
                         <Box 
                             display = 'flex' 
                             flexDirection = 'column' 
                             alignItems = 'center'
+                            gap = {1}
                             sx = {{color : '#f9b826',}}>
                             <Stack 
-                                direction = 'row' 
-                                spacing = {5} 
-                                justifyContent = 'flex-start' 
+                                spacing = {1} 
+                                justifyContent = 'flex-start'
+                                alignItems = 'flex-start' 
                                 sx = {{width : 300}}>
                                 <Stack 
                                     direction = 'row' 
@@ -109,10 +115,9 @@ const OrderSummary = (props) => {
                                     <FontAwesomeIcon 
                                         icon = {faUser} 
                                         style = {{fontSize : '1.5rem'}} />
-                                    <Typography
-                                        sx = {{
-                                            fontFamily : 'BIZ UDMincho, serif', 
-                                            fontSize : '1.2rem'}}>                                                            
+                                    <Typography 
+                                        variant = 'body1'
+                                        className = {classes.addressText}>                                                            
                                         {address.firstName} {address.lastName}
                                     </Typography>
                                 </Stack>
@@ -124,52 +129,46 @@ const OrderSummary = (props) => {
                                         icon = {faMobileRetro} 
                                         style = {{fontSize : '1.5rem'}}/>
                                     <Typography
-                                        sx = {{
-                                            fontFamily : 'BIZ UDMincho, serif', 
-                                            fontSize : '1.2rem'}}>
+                                        variant = 'body1'
+                                        className = {classes.addressText}>
                                         {address.phoneNumber}
                                     </Typography>
                                 </Stack>
                             </Stack>
                             <Stack 
                                 direction = 'row' 
-                                spacing = {2} 
-                                sx = {{mt:2, width : 300}} 
+                                spacing = {1} 
+                                sx = {{width : 300}} 
                                 justifyContent= 'flex-start' 
                                 alignItems = 'center'>
                                 <FontAwesomeIcon 
                                     icon = {faHouse} 
                                     style = {{fontSize : '1.5rem'}} />
                                 <Typography
-                                    sx = {{
-                                        fontFamily : 'BIZ UDMincho, serif', 
-                                        fontSize : '1.2rem'}}>
+                                    variant = 'body1'
+                                    className = {classes.addressText}>
                                     {address.address}
                                 </Typography>
                             </Stack>
                             <Stack 
                                 direction = 'row' 
-                                sx = {{mt:2, width : 300}} 
-                                spacing = {2}>
+                                sx = {{ width : 300}} 
+                                spacing = {1}>
                                 <FontAwesomeIcon  
                                     icon = {faCity} 
                                     style = {{fontSize : '1.5rem'}} />
                                 <Typography
-                                    sx = {{
-                                        fontFamily : 'BIZ UDMincho, serif', 
-                                        fontSize : '1.2rem'}}>
+                                    variant = 'body1'
+                                    className = {classes.addressText}>
                                     {address.city}, {address.state}, {address.country}
                                 </Typography>
                             </Stack>
                             <Box 
-                                sx = {{width : 300}} 
                                 display = 'flex' 
                                 justifyContent = 'flex-start'>
                                 <Typography 
-                                    sx = {{
-                                        mt:2,
-                                        fontFamily : 'BIZ UDMincho, serif', 
-                                        fontSize : '1.2rem'}}>
+                                    variant = 'body1'
+                                    className = {classes.zipCodeText}>
                                     <strong>zip code:</strong> {address.pinCode} 
                                 </Typography>
                             </Box>

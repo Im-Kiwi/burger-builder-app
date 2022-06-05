@@ -4,8 +4,6 @@ import { CenterFocusStrong } from '@mui/icons-material'
 
 export const addressBox = makeStyles({
     main : {
-        position : 'absolute',
-        height : '66vh',
         overflowY : 'auto'
     },
     transitionContainer : {
@@ -49,14 +47,6 @@ export const addressBox = makeStyles({
             opacity : 0.95
         }
     },
-
-    // ------ responsive ------------
-    '@media (max-width : 550px)' : {
-        main : {
-            height : '44vh'
-        }
-    }
-    
 })
 
 export const CustomPaper = styled(Paper)({
