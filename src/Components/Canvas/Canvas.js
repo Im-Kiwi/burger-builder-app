@@ -7,6 +7,7 @@ import { motion } from 'framer-motion'
 import SignUp from '../SignUp/SignUp'
 import LogIn from '../LogIn/LogIn'
 import { dialogActions } from '../../Store/reducer/dialog'
+import { userFormActions } from '../../Store/reducer/userForm'
 import { BackgroundBurger } from '../../path-to-assets/pathToImages'
 import { Close } from '@mui/icons-material'
 
@@ -23,6 +24,7 @@ const Canvas = () => {
     // this method will close the side drawer
     const closeCanvasHandler = () => {
         dispatch(dialogActions.updateShowCanvas(false))
+        dispatch(userFormActions.updateErrorFlag(false))
     }
 
     return (
@@ -42,6 +44,7 @@ const Canvas = () => {
                 <Image 
                     style = {{
                         position : 'absolute', 
+                        zIndex : 10,
                         opacity : 0.2}} 
                     src = {BackgroundBurger} 
                     fluid 

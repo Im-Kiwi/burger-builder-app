@@ -10,6 +10,7 @@ import securityReducer from "./reducer/security";
 import animationReducer from "./reducer/animation";
 import switchCurrReducer from "./reducer/switchCurrency";
 import basePriceReducer from "./reducer/basePrice";
+import loadingReducer from "./reducer/loading";
 
 const store = configureStore({
     reducer : {
@@ -23,7 +24,8 @@ const store = configureStore({
         security : securityReducer.reducer,
         animation : animationReducer.reducer,
         switchCurr : switchCurrReducer.reducer,
-        basePrice : basePriceReducer.reducer
+        basePrice : basePriceReducer.reducer,
+        loading : loadingReducer.reducer
     }
 })
 

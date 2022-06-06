@@ -82,7 +82,7 @@ const SignUp = props => {
     }
 
     return (
-        <Container maxWidth = 'xs'>
+        <Container maxWidth = 'xs' sx = {{zIndex : 20}}>
             <Box>
                 <Typography 
                     className = 'text-center p-3' 

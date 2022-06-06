@@ -23,7 +23,6 @@ const Security = () => {
 
 
     const [isLogIn, setIsLogIn] = useState(false) // to control the login form
-    const [selectChange, setSelectChange] = useState(0) // to control select element
 
     // fetching data from the redux store
     const showModal = useSelector(state => state.dialog.openUserProfModal)
@@ -39,7 +38,7 @@ const Security = () => {
         dispatch(dialogActions.updateUserProfModal(true))
     }, [])
 
-    // to handle the click event on list item
+    // to handle the click event on list item and also handle the change event in select tag
     const clickListHandler = (index) => {
         dispatch(securityActions.updateNavigationIndex(index))
         dispatch(securityActions.updateNewEmailOrPass(''))
@@ -50,7 +49,11 @@ const Security = () => {
 
     // to control select element
     const selectHandler = (event) => {
-        setSelectChange(event.target.value)
+        dispatch(securityActions.updateNavigationIndex(event.target.value))
+        dispatch(securityActions.updateNewEmailOrPass(''))
+        dispatch(securityActions.updateConfirmPass(''))
+        dispatch(securityActions.updateStartValidation(false))
+        dispatch(securityActions.updateSuccessFlag(false))
     }
 
     // this method to handler the change in input tag
@@ -126,7 +129,7 @@ const Security = () => {
     // form will change depending upon the navigation of user
     // for ex: if user navigate to change email, then email form will open, where user can change their email address
     let content
-    switch(navigationIndex || selectChange) {
+    switch(navigationIndex) {
         case 0:
             content = (
                 <Change 
@@ -208,7 +211,7 @@ const Security = () => {
                             <Select
                                 size = 'small'
                                 onChange = {event => selectHandler(event)}
-                                value = {selectChange}>
+                                value = {navigationIndex}>
                                 <MenuItem value = {0}>Change email</MenuItem>
                                 <MenuItem value = {1}>Change password</MenuItem>
                                 <MenuItem value = {2}>Change user name</MenuItem>
