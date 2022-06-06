@@ -179,6 +179,8 @@ const LogIn = props => {
                     <Button 
                         sx = {{
                             borderRadius : 0, 
+                            width : 90,
+                            height : 35,
                             color : '#f9b826',
                             fontFamily : 'Montserrat Alternates, sans-serif'}}
                         className = 'mb-3' 

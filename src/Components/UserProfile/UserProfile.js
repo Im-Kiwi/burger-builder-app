@@ -6,11 +6,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { signOut } from 'firebase/auth'
 import { auth } from '../../firebase-setup'
-import { db } from '../../firebase-setup'
-import { query, collection, where, getDocs, deleteDoc, doc } from 'firebase/firestore'
 import { motion } from 'framer-motion'
 
 // -------- importing from other files ---------------
+import { paths } from '../../identifiers/identifiers'
 import { userFormActions } from '../../Store/reducer/userForm'
 import { CustomMenuItem } from './style.js'
 import { dialogActions } from '../../Store/reducer/dialog'
@@ -44,7 +43,7 @@ const UserProfile = (props) => {
         setAnchorEl(null) // to close the popover when click on the 'Your Orders' menu
         dispatch(dialogActions.updateUserProfModal(true)) // storing the current path when clicking on the 'Your Orders' menu
         localStorage.setItem('prevPath', pathname) // storing the current path when clicking on the 'Your Addresses' menu
-        navigate('/your-orders')  // opens the modal
+        navigate(paths.yourOrders)  // opens the modal
     }
     
     // method to open 'your addresses' modal
@@ -52,14 +51,14 @@ const UserProfile = (props) => {
         setAnchorEl(null) 
         dispatch(dialogActions.updateUserProfModal(true)) 
         localStorage.setItem('prevPath', pathname) 
-        navigate('/manage-addresses') 
+        navigate(paths.manageAddresses) 
     }
 
     // method to open 'security settings' modal
     const securityHandler = () => {
         dispatch(dialogActions.updateUserProfModal(true))
         localStorage.setItem('prevPath', pathname)
-        navigate('/security-settings')
+        navigate(paths.security)
         setAnchorEl(null)
     }
 
@@ -85,7 +84,6 @@ const UserProfile = (props) => {
             <IconButton id = 'userProfile' onClick = {(event) => openPopoverHandler(event)}>
                 <motion.div
                     variants={props.animateButton}
-                    initial = 'initial'
                     animate = 'animate'
                     style = {{borderRadius : '50%'}}>
                     <Avatar sx = {{backgroundColor : 'inherit'}}>

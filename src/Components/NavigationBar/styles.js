@@ -53,7 +53,7 @@ export const styles = makeStyles({
     },    
 })
 
-// to give transition effect while hovering over nav links
+// to give transition effect to the horizontal line while hovering over nav links
 export const hoverAnime = {
     initial : {
         width : 0,

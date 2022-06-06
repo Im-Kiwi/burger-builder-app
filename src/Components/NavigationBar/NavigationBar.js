@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Nav, Navbar, Image } from 'react-bootstrap'
 import { Container, Typography, Button, Stack, Badge, IconButton, Box, useMediaQuery } from '@mui/material'
-import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons'
 import { motion } from 'framer-motion'
@@ -14,6 +14,7 @@ import UserProfile from '../UserProfile/UserProfile'
 import { animationActions } from '../../Store/reducer/animation'
 import { Logo } from '../../path-to-assets/pathToImages'
 import Hamburger from '../Hamburger/Hamburger'
+import { paths } from '../../identifiers/identifiers'
 
 const NavigationBar = () => {
     const classes = styles()
@@ -56,22 +57,31 @@ const NavigationBar = () => {
         trackingPrevPathHandler()
     }
 
-    // to change nav text color and signIn button depending upon the path
-    if (pathname === '/pricing' || pathname === '/about-us' || 
-        ((pathname === '/your-orders' || pathname === '/manage-addresses' || pathname === '/security-settings') && 
-        (prevPath === '/pricing' || prevPath === '/about-us'))) {
-            navColor = '#110f12'
-            buttonColor = '#f9b826'
-            buttonBgColor = '#110f12'
-    } else if (pathname === '/build-burger' && break_899) {
+    // transitioning nav text color, user icon signIn button depending upon the path
+    if (pathname === paths.pricing || pathname === paths.aboutUs) {
         navColor = '#110f12'
         buttonColor = '#f9b826'
         buttonBgColor = '#110f12'
+    } else if (pathname === paths.buildBurger && break_899) {
+        navColor = '#110f12'
+        buttonColor = '#f9b826'
+        buttonBgColor = '#110f12'
+    } else if (pathname === paths.yourOrders || pathname === paths.manageAddresses || pathname === paths.security) {
+        if (prevPath === paths.pricing || prevPath === paths.aboutUs || (prevPath === paths.buildBurger && break_899)) {
+            navColor = '#110f12'
+            buttonColor = '#f9b826'
+            buttonBgColor = '#110f12'
+        } else if (prevPath === paths.home || prevPath === paths.buildBurger) {
+            buttonColor = '#110f12'
+            buttonBgColor = '#f9b826'
+        }
     } else {
         navColor = '#f9b826'
         buttonColor = '#110f12'
         buttonBgColor = '#f9b826'
     }
+
+    // to change navlinks, user icon or sign in button 
 
     // to animate the nav links ( changing colors while page transitioning)
     const animateNav = {   
@@ -86,10 +96,6 @@ const NavigationBar = () => {
 
 // to animate the buttons (changing colors)
     const animateButton = {
-        initial : {
-            backgroundColor : buttonBgColor ,
-            color : buttonColor
-        },
         animate : {
             backgroundColor : buttonBgColor,
             color : buttonColor,
@@ -127,7 +133,6 @@ const NavigationBar = () => {
                         color = 'error'>
                         <motion.div
                             variants = {animateNav}
-                            initial = 'initial'
                             animate = 'animate'>
                             <FontAwesomeIcon 
                                 icon = {faCartShopping} />

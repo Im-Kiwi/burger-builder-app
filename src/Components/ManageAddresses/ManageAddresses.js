@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Modal } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -16,7 +17,12 @@ const ManageAddresses = () => {
 
     // values fetched from the redux store
     const showModal = useSelector(state => state.dialog.openUserProfModal)
-    console.log(showModal)
+
+    // this will stay the modal open even when user reload the page
+    useEffect(() => {
+        dispatch(dialogActions.updateUserProfModal(true))
+    }, [])
+
     // to close modal 
     const closeModalHandler = () => {
         navigate(localStorage.getItem('prevPath')) // this will navigate the user to the previous page where he/she came from 

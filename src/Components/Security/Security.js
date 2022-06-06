@@ -12,6 +12,7 @@ import Change from './Change/Change'
 import LogIn from '../LogIn/LogIn'
 import { securityActions } from '../../Store/reducer/security'
 import { db } from '../../firebase-setup'
+import { userFormActions } from '../../Store/reducer/userForm'
 
 const Security = () => {
     const dispatch = useDispatch()
@@ -40,11 +41,13 @@ const Security = () => {
 
     // to handle the click event on list item and also handle the change event in select tag
     const clickListHandler = (index) => {
-        dispatch(securityActions.updateNavigationIndex(index))
-        dispatch(securityActions.updateNewEmailOrPass(''))
-        dispatch(securityActions.updateConfirmPass(''))
-        dispatch(securityActions.updateStartValidation(false))
-        dispatch(securityActions.updateSuccessFlag(false))
+        dispatch(securityActions.updateNavigationIndex(index)) // to update the navigation index when user navigate from one to another
+        dispatch(securityActions.updateNewEmailOrPass('')) // reset the input tag
+        dispatch(securityActions.updateConfirmPass('')) 
+        dispatch(securityActions.updateStartValidation(false)) // reset the validation process
+        dispatch(securityActions.updateSuccessFlag(false)) // to close the success message under log in form
+        dispatch(userFormActions.updateErrorFlag(false)) // setting the error flag to false which will remove the error msg in login form
+        setIsLogIn(false) // to close the re-login form
     }
 
     // to control select element
@@ -54,6 +57,8 @@ const Security = () => {
         dispatch(securityActions.updateConfirmPass(''))
         dispatch(securityActions.updateStartValidation(false))
         dispatch(securityActions.updateSuccessFlag(false))
+        dispatch(userFormActions.updateErrorFlag(false))
+        setIsLogIn(false)
     }
 
     // this method to handler the change in input tag
@@ -75,6 +80,7 @@ const Security = () => {
         dispatch(securityActions.updateNewEmailOrPass(''))
         dispatch(securityActions.updateConfirmPass(''))
         dispatch(securityActions.updateSuccessFlag(false))
+        dispatch(userFormActions.updateErrorFlag(false)) 
     }
 
     const submitHandler = async (event, navIndex) => {

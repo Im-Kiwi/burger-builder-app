@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { Box, IconButton, Stack, Button } from '@mui/material'
+import { Box, IconButton, Stack, Button, useMediaQuery } from '@mui/material'
 import { Offcanvas } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBurger } from '@fortawesome/free-solid-svg-icons'
@@ -10,11 +10,16 @@ import { motion } from 'framer-motion'
 // --------- importing from other files ------------
 import { styles } from './styles'
 import { dialogActions } from '../../Store/reducer/dialog'
+import { paths } from '../../identifiers/identifiers'
 
 const Hamburger = () => {
     const classes = styles()
     const dispatch = useDispatch()
     const { pathname } = useLocation()
+    const prevPath = localStorage.getItem('prevPath')
+
+    // creating css breakpoints
+    const break_899 = useMediaQuery('(max-width : 899px)')
 
     let hamIconColor, sideMenuColor, navColor
 
@@ -35,23 +40,25 @@ const Hamburger = () => {
     }
 
     // dynamically changing the background color, hamburger icon color and nav link text color
-    switch (pathname) {
-        case '/':
+    if (pathname === paths.home) {
+        hamIconColor = '#f9b826'
+        sideMenuColor = '#f9b826'
+        navColor = '#110f12'
+    } else if (pathname === paths.buildBurger) {
+        hamIconColor = break_899 ? '#110f12' : '#f9b826'
+        sideMenuColor = '#110f12'
+        navColor = '#f9b826'
+    } else if (pathname === paths.yourOrders || pathname === paths.manageAddresses || pathname === paths.security) {
+        if (prevPath === paths.home) {
             hamIconColor = '#f9b826'
-            sideMenuColor = '#f9b826'
-            navColor = '#110f12'
-            break;
-        case '/build-burger':
-            hamIconColor = '#110f12'
-            sideMenuColor = '#110f12'
-            navColor = '#f9b826'
-            break;
-        default:
-            hamIconColor = '#110f12'
-            sideMenuColor = '#110f12'
-            navColor = '#f9b826'
-            break;
-    }  
+        } else if (prevPath === paths.buildBurger) {
+            hamIconColor = !break_899 && '#f9b826'
+        }
+    } else {
+        hamIconColor = '#110f12'
+        sideMenuColor = '#110f12'
+        navColor = '#f9b826'
+    }
     
     // horizonta line which will appear under the clicked nav link
     const horizontalLine = (

@@ -1,3 +1,17 @@
+export const paths = {
+    home : '/',
+    buildBurger : '/build-burger',
+    pricing : '/pricing',
+    aboutUs : '/about-us',
+    cart : '/cart',
+    deliveryAddress : '/buy/delivery-address',
+    orderSummary : '/buy/order-summary',
+    payment : '/buy/payment',
+    yourOrders : '/your-orders',
+    manageAddresses : '/manage-addresses',
+    security : '/security-settings'
+}
+
 export const lettuce = 'Lettuce'
 export const cheese = 'Cheese'
 export const meat = 'Meat'
