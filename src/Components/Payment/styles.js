@@ -15,6 +15,8 @@ export const styles = makeStyles({
 export const CustomFab = styled(Fab)({
     marginTop : 20,
     borderRadius : 50,
+    width : 270,
+    height : 50,
     border : 'solid 3px #110f12', 
     backgroundColor : '#fca311', 
     fontSize : '1.1rem',

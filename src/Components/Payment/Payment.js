@@ -1,4 +1,4 @@
-import { Image } from 'react-bootstrap'
+import { Image, Spinner } from 'react-bootstrap'
 import { Box, Grid, Typography, useMediaQuery } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -13,6 +13,7 @@ import { dialogActions } from '../../Store/reducer/dialog.js'
 import { ingredientsActions } from '../../Store/reducer/ingredients.js'
 import { stepperActions } from '../../Store/reducer/stepper.js'
 import { ordersActions } from '../../Store/reducer/orders.js'
+import { loadingActions } from '../../Store/reducer/loading.js'
 import { CuteBurger } from '../../path-to-assets/pathToImages'
 import { dispatching, india } from '../../identifiers/identifiers.js'
 import PaymentMethods from './PaymentMethod/PaymentMethod.js'
@@ -27,17 +28,17 @@ const Payment = () => {
     const break_705 = useMediaQuery('(max-width : 705px)')
     const break_326 = useMediaQuery('(max-width : 326px)')
 
-    const userId = useSelector(state => state.userForm.currentUser.userId)
-    const currentItem = useSelector(state => state.cart.currentItem)
-    const cartItems = useSelector(state => state.cart.cartItems) 
-    const instantBuy = useSelector(state => state.cart.instantBuy)
-    const paymentMethod = useSelector(state => state.orders.paymentMethod)
-    const paymentSuccess = useSelector(state => state.orders.paymentSuccess)
-    const address = useSelector(state => state.orders.deliveryAddress)
-    const deliveryAddress = useSelector(state => state.orders.deliveryAddress)
+    // fetching values from redux store
+    const userId = useSelector(state => state.userForm.currentUser.userId) // id of the user
+    const currentItem = useSelector(state => state.cart.currentItem) // contain current burger which user build
+    const cartItems = useSelector(state => state.cart.cartItems) // contains cart items
+    const instantBuy = useSelector(state => state.cart.instantBuy) // mode which tells whether user placing order thru cart or buying directly
+    const paymentMethod = useSelector(state => state.orders.paymentMethod) // method of payment
+    const paymentSuccess = useSelector(state => state.orders.paymentSuccess) // stores the boolean value to tell whether payment is success
+    const deliveryAddress = useSelector(state => state.orders.deliveryAddress) // selected delivery address of the user
+    const loading = useSelector(state => state.loading.loading) // to enable/disable the loading spinner
     
     let totalPrice
-
     // total price depends upon whether user buying one item or more then 1 items and instandBuy tells us that (if true means buying 1 item)
     // user buying more then 1 items means he/she added those items in cart first, thus using cart items to extract price from each and summed up
     if (instantBuy) {
@@ -50,6 +51,7 @@ const Payment = () => {
     // will sends the orders information to the firebase database
     const paymentHandler = async () => {
         let dataToSend
+        dispatch(loadingActions.updateLoading(true)) // enable the loading spinner
         try {
             if (instantBuy) {
                 dataToSend = {
@@ -78,10 +80,13 @@ const Payment = () => {
                     await deleteDoc(doc(db, 'cart', item.id))
                 }
             }
-            dispatch(stepperActions.updateActiveStep(3))
-            dispatch(ordersActions.updatePaymentSuccess(true))
+            dispatch(stepperActions.updateActiveStep(3)) // stepper will be updated
+            dispatch(ordersActions.updatePaymentSuccess(true)) // success payment
+            dispatch(loadingActions.updateLoading(false))
         } catch (err) {
             console.log(err)
+            dispatch(ordersActions.updatePaymentSuccess(false))
+            dispatch(loadingActions.updateLoading(false))
         }
     }
 
@@ -89,17 +94,18 @@ const Payment = () => {
     // some state properties value also been reset
     const backToBuildingHandler = () => {
         navigate('/build-burger')
-        dispatch(dialogActions.updateOpen(false))
-        dispatch(ingredientsActions.updateReset())
-        dispatch(ordersActions.updatePaymentSuccess(false))
-        dispatch(ordersActions.updatePaymentMethod(''))
-        localStorage.removeItem('id')
+        dispatch(dialogActions.updateOpen(false)) // close the fullscreen modal
+        dispatch(ingredientsActions.updateReset()) // this will reset the burger in burger builder
+        dispatch(ordersActions.updatePaymentSuccess(false)) // payment success flag will reset to false
+        dispatch(ordersActions.updatePaymentMethod('')) // payment method will be reset
+        // removing data from local storage
+        localStorage.removeItem('id') 
         localStorage.removeItem('prevPath')
     }
 
     // showing the currency signs dynamically
     let icon
-    if (address.country === india) {
+    if (deliveryAddress.country === india) {
         icon = faIndianRupeeSign
     } else {
         icon = faPesoSign
@@ -131,7 +137,7 @@ const Payment = () => {
                                 disabled = {paymentMethod ? false : true}
                                 onClick= {paymentHandler}
                                 sx = {{opacity : paymentMethod ? 1:0.4}}>
-                                Click here to pay
+                                {loading ? <Spinner animation = 'border' /> : 'Click here to pay'}
                             </CustomFab>
                         </Box>
                     </Grid>                     
