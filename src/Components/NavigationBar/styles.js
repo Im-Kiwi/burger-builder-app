@@ -14,6 +14,12 @@ export const styles = makeStyles({
             background : 'none'
         }
     },
+    logo : {
+        position : 'absolute',
+        top : 0,
+        background : 'none',
+        border : 'none'
+    },
     logoTitle : {
         textAlign : 'center', 
         position : 'relative', 
@@ -46,3 +52,38 @@ export const styles = makeStyles({
         }
     },    
 })
+
+// to give transition effect while hovering over nav links
+export const hoverAnime = {
+    initial : {
+        width : 0,
+    },
+    homeHover : {
+        width : 43,
+        transition : {
+            duration : 0.2,
+            type : 'tween'
+        }
+    },
+    buildHover : {
+        width : 37,
+        transition : {
+            duration : 0.2,
+            type : 'tween'
+        }
+    },
+    pricingHover : {
+        width : 51,
+        transition : {
+            duration : 0.2,
+            type : 'tween'
+        }
+    },
+    aboutUsHover : {
+        width : 64,
+        transition : {
+            duration : 0.2,
+            type : 'tween'
+        }
+    }     
+}

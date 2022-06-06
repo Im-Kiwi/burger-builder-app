@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { TextField, Container, Button, Box, Typography } from "@mui/material";
+import { TextField, Container, Button, Box, Typography, Alert, AlertTitle } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { signInWithEmailAndPassword, updateEmail, updatePassword } from "firebase/auth";
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom'
 //  ------------- importing from other files ----------------
 import { dialogActions } from '../../Store/reducer/dialog';
 import { securityActions } from '../../Store/reducer/security';
+import { userFormActions } from '../../Store/reducer/userForm';
 
 const LogIn = props => {
     const dispatch = useDispatch()
@@ -18,6 +19,7 @@ const LogIn = props => {
     // fetching values from redux store
     const navigationIndex = useSelector(state => state.security.navigationIndex)
     const newEmailOrPass = useSelector(state => state.security.newEmailOrPass)
+    const errorFlag = useSelector(state => state.userForm.errorFlag)
 
 
     // creating schema for input validation
@@ -40,6 +42,7 @@ const LogIn = props => {
 
         } catch(err) {
             console.log('login failed!')
+            dispatch(userFormActions.updateErrorFlag(true))
         }
     }
 
@@ -59,6 +62,7 @@ const LogIn = props => {
             dispatch(securityActions.updateSuccessFlag(true))  // success status to true       
         } catch(err) {
             dispatch(securityActions.updateSuccessFlag(false)) 
+            dispatch(userFormActions.updateErrorFlag(true))
         }
     }
 
@@ -105,6 +109,14 @@ const LogIn = props => {
                                 fontFamily : 'Montserrat Alternates, sans-serif'}}>
                             Log In
                         </Button>
+                        {errorFlag &&
+                            <Alert severity = 'error' color = 'error' variant = 'filled'>
+                                <AlertTitle>
+                                    <strong>Wrong ceredentials</strong>
+                                </AlertTitle>
+                                <strong>Please mention correct info</strong>
+                            </Alert>
+                        }
                     </form>
                 </Box>
             :

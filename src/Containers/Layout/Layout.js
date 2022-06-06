@@ -41,12 +41,11 @@ const Layout = () => {
     const token = useSelector(state => state.userForm.currentUser.token)
     const userId = useSelector(state => state.userForm.currentUser.userId)
     const cartItems = useSelector(state => state.cart.cartItems)
-    const orders = useSelector(state => state.orders.orders)
 
-    let addressesArr = []
-    let itemsInCart = []
-    let ordersArr = []
-    let fallBack
+    let addressesArr = [] // will store the addresses created by the authenticated user
+    let itemsInCart = [] // will store cart items of the authenticated user
+    let ordersArr = [] // will store orders info
+    let fallBack // this will help to return to the home screen if user navigate to a wrong URL
 
     // listening to addresses, cart, orders collection of firestore database 
     // this will autmaticaly run when there is a change in the collections of the firebase database
@@ -137,7 +136,7 @@ const Layout = () => {
         }
     }, [])
 
-    // making sure user stays logged in once it logs in
+    // making sure user stays logs in and stays log in
     onAuthStateChanged(auth, (currentUser) => {
         if (currentUser) {
             let userDbId, userName
@@ -291,7 +290,6 @@ const Layout = () => {
                 </Route>
                 <Route path = '*' element = {<Navigate to = '/' />} />
             </Routes>
-
             {/* Below two components are modals */}
             <DeleteAccount />
             <Canvas />

@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { Box, AppBar, Toolbar, IconButton, Typography, Stack, useMediaQuery, Grid } from '@mui/material'
-import { Modal } from 'react-bootstrap'
+import { Modal, Offcanvas } from 'react-bootstrap'
 import { Button } from '@mui/material'
 import { CloseRounded } from '@mui/icons-material'
 import { motion } from 'framer-motion'
@@ -36,7 +36,7 @@ const FullDialogs = (props) => {
     }
 
     return (
-        <Modal fullscreen = {true} show = {openDialog}>
+        <Offcanvas placement = 'bottom' show = {openDialog} style = {{height : '100%'}} >
             <Box className = {classes.navContainer}>
                 <AppBar sx = {{backgroundColor : '#110f12'}}>
                     <Toolbar>
@@ -130,7 +130,7 @@ const FullDialogs = (props) => {
                     {props.children}
                 </Box>
             </Box>
-        </Modal>           
+        </Offcanvas>           
     )
 }
 

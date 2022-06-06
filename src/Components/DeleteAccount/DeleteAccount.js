@@ -1,4 +1,4 @@
-import { Modal } from 'react-bootstrap'   
+import { Modal, Image } from 'react-bootstrap'   
 import { Box, Button, Stack, Typography, Alert } from '@mui/material'
 import { auth, db } from '../../firebase-setup'
 import { deleteUser, signOut } from 'firebase/auth'
@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 // ----- importing from other files -----------
 import { dialogActions } from '../../Store/reducer/dialog'
 import { userFormActions } from '../../Store/reducer/userForm'
+import { Sad } from '../../path-to-assets/pathToImages'
 
 const DeleteAccount = () => {
     const dispatch = useDispatch()
@@ -39,7 +40,13 @@ const DeleteAccount = () => {
 
     return (
         <Modal style = {{marginTop : 100}} show = {showModal} onHide = {closeModalHandler}>
-            <Box sx = {{backgroundColor : '#f9b826', p:5}}>
+            <Box
+                display = 'flex'
+                flexDirection = 'column'
+                alignItems = 'center' 
+                gap = {2}
+                sx = {{backgroundColor : '#f9b826', p:5}}>
+                <Image src = {Sad} fluid alt = 'sad' />
                 <Typography variant = 'h6' sx = {{fontFamily : 'Concert One, cursive'}}>
                     Are you sure to delete your account ?
                 </Typography>

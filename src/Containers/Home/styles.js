@@ -62,6 +62,9 @@ export const styles = makeStyles({
             width : '100vw',
             height : '100vh'
         }, 
+        secondItem : {
+            width : '100vw'
+        },
         backgroundCover : {
             display : 'none'
         },

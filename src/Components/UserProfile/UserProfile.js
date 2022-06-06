@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { IconButton, Avatar, Menu, Divider, Typography, Box } from '@mui/material'
+import { IconButton, Avatar, Menu, Divider, Typography, Box, useMediaQuery } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { signOut } from 'firebase/auth'
@@ -19,6 +19,10 @@ const UserProfile = (props) => {
     const navigate = useNavigate() 
     const dispatch = useDispatch()
     const { pathname } = useLocation()
+
+    // creating css breakpoints
+    const break_899 = useMediaQuery('(max-width : 899px)')
+
 
     // fetching data from redux store
     const userName = useSelector(state => state.userForm.currentUser.userName)
@@ -114,7 +118,15 @@ const UserProfile = (props) => {
                         background : '#f9b826 !important'
                         },
                     }}>
-                <Box sx = {{p:1}}>
+                <Box 
+                    sx = {{p:1}}
+                    display = 'flex'
+                    justifyContent = 'center'
+                    alignItems = 'center'
+                    gap = {1}>
+                    <FontAwesomeIcon 
+                        icon = {faUser}
+                        style = {{fontSize : '1.4rem'}} />
                     <Typography 
                         variant = 'body1' 
                         sx = {{fontSize : '1.2rem', textAlign : 'center'}}>

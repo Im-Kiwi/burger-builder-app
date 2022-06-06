@@ -4,7 +4,7 @@ export const styles = makeStyles({
     navContainer : {
         position : 'fixed',
         width : '100vw', 
-        height : '100vh', 
+        height : '100%', 
         backgroundColor : '#f9b826'
     },
     priceDetails : {

@@ -28,6 +28,7 @@ import Staff from '../Assets/staff.svg'
 import WorldMap from '../Assets/worldMap.svg'
 import BackgroundBurger from '../Assets/backgroundBurger.svg'
 import EmptyCart from '../Assets/emptyCart.svg'
+import Sad from '../Assets/sad.svg'
 
 
 export {
@@ -43,5 +44,6 @@ export {
     PickBurger, Customers, Fries_Coke,
     Staff, WorldMap,
     BackgroundBurger,
-    EmptyCart
+    EmptyCart,
+    Sad
 }

@@ -6,6 +6,7 @@ const initialState = {
     openUserProfModal : false, // to open user profile modal
     openDeleteAccModal : false, // to open delete account modal
     showCanvas : false, // this to open login and sign up form
+    showSideMenu : false // to show navigation drawer for smaller devices
 }
 
 const dialogReducer = createSlice({
@@ -26,6 +27,9 @@ const dialogReducer = createSlice({
         },
         updateShowCanvas (state, action) {
             state.showCanvas = action.payload
+        },
+        updateShowSideMenu (state, action) {
+            state.showSideMenu = action.payload
         }
     }
 })
