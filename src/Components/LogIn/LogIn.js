@@ -46,18 +46,19 @@ const LogIn = props => {
     // this will make user to re login during changing of email and password
     const reSubmitForm = async (data) => {
         try {
+            // signing in
             await signInWithEmailAndPassword(auth, data.emailAddress, data.password)
             if (navigationIndex === 0) {
-                await updateEmail(auth.currentUser, newEmailOrPass)
+                await updateEmail(auth.currentUser, newEmailOrPass) // to update email address
                 dispatch(securityActions.updateStartValidation(false))
 
             } else if (navigationIndex === 1) {
-                await updatePassword(auth.currentUser, newEmailOrPass)
+                await updatePassword(auth.currentUser, newEmailOrPass) // to update password
                 dispatch(securityActions.updateStartValidation(false))
             }   
-            dispatch(securityActions.updateSuccessFlag(true))         
+            dispatch(securityActions.updateSuccessFlag(true))  // success status to true       
         } catch(err) {
-            dispatch(securityActions.updateSuccessFlag(false))
+            dispatch(securityActions.updateSuccessFlag(false)) 
         }
     }
 

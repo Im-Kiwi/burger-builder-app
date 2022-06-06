@@ -1,4 +1,4 @@
-import { Box, Stack, Button, TextField } from '@mui/material'
+import { Box, Stack, Button, TextField, Typography, Alert, AlertTitle } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 
 // ------ importing from other files ----------
@@ -14,6 +14,7 @@ const Change = (props) => {
     const startValidation = useSelector(state => state.security.startValidation)
     const navigationIndex = useSelector(state => state.security.navigationIndex)
     const userNameExist = useSelector(state => state.security.userNameExist)
+    const successFlag = useSelector(state => state.security.successFlag)
 
     // method to control the 'confirm password' input tag
     const changeConfirmPassHandler = (event) => {
@@ -57,33 +58,38 @@ const Change = (props) => {
         <Box 
             display = 'flex' 
             justifyContent = 'center' 
-            sx = {{mt:5}}
-        >
+            sx = {{mt:5}}>
+                
             <form onSubmit = {event => props.submitHandler(event, navigationIndex)}>
                 <Stack spacing = {2} alignItems = 'center'>
+                    <Typography 
+                        variant = 'h6'
+                        sx = {{fontFamily : 'DM Serif Text, serif', mb:2}}>
+                        {props.title}
+                    </Typography>
                     <TextField 
                         sx = {{width : props.width}}
                         type = {props.type} 
                         label = {props.label}
                         size = 'small' 
                         variant = 'filled'
+                        color = 'blackish'
                         onChange = {event => props.changeHandler(event)}
                         value = {props.value}
                         error = {errorFlag && startValidation}
-                        helperText = {startValidation ? errorMsg : null}
-                    /> 
+                        helperText = {startValidation ? errorMsg : null}/> 
                     {navigationIndex === 1 ? 
                         <TextField                             
                             size = 'small'
                             type = 'password'
                             label = 'Confirm Password'
                             variant = 'filled'
+                            color = 'blackish'
                             sx = {{width : props.width}}
                             onChange = {event => changeConfirmPassHandler(event)}
                             value = {confirmPass}
                             error = {(confirmPass.length === 0 || confirmPass.length !== newEmailOrPass.length) && startValidation} 
-                            helperText = {confirmPass.length !== newEmailOrPass.length ? 'Password didnt match' : null}                           
-                        />
+                            helperText = {confirmPass.length !== newEmailOrPass.length ? 'Password didnt match' : null} />
                     : null
                     }                    
                     <Button 
@@ -92,16 +98,21 @@ const Change = (props) => {
                         type = 'submit'
                         sx = {{
                             backgroundColor : '#110f12',
+                            fontFamily : 'Montserrat Alternates, sans-serif',
                             width : 100,
                             borderRadius : 0,
                             "&:hover" : {
                                 backgroundColor : '#110f12'
-                            }
-                        }}
-                        
-                    >
+                            }}}>
                         confirm
                     </Button>
+                    {/* success message, once user successfully changed their email or password or username */}
+                    {successFlag &&
+                        <Alert severity = 'success' color = 'success' variant = 'outlined' >
+                            <AlertTitle>Success</AlertTitle>
+                            {props.successMsg}
+                        </Alert>
+                    }
                 </Stack>
             </form>
         </Box>

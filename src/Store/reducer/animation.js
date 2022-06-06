@@ -1,8 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    beginAnime : false,
-    animeAtEnd : false
+    beginAnime : false, // to make sure that transition of the element only begin when the value turns true
 }
 
 const animationReducer = createSlice({
@@ -12,9 +11,6 @@ const animationReducer = createSlice({
         updateBeginAnime (state, action) {
             state.beginAnime = action.payload
         },
-        updateAnimeAtEnd (state, action) {
-            state.animeAtEnd = action.payload
-        }
     }
 })
 

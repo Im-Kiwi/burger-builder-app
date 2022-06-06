@@ -19,6 +19,7 @@ const Pricing = (props) => {
     const prevPath = localStorage.getItem('prevPath')
 
     // creating @media breakpoints
+    const break_899 = useMediaQuery('(max-width : 899px)')
     const break_800 = useMediaQuery('(min-width : 800px)')
     const break_410 = useMediaQuery('(min-width : 410px)')
 
@@ -69,7 +70,7 @@ const Pricing = (props) => {
 
 
     return (
-        <Container maxWidth = 'xl'>
+        <Container disableGutters = {break_899 && true} maxWidth = 'xl'>
             <div className = {classes.pricingContainer}>
                 <motion.div 
                     className = {classes.pricingBackdrop}

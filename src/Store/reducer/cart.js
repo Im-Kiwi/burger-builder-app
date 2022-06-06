@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    itemToDel : {},
-    cartItems : [],
-    currentItem : [],
+    itemToDel : {}, // this will contain the cart item to delete
+    cartItems : [], // contains cart items of the authenticated user
+    currentItem : [], // contain the item which user buying instantly
     instantBuy : false, // if user buying a burger directly without adding it into cart
 }
 

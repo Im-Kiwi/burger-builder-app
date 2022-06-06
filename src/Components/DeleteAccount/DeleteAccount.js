@@ -1,5 +1,5 @@
 import { Modal } from 'react-bootstrap'   
-import { Box, Button, Stack, Typography, ThemeProvider } from '@mui/material'
+import { Box, Button, Stack, Typography, Alert } from '@mui/material'
 import { auth, db } from '../../firebase-setup'
 import { deleteUser, signOut } from 'firebase/auth'
 import { deleteDoc, doc } from 'firebase/firestore'
@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom'
 // ----- importing from other files -----------
 import { dialogActions } from '../../Store/reducer/dialog'
 import { userFormActions } from '../../Store/reducer/userForm'
-import { mainColors } from '../../theme/mui-theme'
 
 const DeleteAccount = () => {
     const dispatch = useDispatch()
@@ -41,30 +40,31 @@ const DeleteAccount = () => {
     return (
         <Modal style = {{marginTop : 100}} show = {showModal} onHide = {closeModalHandler}>
             <Box sx = {{backgroundColor : '#f9b826', p:5}}>
-                <Typography variant = 'h6'>
-                    Are you sure that u wanna delete your account ?
+                <Typography variant = 'h6' sx = {{fontFamily : 'Concert One, cursive'}}>
+                    Are you sure to delete your account ?
                 </Typography>
+                <Alert severity = 'warning' variant = 'filled'>
+                    You won't be able to recover your account once deleted
+                </Alert>
                 <Stack direction = 'row' sx = {{mt:2, color: '#f9b826'}} justifyContent = 'flex-end' spacing = {2}>
-                    <ThemeProvider theme = {mainColors}>
-                        <Button 
-                            size = 'small'
-                            variant = 'contained'
-                            color = 'blackish'
-                            sx = {{borderRadius : 0}}
-                            onClick = {confirmHandler}
-                        >
-                            Yes
-                        </Button>
-                        <Button 
-                            variant = 'contained'
-                            color = 'blackish'
-                            size = 'small'
-                            sx = {{borderRadius : 0}}
-                            onClick = {closeModalHandler}
-                        >
-                            No
-                        </Button>
-                    </ThemeProvider>
+                    <Button 
+                        size = 'small'
+                        variant = 'contained'
+                        color = 'blackish'
+                        sx = {{borderRadius : 0, fontFamily : 'Montserrat Alternates, sans-serif'}}
+                        onClick = {confirmHandler}
+                    >
+                        YES
+                    </Button>
+                    <Button 
+                        variant = 'contained'
+                        color = 'blackish'
+                        size = 'small'
+                        sx = {{borderRadius : 0, fontFamily : 'Montserrat Alternates, sans-serif'}}
+                        onClick = {closeModalHandler}
+                    >
+                        NO
+                    </Button>
                 </Stack>
             </Box>
 

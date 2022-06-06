@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 // a slice of state of redux store for Security component
 const initialState = {
     navigationIndex : 0, // this will record the navigation of user in security modal
-    newEmailOrPass : '', // this will record new email mention by the user
+    newEmailOrPass : '', // this will record new email or password mention by the user
     newUserName : '', // this will record the user name 
     confirmPass : '', // record confirm password 
     startValidation : false, // this will turn to true when user clicks on the confirm button, which will validate the form

@@ -47,7 +47,6 @@ const BurgerController = (props) => {
         if (ingredients[ingName].qty < 3) {
             dispatch(ingredientsActions.updateIngredient({ingName : ingName, qty : 1, price : basePrice[ingName] }))
             dispatch(animationActions.updateBeginAnime(true)) // to animate slice
-            dispatch(animationActions.updateAnimeAtEnd(false))
         }
     }
 
@@ -56,7 +55,6 @@ const BurgerController = (props) => {
         if (ingredients[ingName].qty > 0) {
             dispatch(ingredientsActions.updateIngredient({ingName : ingName, qty : -1, price : -basePrice[ingName]}))
             dispatch(animationActions.updateBeginAnime(false))
-            dispatch(animationActions.updateAnimeAtEnd(true))
         }
     }
 

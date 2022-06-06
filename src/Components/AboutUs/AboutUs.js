@@ -18,6 +18,7 @@ const AboutUs = (props) => {
 
     // creating @media breakpoints
     const break_1199 = useMediaQuery('(max-width : 1199px)')
+    const break_899 = useMediaQuery('(max-width : 899px)')
     const break_600 = useMediaQuery('(max-width : 550px)')
 
     // dynamically setting the animation property, depending upon the previous path from where user navigated from
@@ -53,7 +54,7 @@ const AboutUs = (props) => {
     }
 
     return (
-        <Container maxWidth = 'xl'>
+        <Container disableGutters = {break_899 && true} maxWidth = 'xl'>
             {/* the background */}
             <Box  
                 position = 'relative'

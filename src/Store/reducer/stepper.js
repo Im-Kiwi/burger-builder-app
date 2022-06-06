@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    activeStep : 0
+    activeStep : 0 // will record the stepper steps
 }
 
 const stepperReducer = createSlice({

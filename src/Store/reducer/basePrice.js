@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    basePrice : {}
+    basePrice : {} // will contain the base price of the burger and other extra items
 }
 
 const basePriceReducer = createSlice({

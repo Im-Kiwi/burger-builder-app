@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useLocation } from 'react-router-dom'
-import { Grid, List, ListItem, ListItemButton, Box, TextField, Button, Stack } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
+import { Grid, List, ListItem, ListItemButton, FormControl, Select, useMediaQuery, MenuItem } from '@mui/material'
 import { getAuth, updateEmail, updatePassword } from 'firebase/auth'
 import { collection, getDocs, updateDoc, query, where, doc } from 'firebase/firestore'
 
@@ -18,8 +18,12 @@ const Security = () => {
     const navigate = useNavigate()
     const auth = getAuth()
 
+    // creating css breakpoints
+    const break_991 = useMediaQuery('(max-width : 991px)')
 
-    const [isLogIn, setIsLogIn] = useState(false) // to control the login form 
+
+    const [isLogIn, setIsLogIn] = useState(false) // to control the login form
+    const [selectChange, setSelectChange] = useState(0) // to control select element
 
     // fetching data from the redux store
     const showModal = useSelector(state => state.dialog.openUserProfModal)
@@ -28,6 +32,7 @@ const Security = () => {
     const navigationIndex = useSelector(state => state.security.navigationIndex)
     const newUserName = useSelector(state => state.security.newUserName)
     const currentUser = useSelector(state => state.userForm.currentUser)
+    const successFlag = useSelector(state => state.security.successFlag)
 
     // to make sure when user reloads the page the modal stays open
     useEffect(() => {
@@ -40,10 +45,17 @@ const Security = () => {
         dispatch(securityActions.updateNewEmailOrPass(''))
         dispatch(securityActions.updateConfirmPass(''))
         dispatch(securityActions.updateStartValidation(false))
+        dispatch(securityActions.updateSuccessFlag(false))
+    }
+
+    // to control select element
+    const selectHandler = (event) => {
+        setSelectChange(event.target.value)
     }
 
     // this method to handler the change in input tag
     const changeHandler = (event) => {
+        dispatch(securityActions.updateSuccessFlag(false))
         if (navigationIndex === 2) {
             dispatch(securityActions.updateNewUserName(event.target.value))
         } else {
@@ -59,6 +71,7 @@ const Security = () => {
         dispatch(securityActions.updateStartValidation(false))
         dispatch(securityActions.updateNewEmailOrPass(''))
         dispatch(securityActions.updateConfirmPass(''))
+        dispatch(securityActions.updateSuccessFlag(false))
     }
 
     const submitHandler = async (event, navIndex) => {
@@ -113,10 +126,11 @@ const Security = () => {
     // form will change depending upon the navigation of user
     // for ex: if user navigate to change email, then email form will open, where user can change their email address
     let content
-    switch(navigationIndex) {
+    switch(navigationIndex || selectChange) {
         case 0:
             content = (
                 <Change 
+                    title = 'Change your Email address'
                     width = {250}
                     type = 'text'
                     label = 'Enter your new email address'
@@ -124,12 +138,14 @@ const Security = () => {
                     submitHandler = {submitHandler} 
                     changeHandler = {changeHandler} 
                     errorMsg = 'Mention Email Address'
+                    successMsg = 'Your email changed successfully'
                 />
             )
             break;
         case 1:
             content = (
                 <Change
+                    title = 'Change your password'
                     width = {210} 
                     type = 'password'
                     label = 'Enter your new Password'
@@ -137,19 +153,21 @@ const Security = () => {
                     submitHandler = {submitHandler} 
                     changeHandler = {changeHandler} 
                     errorMsg = 'Mention Password'
+                    successMsg = 'Your password changed successfully'
                 />
             )
             break;
         case 2:
             content = (
                 <Change 
-                    width = {200}
+                    title = 'Change your user name'
+                    width = {220}
                     type = 'text'
                     label = 'Enter your new User name'
                     value = {newUserName}
                     changeHandler = {changeHandler}
                     submitHandler = {submitHandler}
-                    
+                    successMsg = 'Your user name changed successfully'
                 />
             )
     }
@@ -157,30 +175,47 @@ const Security = () => {
     return (
         <Modal centered size = 'lg' show = {showModal} onHide = {closeModalHandler}>
             <Grid container sx = {{height : 500, backgroundColor : '#f9b826'}}>
-                <Grid item xs = {3} sx = {{backgroundColor : '#110f12'}}>
-                    <List sx = {{color : '#f9b826'}}>
-                        <ListItemButton 
-                            selected = {navigationIndex === 0}
-                            onClick = {() => clickListHandler(0)}
-                        >
-                            <ListItem>Change Email</ListItem>                            
-                        </ListItemButton>
-                        <ListItemButton 
-                            selected = {navigationIndex === 1}
-                            onClick = {() => clickListHandler(1)}
-                        >
-                            <ListItem>Change Password</ListItem>                            
-                        </ListItemButton>
-                        <ListItemButton 
-                            selected = {navigationIndex === 2}
-                            onClick = {() => clickListHandler(2)}
-                        >
-                            <ListItem>Change user name</ListItem>                            
-                        </ListItemButton>
-                    </List>
-                </Grid>
-                <Grid item xs = {9}>
-                    {!isLogIn ? 
+                {!break_991 &&
+                    <Grid item xs = {3} sx = {{backgroundColor : '#110f12'}}>
+                        <List sx = {{color : '#f9b826', fontSize : '1.2rem', fontFamily : 'Pathway Gothic One, sans-serif'}}>
+                            <ListItemButton 
+                                selected = {navigationIndex === 0}
+                                onClick = {() => clickListHandler(0)}>
+                                <ListItem>Change Email</ListItem>                            
+                            </ListItemButton>
+                            <ListItemButton 
+                                selected = {navigationIndex === 1}
+                                onClick = {() => clickListHandler(1)}>
+                                <ListItem>Change Password</ListItem>                            
+                            </ListItemButton>
+                            <ListItemButton 
+                                selected = {navigationIndex === 2}
+                                onClick = {() => clickListHandler(2)}>
+                                <ListItem>Change user name</ListItem>                            
+                            </ListItemButton>
+                        </List>
+                    </Grid>
+                }
+                <Grid item xs = {break_991 ? 12 : 9}
+                    display = 'flex'
+                    flexDirection = 'column'
+                    alignItems = 'center'>
+                    {break_991 &&
+                        <FormControl
+                            sx = {{mt:8, width : 200}}
+                            variant = 'standard'
+                            color = 'blackish'>
+                            <Select
+                                size = 'small'
+                                onChange = {event => selectHandler(event)}
+                                value = {selectChange}>
+                                <MenuItem value = {0}>Change email</MenuItem>
+                                <MenuItem value = {1}>Change password</MenuItem>
+                                <MenuItem value = {2}>Change user name</MenuItem>
+                            </Select>
+                        </FormControl>
+                    }
+                    {!isLogIn || successFlag ? 
                         content
                     : 
                         <LogIn reAuth = {true} />
