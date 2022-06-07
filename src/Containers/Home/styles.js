@@ -31,7 +31,9 @@ export const styles = makeStyles({
     mainTitle : {
         color : '#f9b826', 
         fontFamily : 'Bebas Neue, cursive',
-        fontSize : '5rem'
+        fontSize : '5rem',
+        '&:hover' : {
+        }
     },
     textContent : {
         color : '#f9b826',
@@ -74,3 +76,29 @@ export const styles = makeStyles({
     }
 })
 
+// --------- transition effect -----------------
+
+// to animate CLARISH text
+export const clarishTextAnime = {
+    animate : {
+        textShadow : ['0 0 8px #f9b826', '0 0 0', '0 0 8px #f9b826'],
+        transition : {
+            ease : 'easeOut',
+            repeat : Infinity,
+            duration : 2
+        }
+    }
+}
+
+// to animate BURGERS text
+export const burgerTextAnime = {
+    animate : {
+        textShadow : ['0 0 8px #f9b826', '0 0 0', '0 0 8px #f9b826'],
+        transition : {
+            delay : 1,
+            ease : 'easeOut',
+            repeat : Infinity,
+            duration : 2
+        }
+    }
+}

@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 // ------ importing from other files --------
 import { styles } from './styles'
-import { cartBreakpoints } from '../../theme/mui-theme'
 import { db } from '../../firebase-setup'
 import OrderItem from '../OrderItem/OrderItem'
 import { EmptyCart } from '../../path-to-assets/pathToImages'
@@ -21,12 +20,12 @@ const Cart = () => {
     const break_420 = useMediaQuery('(max-width : 420px)')
 
     // getting values from the redux store
-    const cartItems = useSelector(state => state.cart.cartItems)
+    const cartItems = useSelector(state => state.cart.cartItems) // contains cart items of the user
 
     // method to delete a cart item
     const deleteCartItemHandler = async (dataId) => {
         try {
-            await deleteDoc(doc(db, 'cart', dataId))
+            await deleteDoc(doc(db, 'cart', dataId)) // this will delete the cart item from the database
         } catch (err) {
             console.log('cant able to delete, please check your network connection')
         }

@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 
 // --------- importing from other files ----------------
 import { stepperActions } from '../../Store/reducer/stepper'
+import { paths } from '../../identifiers/identifiers'
 import useStyle from './style'
 
 const BuyBurger = () => {
@@ -17,9 +18,9 @@ const BuyBurger = () => {
     // creating responsive breakpoints
     const break_550 = useMediaQuery('(max-width : 550px)')
 
-    const activeStep = useSelector(state => state.stepper.activeStep)
-    const selectedAddress = useSelector(state => state.orders.deliveryAddress)
-    const paymentSuccess = useSelector(state => state.orders.paymentSuccess)
+    const activeStep = useSelector(state => state.stepper.activeStep) // stepper active id
+    const selectedAddress = useSelector(state => state.orders.deliveryAddress) // selected delievery address
+    const paymentSuccess = useSelector(state => state.orders.paymentSuccess) // payment success flag
 
     // fetching the keys of selectedAddress
     // will use to disable or enable the 'NEXT' button depending upon
@@ -28,13 +29,13 @@ const BuyBurger = () => {
     // what stepper value should be on a particular path
     useEffect(() => {
         switch (pathname) {
-            case '/buy/delivery-address':
+            case paths.deliveryAddress:
                 dispatch(stepperActions.updateActiveStep(0))
                 break;
-            case '/buy/order-summary':
+            case paths.orderSummary:
                 dispatch(stepperActions.updateActiveStep(1))
                 break;
-            case '/buy/payment':
+            case paths.payment:
                 paymentSuccess ?
                 dispatch(stepperActions.updateActiveStep(3)) :
                 dispatch(stepperActions.updateActiveStep(2))
@@ -48,10 +49,10 @@ const BuyBurger = () => {
     const backHandler = () => {
         if (activeStep === 2) {
             dispatch(stepperActions.updateActiveStep(1))
-            navigate('/buy/order-summary')
+            navigate(paths.orderSummary)
         } else if (activeStep === 1) {
             dispatch(stepperActions.updateActiveStep(0))
-            navigate('/buy/delivery-address')
+            navigate(paths.deliveryAddress)
         }
     }
     
@@ -61,10 +62,10 @@ const BuyBurger = () => {
         if (activeStep <= 2) {
             if (activeStep === 0) {
                 dispatch(stepperActions.updateActiveStep(1))
-                navigate('/buy/order-summary')
+                navigate(paths.orderSummary)
             } else if (activeStep === 1) {
                 dispatch(stepperActions.updateActiveStep(2))
-                navigate('/buy/payment')
+                navigate(paths.payment)
             }
         }        
     } 

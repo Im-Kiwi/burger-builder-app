@@ -1,16 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { addDoc, collection, onSnapshot, query, where, doc, updateDoc } from 'firebase/firestore'
+import { addDoc, collection, doc, updateDoc } from 'firebase/firestore'
 import { Stack, Box, Paper, TextField, MenuItem, IconButton, FormControl, FormLabel, Radio, RadioGroup, FormControlLabel  } from '@mui/material'
 import { Backdrop } from '@mui/material'
-import { ThemeProvider } from '@mui/material/styles'
 import { CloseRounded } from '@mui/icons-material'
 import { Modal } from 'react-bootstrap'
 import { v4 as uniqueId } from 'uuid'
 
 // -------- importing from other files -------------
 import { db } from '../../firebase-setup'
-import { mainColors } from '../../theme/mui-theme'
 import { philippinesStates, indianStates } from '../../Places/places'
 import { CustomButton } from './styles.js'
 import { dialogActions } from '../../Store/reducer/dialog'
@@ -21,18 +19,19 @@ const AddAddress = () => {
     const dispatch = useDispatch()
 
     // fetching data from redux store
-    const userId = useSelector(state => state.userForm.currentUser.userId)
-    const openModal = useSelector(state => state.dialog.openModal)
-    const addressForm = useSelector(state => state.deliveryAddresses.addressForm)
-    const editZone = useSelector(state => state.deliveryAddresses.editZone)
-    const addressStore = useSelector(state => state.deliveryAddresses.addressStore)
-    const validationFlag = useSelector(state => state.deliveryAddresses.validationFlag)
+    const userId = useSelector(state => state.userForm.currentUser.userId) // contains id of the user
+    const openModal = useSelector(state => state.dialog.openModal) // value to open/close modal
+    const addressForm = useSelector(state => state.deliveryAddresses.addressForm) // contains information of address form
+    const editZone = useSelector(state => state.deliveryAddresses.editZone) // enable/disable the edit mode 
+    const addressStore = useSelector(state => state.deliveryAddresses.addressStore) // contains all addresses saved by the user
+    const validationFlag = useSelector(state => state.deliveryAddresses.validationFlag) // this will help to begin validation process in address form once user clicked on submit button
     
     // when the user click on the edit button to edit address then all the information will be displayed in address form
     // then user can edit and later save the new address
     useEffect(() => {
         if (editZone.flag) {
             const resultantAddress = addressStore.find((_, index) => index === editZone.id)
+            // sending the edited data to the address form in redux store
             dispatch(deliveryAddressActions.updateAddressForm({label: firstName, value : resultantAddress.firstName}))
             dispatch(deliveryAddressActions.updateAddressForm({label: lastName, value : resultantAddress.lastName}))
             dispatch(deliveryAddressActions.updateAddressForm({label: phoneNumber, value : resultantAddress.phoneNumber}))
@@ -137,7 +136,6 @@ const AddAddress = () => {
                             onClick = {closeAddressFormHandler} >
                             <CloseRounded />
                         </IconButton>
-                        
                         <form onSubmit = {(event) => addressSubmitHandler(event)}>
                             <Stack direction = 'column'>
                                 <Stack direction = 'row'>

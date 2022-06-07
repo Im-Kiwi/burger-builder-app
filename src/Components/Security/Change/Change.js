@@ -8,13 +8,13 @@ const Change = (props) => {
     const dispatch = useDispatch()
 
     // fetching values from redux store
-    const newEmailOrPass = useSelector(state => state.security.newEmailOrPass)
-    const newUserName = useSelector(state => state.security.newUserName)
-    const confirmPass = useSelector(state => state.security.confirmPass)
-    const startValidation = useSelector(state => state.security.startValidation)
-    const navigationIndex = useSelector(state => state.security.navigationIndex)
-    const userNameExist = useSelector(state => state.security.userNameExist)
-    const successFlag = useSelector(state => state.security.successFlag)
+    const newEmailOrPass = useSelector(state => state.security.newEmailOrPass) // email or password mentioned by the user
+    const newUserName = useSelector(state => state.security.newUserName) // new user name mentioned by the user
+    const confirmPass = useSelector(state => state.security.confirmPass) // to confirm new password
+    const startValidation = useSelector(state => state.security.startValidation) // to begin validation process once user click on confirm button
+    const navigationIndex = useSelector(state => state.security.navigationIndex) // contains navigation id of the page
+    const userNameExist = useSelector(state => state.security.userNameExist) // will tell whether user name exist or not
+    const successFlag = useSelector(state => state.security.successFlag) // whether the request is a success or not
 
     // method to control the 'confirm password' input tag
     const changeConfirmPassHandler = (event) => {

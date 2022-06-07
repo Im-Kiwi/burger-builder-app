@@ -1,18 +1,13 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Stack, Box } from '@mui/material'
+import { Stack } from '@mui/material'
 import { Image } from 'react-bootstrap'
-import { v4 as uniqueId } from 'uuid'
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
-import { TransitionGroup } from 'react-transition-group'
 
 // -------- importing from other files ----------------
 import { burgerBase, burgerTop, Cheese, Coke, Lettuce, Meat, Bacon, Tomato, Fries, Onion, Plate } from '../../path-to-assets/pathToImages'
-import { animationActions } from '../../Store/reducer/animation'
 
 const Burger = (props) => {
-    const dispatch = useDispatch()
-
     const checkCoke = props.ingredients.Coke.status
     const checkFries = props.ingredients.FrenchFries.status
     

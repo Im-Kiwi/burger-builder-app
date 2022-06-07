@@ -10,10 +10,10 @@ const PriceDetails = ({icon, totalPrice}) => {
     const classes = styles()
 
     // fetching values from redux store
-    const instantBuy = useSelector(state => state.cart.instantBuy)
-    const currentItem = useSelector(state => state.cart.currentItem)
-    const cartItems = useSelector(state => state.cart.cartItems)
-    const deliveryAddress = useSelector(state => state.orders.deliveryAddress)
+    const instantBuy = useSelector(state => state.cart.instantBuy) // this tells us whether user buying burger directly or thru cart
+    const currentItem = useSelector(state => state.cart.currentItem) // containing built burger which user made
+    const cartItems = useSelector(state => state.cart.cartItems) // containing cart items
+    const deliveryAddress = useSelector(state => state.orders.deliveryAddress) // selected delivery address of the user
 
 
     return (

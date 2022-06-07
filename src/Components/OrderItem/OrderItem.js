@@ -1,10 +1,9 @@
-import { Grid, Typography, Chip, IconButton, useMediaQuery, ThemeProvider, Box} from '@mui/material'
+import { Grid, Typography, Chip, IconButton} from '@mui/material'
 import { useSelector } from 'react-redux'
 import { DoneRounded } from '@mui/icons-material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan, faPesoSign, faIndianRupee } from '@fortawesome/free-solid-svg-icons'
 import { motion } from 'framer-motion'
-import { useLocation } from 'react-router-dom'
 
 // ----------- importing from other files -----------
 import Burger from '../Burger/Burger'
@@ -12,9 +11,9 @@ import { styles } from './styles'
 
 const OrderItem = ({ing, thisIsCart, deleteCartItemHandler, firstBreak, secondBreak, thirdBreak}) => {
     const classes = styles()
-    const { pathname } = useLocation()
 
-    const switchCurr = useSelector(state => state.switchCurr.switchCurr)
+    // fetching values from redux store
+    const switchCurr = useSelector(state => state.switchCurr.switchCurr) // contains switch currency toggle info
 
     return (
         <Grid container 

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Container } from '@mui/material'
 import { Routes, Route, useNavigate, useLocation, Navigate } from 'react-router'
 import { onAuthStateChanged } from 'firebase/auth'
-import { query, where, collection, onSnapshot, getDocs, updateDoc, doc } from 'firebase/firestore'
+import { query, where, collection, onSnapshot, getDocs} from 'firebase/firestore'
 
 // ----------------- importing other components -----------------
 import Home from "../Home/Home"
@@ -31,16 +31,15 @@ import { cartActions } from '../../Store/reducer/cart'
 
 // ----------- importing others ------------
 import { auth, db } from '../../firebase-setup'
-import { onTheWay, delivered } from '../../identifiers/identifiers'
 
 const Layout = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { pathname } = useLocation() 
     
-    const token = useSelector(state => state.userForm.currentUser.token)
-    const userId = useSelector(state => state.userForm.currentUser.userId)
-    const cartItems = useSelector(state => state.cart.cartItems)
+    const token = useSelector(state => state.userForm.currentUser.token) // token of the authenticated user
+    const userId = useSelector(state => state.userForm.currentUser.userId) // user's id
+    const cartItems = useSelector(state => state.cart.cartItems) // cart items which is saved by the user
 
     let addressesArr = [] // will store the addresses created by the authenticated user
     let itemsInCart = [] // will store cart items of the authenticated user

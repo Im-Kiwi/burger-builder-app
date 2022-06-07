@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    open : false,   // for fullscreen dialog 
-    openModal : false, // for 
-    openUserProfModal : false, // to open user profile modal
-    openDeleteAccModal : false, // to open delete account modal
-    showCanvas : false, // this to open login and sign up form
+    open : false,   // to open/close fullscreen dialog 
+    openModal : false, // to open/close address form modal 
+    openUserProfModal : false, // to open/close user profile modal
+    openDeleteAccModal : false, // to open/close delete account modal
+    showCanvas : false, // this to open/close login and sign up form
     showSideMenu : false // to show navigation drawer for smaller devices
 }
 

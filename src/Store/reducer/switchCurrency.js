@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    switchCurr : false 
+    switchCurr : false // toggle currency  false-india ruppee, true - pesos
 }
 
 const switchCurrReducer = createSlice({

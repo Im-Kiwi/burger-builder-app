@@ -24,9 +24,11 @@ const FullDialogs = (props) => {
     const break_500 = useMediaQuery('(max-width : 500px)')
     const break_425 = useMediaQuery('(max-width : 425px)')
 
-    const openDialog = useSelector(state => state.dialog.open)
-    const switchCurr = useSelector(state => state.switchCurr.switchCurr)
+    // fetching values from redux store
+    const openDialog = useSelector(state => state.dialog.open) // to open/close the fullscreen modal
+    const switchCurr = useSelector(state => state.switchCurr.switchCurr) // to switch currencies ruppee<->pesos
 
+    // this method will place order of the cart items saved by the user
     const placeOrderHandler = () => {
         dispatch(cartActions.updateInstantBuy(false))
         dispatch(stepperActions.resetStepper())

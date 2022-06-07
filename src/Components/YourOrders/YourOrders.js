@@ -41,12 +41,12 @@ const YourOrders = () => {
         orders.forEach(order => {
             if (order.status !== 'delivered') {
                 (async () => {
-                    const dispatchTime = order.orderedOn + 300000
-                    const deliverTime = order.orderedOn + 1200000
+                    const dispatchTime = order.orderedOn + 300000 // 5 min after the order placement
+                    const deliverTime = order.orderedOn + 1200000 // 20 min after the order placement
                     if (currentTime >= dispatchTime && currentTime < deliverTime) {
-                        await updateDoc(doc(db, 'orders', order.id), {status : onTheWay})
+                        await updateDoc(doc(db, 'orders', order.id), {status : onTheWay}) // updating the status in database
                     } else if (currentTime >= deliverTime) {
-                        await updateDoc(doc(db, 'orders', order.id), {status : delivered})
+                        await updateDoc(doc(db, 'orders', order.id), {status : delivered}) // updating the status in database
                     }                    
                 })();            
             }
@@ -54,6 +54,7 @@ const YourOrders = () => {
     }, [orders])
 
     // to deleting the orders from database which are older and delivered
+    // this will delete the orders which are more then 1 day old
     useEffect(() => {
         (async () => {
             const time = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 1).getTime()

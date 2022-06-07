@@ -24,7 +24,7 @@ const SignUp = props => {
     const [selectNation, setSelectNation] = useState('')
 
     // fetching values from the redux store
-    const isUserNameExist = useSelector(state => state.userForm.isUserNameExist)
+    const isUserNameExist = useSelector(state => state.userForm.isUserNameExist) // tells whether user name exist or not in the database
 
      // creating schema for sign up validation
     const signUpSchema = yup.object().shape({

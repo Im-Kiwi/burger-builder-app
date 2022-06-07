@@ -14,7 +14,7 @@ import { Staff, WorldMap } from '../../path-to-assets/pathToImages'
 const AboutUs = (props) => {
     const { pathname } = useLocation()
     const classes = styles()
-    const prevPath = localStorage.getItem('prevPath')
+    const prevPath = localStorage.getItem('prevPath') // contains user's prevous navigation path
 
     // creating @media breakpoints
     const break_1199 = useMediaQuery('(max-width : 1199px)')

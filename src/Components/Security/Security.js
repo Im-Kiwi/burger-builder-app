@@ -26,13 +26,13 @@ const Security = () => {
     const [isLogIn, setIsLogIn] = useState(false) // to control the login form
 
     // fetching data from the redux store
-    const showModal = useSelector(state => state.dialog.openUserProfModal)
-    const newEmailOrPass = useSelector(state => state.security.newEmailOrPass)
-    const confirmPass = useSelector(state => state.security.confirmPass)
-    const navigationIndex = useSelector(state => state.security.navigationIndex)
-    const newUserName = useSelector(state => state.security.newUserName)
-    const currentUser = useSelector(state => state.userForm.currentUser)
-    const successFlag = useSelector(state => state.security.successFlag)
+    const showModal = useSelector(state => state.dialog.openUserProfModal) // this contains value to open/close modal
+    const newEmailOrPass = useSelector(state => state.security.newEmailOrPass) // new email or pass mentioned by the user
+    const confirmPass = useSelector(state => state.security.confirmPass) // confirm pass to confirm the new pass
+    const navigationIndex = useSelector(state => state.security.navigationIndex) // navigation id 
+    const newUserName = useSelector(state => state.security.newUserName) // new user name mentioned by the user
+    const currentUser = useSelector(state => state.userForm.currentUser) // contains info or current authenticated user
+    const successFlag = useSelector(state => state.security.successFlag) // whether request is success or not
 
     // to make sure when user reloads the page the modal stays open
     useEffect(() => {
@@ -43,7 +43,7 @@ const Security = () => {
     const clickListHandler = (index) => {
         dispatch(securityActions.updateNavigationIndex(index)) // to update the navigation index when user navigate from one to another
         dispatch(securityActions.updateNewEmailOrPass('')) // reset the input tag
-        dispatch(securityActions.updateConfirmPass('')) 
+        dispatch(securityActions.updateConfirmPass('')) // to reset the confirm pass input tag
         dispatch(securityActions.updateStartValidation(false)) // reset the validation process
         dispatch(securityActions.updateSuccessFlag(false)) // to close the success message under log in form
         dispatch(userFormActions.updateErrorFlag(false)) // setting the error flag to false which will remove the error msg in login form

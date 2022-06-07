@@ -27,17 +27,21 @@ const NavigationBar = () => {
     const break_1015 = useMediaQuery('(min-width : 1015px)')
     const break_899 = useMediaQuery('(max-width : 899px)')
 
-    const cartItems = useSelector(state => state.cart.cartItems)
-    const token = localStorage.getItem('token')
+    // fetching values from redux store
+    const cartItems = useSelector(state => state.cart.cartItems) // contains items which are save in cart by the user
+
+    const token = localStorage.getItem('token') //fetching value from local storage
 
     let navColor, buttonColor, buttonBgColor // this will store the color dynamically
     
+    // this will track the previous path of the user when clicked on the cart icon
     const trackingPrevPathHandler = () => {
         localStorage.setItem('prevPath', pathname)
         // also disabling animation specially the coke, fries, slices of burger 
         dispatch(animationActions.updateBeginAnime(false)) 
     }
 
+    // this will navigate the user to the home page once he/she clicked on the logo of this app
     const logoClickHandler = () => {
         navigate('/')
     }
@@ -45,19 +49,19 @@ const NavigationBar = () => {
     // this will open the login form modal
     const openLogInHandler = () => {
         if (!token) { // login form will appear if unauthenticated user try to click on 'Build' navigation button
-            dispatch(userFormActions.updateIsSignUpForm(false))
-            dispatch(dialogActions.updateShowCanvas(true)) 
+            dispatch(userFormActions.updateIsSignUpForm(false)) // means log in form will open
+            dispatch(dialogActions.updateShowCanvas(true)) // this will open the side drawer in which login form is located
         }
     }
     
     // this will open the cart full screen dialog box
     const openCartHandler = () => {
-        dispatch(dialogActions.updateOpen(true))
-        dispatch(animationActions.updateBeginAnime(false))
+        dispatch(dialogActions.updateOpen(true)) // this will open the cart items modal
+        dispatch(animationActions.updateBeginAnime(false)) // reset the animation
         trackingPrevPathHandler()
     }
 
-    // transitioning nav text color, user icon signIn button depending upon the path
+    // transitioning and changing nav text color, user icon signIn button depending upon the path
     if (pathname === paths.pricing || pathname === paths.aboutUs) {
         navColor = '#110f12'
         buttonColor = '#f9b826'
@@ -80,8 +84,6 @@ const NavigationBar = () => {
         buttonColor = '#110f12'
         buttonBgColor = '#f9b826'
     }
-
-    // to change navlinks, user icon or sign in button 
 
     // to animate the nav links ( changing colors while page transitioning)
     const animateNav = {   

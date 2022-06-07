@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Box, Button, Stack, Typography, IconButton, useMediaQuery } from '@mui/material'
+import { Box, Stack, Typography, IconButton, useMediaQuery } from '@mui/material'
 import { Add, Delete, Edit } from '@mui/icons-material'
 import { doc, deleteDoc } from 'firebase/firestore'
-import { v4 as uniqueId } from 'uuid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faMobileRetro, faHouse, faCity, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -16,11 +15,8 @@ import { deliveryAddressActions } from '../../Store/reducer/deliveryAddress'
 
 
 const DisplayAddresses = (props) => {
-    const dispatch = useDispatch()
-    const classes = addressBox()
-
-    // creating responsive breakpoints
-    const break_768 = useMediaQuery('(max-width : 768px)')
+    const dispatch = useDispatch() 
+    const classes = addressBox() // contains css properties corressponds to the class name of the elements
 
     const addressStore = useSelector(state => state.deliveryAddresses.addressStore)
     const [selectedAddressId, setSelectedAddressId] = useState(null) // helps to re-render the component after value get stores in local storage
@@ -42,7 +38,7 @@ const DisplayAddresses = (props) => {
     // to delete an address card
     const deleteAddressHandler = async (addressId) => {
         try {
-            await deleteDoc(doc(db, 'addresses', addressId))
+            await deleteDoc(doc(db, 'addresses', addressId)) // this will delete address from the database
         } catch (err) {
             console.log('unable to delete')
         }
@@ -50,10 +46,11 @@ const DisplayAddresses = (props) => {
 
     // this method will help to edit address
     const editAddressHandler = (id) => {
-        props.openForm()
-        dispatch(deliveryAddressActions.updateEditZone({flag : true, id : id}))
+        props.openForm() // will open the address form
+        dispatch(deliveryAddressActions.updateEditZone({flag : true, id : id})) // will send the info to the redux store abt which address card will be edited
     }
 
+    // to animate the section where edit and delete address buttons are
     const animateAddress = {
         initial : {
             y : 60

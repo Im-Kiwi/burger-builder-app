@@ -23,8 +23,9 @@ const Pricing = (props) => {
     const break_800 = useMediaQuery('(min-width : 800px)')
     const break_410 = useMediaQuery('(min-width : 410px)')
 
-    const [switchCurr, switchCurrHandler] = useSwitchCurrency()
+    const [switchCurr, switchCurrHandler] = useSwitchCurrency() // this will handle the currency switch
 
+    // conversion of price depending upon the switch currency value 
     const priceDetails = [
         {name : 'Lettuce', price : switchCurr ? 5 : (5*0.67).toFixed(0), img : LettuceIco},
         {name : 'Cheese', price : switchCurr ? 10 : (10*0.67).toFixed(0), img : CheeseIco},

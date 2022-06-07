@@ -31,7 +31,7 @@ const BurgerController = (props) => {
 
     // fetching values from the redux store
     const ingredients = useSelector(state => state.ingredients) // contains the ingredients object
-    const userId = useSelector(state => state.userForm.currentUser.userId)
+    const userId = useSelector(state => state.userForm.currentUser.userId) // id of the user
     const basePrice = useSelector(state => state.basePrice.basePrice) // It contains the base prices of the ingredients
     // fetching the base prices of ingredients from the database
     useEffect(() => {
@@ -70,8 +70,8 @@ const BurgerController = (props) => {
 
     // it will reset the ingredients and total price
     const resetHandler = () => {
-        dispatch(ingredientsActions.updateReset())
-        dispatch(dialogActions.updateOpenModal(false))
+        dispatch(ingredientsActions.updateReset()) // to reset the burger slices and extra items
+        dispatch(dialogActions.updateOpenModal(false)) // close the modal
     }
 
     // this method will navigate to the order summary page
@@ -90,15 +90,13 @@ const BurgerController = (props) => {
             ...ingredients,
             userId
         }
-
         try {
-            await addDoc(collection(db, 'cart'), cartItem)  
+            await addDoc(collection(db, 'cart'), cartItem)  // will add the cart items to the database
             resetHandler()
         } catch (err) {
             console.log('cant add to the cart')
         }
     }
-
 
     return (
         <Stack 

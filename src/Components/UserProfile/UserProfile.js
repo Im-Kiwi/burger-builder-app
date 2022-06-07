@@ -19,12 +19,8 @@ const UserProfile = (props) => {
     const dispatch = useDispatch()
     const { pathname } = useLocation()
 
-    // creating css breakpoints
-    const break_899 = useMediaQuery('(max-width : 899px)')
-
-
     // fetching data from redux store
-    const userName = useSelector(state => state.userForm.currentUser.userName)
+    const userName = useSelector(state => state.userForm.currentUser.userName) // contains the user name
 
     const [anchorEl, setAnchorEl] = useState(null) // to control the popover
 

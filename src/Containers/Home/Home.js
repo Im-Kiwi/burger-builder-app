@@ -5,7 +5,7 @@ import { Image } from 'react-bootstrap'
 import { motion } from 'framer-motion'
 
 // ------------- importing from files -------------------
-import { styles } from './styles'
+import { styles, clarishTextAnime, burgerTextAnime } from './styles'
 import { dialogActions } from '../../Store/reducer/dialog';
 import { userFormActions } from '../../Store/reducer/userForm';
 import FullDialogs from '../../Components/FullDialogs/FullDialogs';
@@ -17,7 +17,7 @@ const Home = (props) => {
     const dispatch = useDispatch()
     const { pathname } = useLocation()
     const prevPath = localStorage.getItem('prevPath') // stores the previous path from where user navigated from
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token') // fetching token from local storage
 
     // creating css breakpoints
     const break_899 = useMediaQuery('(max-width : 899px)')
@@ -117,12 +117,18 @@ const Home = (props) => {
                             <Box sx = {{zIndex : 10}}>
                                 <Typography 
                                     variant = 'h2' 
-                                    className = {classes.mainTitle}>
+                                    className = {classes.mainTitle}
+                                    component = {motion.p}
+                                    variants = {clarishTextAnime}
+                                    animate = 'animate'>
                                     CLARISH
                                 </Typography> 
                                 <Typography 
                                     variant = 'h2' 
-                                    className = {classes.mainTitle}>
+                                    className = {classes.mainTitle}
+                                    component = {motion.p}
+                                    variants = {burgerTextAnime}
+                                    animate = 'animate'>
                                     BURGERS
                                 </Typography>
                                 <Typography

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    loading : false
+    loading : false // to enable disable the loading spinner
 }
 
 const loadingReducer = createSlice({

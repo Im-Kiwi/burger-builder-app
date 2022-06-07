@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import * as global from '../../identifiers/identifiers'
 
+// information of the burger slices and its quantities and status of extra items whether it is included by the user or not
 const initialState = {
     Lettuce : {name : 'Lettuce', qty : 0},
     Cheese : {name : 'Cheese', qty : 0},

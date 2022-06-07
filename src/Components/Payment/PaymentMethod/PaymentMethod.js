@@ -10,7 +10,7 @@ const PaymentMethods = () => {
     const dispatch = useDispatch()
 
     // fetching values from redux store
-    const paymentMethod = useSelector(state => state.orders.paymentMethod)
+    const paymentMethod = useSelector(state => state.orders.paymentMethod) // contains the payment mode which user selected
 
     // method to control radio button
     const changePaymentMethod = (event) => {

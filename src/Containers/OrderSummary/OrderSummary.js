@@ -19,9 +19,9 @@ const OrderSummary = (props) => {
     const break_760 = useMediaQuery('(max-width : 760px)')
     const break_431 = useMediaQuery('(max-width : 431px)')
 
-    const instantBuy = useSelector(state => state.cart.instantBuy)
-    const items = useSelector(state => !instantBuy ? state.cart.cartItems : state.cart.currentItem)
-    const address = useSelector(state => state.orders.deliveryAddress)
+    const instantBuy = useSelector(state => state.cart.instantBuy) // mode of buying, via cart place order, or buying directly by clicking on buy now button
+    const items = useSelector(state => !instantBuy ? state.cart.cartItems : state.cart.currentItem) // cart items/ current item which user will instant buy
+    const address = useSelector(state => state.orders.deliveryAddress) // selected delivery address
     return (  
         <motion.div
             initial = {{x:200, opacity:0}}

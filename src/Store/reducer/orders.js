@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    deliveryAddress : {},
-    orders : [],
-    paymentMethod : '',
-    paymentSuccess : false,
-    orderStatus : 'dispatching . . .'
+    deliveryAddress : {}, // selected delivery address
+    orders : [], // total orders placed by the users
+    paymentMethod : '', // payment method user used to buy
+    paymentSuccess : false, // to inform whether payment was success or failure
+    orderStatus : 'dispatching . . .' // the order status
 }
 
 const ordersReducer = createSlice({

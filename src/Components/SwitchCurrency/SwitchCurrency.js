@@ -8,8 +8,9 @@ import { CustomSwitch, styles } from './styles'
 
 
 const SwitchCurrency = ({switchCurr, switchCurrHandler}) => {
-    const classes = styles()
+    const classes = styles() // contains object defining css properties of the element
 
+    // animation to the horizontal line appears below the currency icon
     const underlineAnime = {
         initial : {
             width : 0

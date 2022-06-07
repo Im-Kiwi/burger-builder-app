@@ -39,7 +39,7 @@ const Hamburger = () => {
         dispatch(dialogActions.updateShowSideMenu(false))
     }
 
-    // dynamically changing the background color, hamburger icon color and nav link text color
+    // dynamically changing the background color of side menu, hamburger icon color and nav link text color
     if (pathname === paths.home) {
         hamIconColor = '#f9b826'
         sideMenuColor = '#f9b826'

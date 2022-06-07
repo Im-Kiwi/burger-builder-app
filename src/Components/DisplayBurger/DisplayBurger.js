@@ -11,8 +11,9 @@ import SwitchCurrency from '../SwitchCurrency/SwitchCurrency'
 
 const DisplayBurger = (props) => {
 
-    const ingredients = useSelector(state => state.ingredients) 
-    const totalPrice = useSelector(state => state.ingredients.totalPrice)
+    // fetching values from the redux store
+    const ingredients = useSelector(state => state.ingredients) // contains info of how many and what slices and extra items are added
+    const totalPrice = useSelector(state => state.ingredients.totalPrice) // total price of the burger including extra items (coke, fries)
 
     // creating css breakpoints
     const break_550 = useMediaQuery('(max-width : 550px)')
@@ -26,7 +27,7 @@ const DisplayBurger = (props) => {
     if (switchCurr) {
         convertPrice = totalPrice.toFixed(0)
     } else {
-        const temp = totalPrice*0.67
+        const temp = totalPrice*0.67 // converting indian ruppee to philippine pesos
         convertPrice = temp.toFixed(0)
     }
 
