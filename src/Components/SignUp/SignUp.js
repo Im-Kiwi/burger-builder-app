@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import { Container, Stack, TextField, Button, Box, Typography, MenuItem } from '@mui/material'
-import { Image } from 'react-bootstrap'
 import { useForm  } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup'; 
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -14,26 +13,43 @@ import { addDoc, collection, query, where, getDocs} from 'firebase/firestore'
 //  ----------------- importing from other files ------------------
 import { userFormActions } from '../../Store/reducer/userForm';
 import { dialogActions } from '../../Store/reducer/dialog';
-import { Phili, Ind } from '../../path-to-assets/pathToImages'
+import { user_name, email, password, confirmPass } from '../../identifiers/identifiers'
 
 const SignUp = props => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    // this will record the selection of nation by the user
-    const [selectNation, setSelectNation] = useState('')
-
     // fetching values from the redux store
     const isUserNameExist = useSelector(state => state.userForm.isUserNameExist) // tells whether user name exist or not in the database
+    const signUpForm = useSelector(state => state.userForm.signUpForm)
 
      // creating schema for sign up validation
     const signUpSchema = yup.object().shape({
-        userName : yup.string().required('please add user name').max(8, 'user name should not exceed 8 characters'),
-        emailAddress : yup.string().required('please add email address').matches(/^[a-z]+[.a-z]+[a-z]+@[a-z]+[.]+[a-z]+[a-z]$/, 'invalid email'),
-        nationality : yup.string().required('Mention the nationality'),        
+        userName : yup.string().trim().required('please add user name').max(8, 'user name should not exceed 8 characters'),
+        emailAddress : yup.string().required('please add email address').matches(/^[a-z0-9]+(\.[a-z0-9]|[a-z0-9])+@[a-z]+\.com$/, 'invalid email'),
         password : yup.string().required('mention password').min(6, 'password must be 6 character long').max(12, 'password must be less then 12 characters'),
         confirmPassword : yup.string().required().oneOf([yup.ref('password')], 'password does not match')        
     });
+
+    // to control the input elements in signup form
+    const changeHandler = (event, label) => {
+        switch (label) {
+            case user_name:
+                dispatch(userFormActions.updateUserName(event.target.value.trim()))
+                break;
+            case email:
+                dispatch(userFormActions.updateEmail(event.target.value.trim()))
+                break;
+            case password:
+                dispatch(userFormActions.updatePassword(event.target.value.trim()))
+                break;
+            case confirmPass:
+                dispatch(userFormActions.updateConfirmPass(event.target.value.trim()))
+                break;
+            default:
+                break;
+        }
+    }
 
     // this will help to handle validation of the form
     const { register, handleSubmit, formState : {errors} } = useForm({
@@ -62,7 +78,6 @@ const SignUp = props => {
             const response = await createUserWithEmailAndPassword(auth, data.emailAddress, data.password)
             const userData = {
                 userName : data.userName,
-                nationality : data.nationality,
                 email : response._tokenResponse.email,
                 userId : response._tokenResponse.localId
             }
@@ -103,7 +118,9 @@ const SignUp = props => {
                         className = 'mb-4'
                         size = 'small'
                         type = 'text'
-                        {...register('userName')}/>
+                        {...register('userName')}
+                        value = {signUpForm.userName}
+                        onChange = {(event) => changeHandler(event, user_name)} />
                     <TextField 
                         error = {Boolean(errors.emailAddress)}
                         helperText = {errors.emailAddress?.message}
@@ -114,32 +131,9 @@ const SignUp = props => {
                         className = 'mb-4'
                         size = 'small'
                         type = 'text'
-                        {...register('emailAddress')}/>
-                    <TextField select
-                        error = {Boolean(errors.nationality)}
-                        helperText = {errors.nationality?.message}
-                        aria-hidden = 'false'
-                        color = 'blackish'
-                        label = 'Nationality'
-                        size = 'small'
-                        variant = 'standard'
-                        className = 'mb-4 w-100'
-                        {...register('nationality')}
-                        onChange = {(event) => setSelectNation(event.target.value)}
-                        value = {selectNation}>
-                        <MenuItem  value = 'Philippine'>
-                            <Stack direction = 'row' spacing = {1}>
-                                <Image src = {Phili} alt = 'philippine flag' width = {30} />
-                                <Typography>Philippine</Typography>
-                            </Stack>
-                        </MenuItem>
-                        <MenuItem value = 'India'>
-                            <Stack direction = 'row' spacing = {1}>
-                                <Image fluid src = {Ind} alt = 'indian flag' width= {30} />
-                                <Typography>India</Typography>
-                            </Stack>    
-                        </MenuItem>
-                    </TextField>
+                        {...register('emailAddress')}
+                        value = {signUpForm.emailAddress}
+                        onChange = {event => changeHandler(event, email)} />
                     <TextField 
                         error = {Boolean(errors.password)}
                         helperText = {errors.password?.message}
@@ -151,6 +145,8 @@ const SignUp = props => {
                         size = 'small'
                         type = 'password'
                         {...register('password')}
+                        value = {signUpForm.password}
+                        onChange = {event => changeHandler(event, password)}
                     />
                     <TextField 
                         error = {Boolean(errors.confirmPassword)}
@@ -163,6 +159,8 @@ const SignUp = props => {
                         size = 'small'
                         type = 'password'
                         {...register('confirmPassword')}
+                        value = {signUpForm.confirmPass}
+                        onChange = {event => changeHandler(event, confirmPass)}
                     />
                     <Button 
                         type = 'submit' 

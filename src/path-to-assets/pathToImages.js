@@ -29,6 +29,7 @@ import WorldMap from '../Assets/worldMap.svg'
 import BackgroundBurger from '../Assets/backgroundBurger.svg'
 import EmptyCart from '../Assets/emptyCart.svg'
 import Sad from '../Assets/sad.svg'
+import LogoY from '../Assets/logo_y.svg'
 
 
 export {
@@ -36,7 +37,7 @@ export {
     Lettuce, Cheese, Meat, Onion, Tomato, Bacon,
     Coke, Fries,
     Phili, Ind,
-    Logo,
+    Logo, LogoY,
     Burger, Girl,
     Plate,
     LettuceIco, CheeseIco, MeatIco, TomatoIco, OnionIco, BaconIco,

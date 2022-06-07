@@ -54,7 +54,7 @@ const ManageAddresses = () => {
             <Box 
                 sx = {{
                     width : 'inherit', 
-                    height : 'inherit', 
+                    height : 700, 
                     overflowX : 'hidden',
                     backgroundColor : '#f9b826'
                 }}>

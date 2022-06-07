@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 
 // ------------- importing from files -------------------
 import { styles, clarishTextAnime, burgerTextAnime } from './styles'
+import { paths } from '../../identifiers/identifiers';
 import { dialogActions } from '../../Store/reducer/dialog';
 import { userFormActions } from '../../Store/reducer/userForm';
 import FullDialogs from '../../Components/FullDialogs/FullDialogs';
@@ -71,9 +72,8 @@ const Home = (props) => {
                         {/* the curvy yellow background */}
                         <motion.div 
                             className = {classes.backgroundCover}
-                            initial = {{width : prevPath === '/pricing' || prevPath === '/about-us' ? '100vw' : '100%'}}
-                            animate = {{width : '100%'}}>
-                        </motion.div>                        
+                            initial = {{width : prevPath === paths.pricing || prevPath === paths.aboutUs ? '100vw' : '100%'}}
+                            animate = {{width : '100%'}}></motion.div>                        
                         <Stack 
                             direction = 'row' 
                             justifyContent = 'center'

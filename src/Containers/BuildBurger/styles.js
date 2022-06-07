@@ -10,7 +10,6 @@ export const styles = makeStyles({
         backgroundColor : '#110f12',
         position : 'relative',
         height : '100vh',
-        overflow : 'hidden',
     },
     backgroundCover : {
         position : 'absolute',
@@ -18,6 +17,12 @@ export const styles = makeStyles({
         height : '100%',
         borderRadius : '0 50% 50% 0/0 100% 100% 0',
         transform : 'scaleY(1.5)'
+    },
+    burgerContainer : {
+        position : 'absolute',
+        height : '100%', 
+        width : '100%', 
+        overflow : 'hidden'
     },
     secondItem : {
         backgroundColor : '#110f12',

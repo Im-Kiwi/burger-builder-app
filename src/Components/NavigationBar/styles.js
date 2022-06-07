@@ -24,7 +24,6 @@ export const styles = makeStyles({
         textAlign : 'center', 
         position : 'relative', 
         top : 4, 
-        color : '#110f12',
         fontWeight : 600,
         fontFamily : 'Yuji Mai, serif'
     },
@@ -50,7 +49,7 @@ export const styles = makeStyles({
         '&:hover' : {
             backgroundColor : 'inherit'
         }
-    },    
+    },  
 })
 
 // to give transition effect to the horizontal line while hovering over nav links

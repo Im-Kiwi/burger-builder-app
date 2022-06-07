@@ -12,7 +12,7 @@ import { userFormActions } from '../../Store/reducer/userForm'
 import { dialogActions } from '../../Store/reducer/dialog'
 import UserProfile from '../UserProfile/UserProfile'
 import { animationActions } from '../../Store/reducer/animation'
-import { Logo } from '../../path-to-assets/pathToImages'
+import { Logo, LogoY } from '../../path-to-assets/pathToImages'
 import Hamburger from '../Hamburger/Hamburger'
 import { paths } from '../../identifiers/identifiers'
 
@@ -32,8 +32,13 @@ const NavigationBar = () => {
 
     const token = localStorage.getItem('token') //fetching value from local storage
 
-    let navColor, buttonColor, buttonBgColor // this will store the color dynamically
+    // variables which will store the color, logo image dynamically
+    let navColor, buttonColor, buttonBgColor 
     
+    // variables storing the logo text color and logo image itself
+    let logoTextColor = '#110f12'
+    let mainLogo = Logo
+
     // this will track the previous path of the user when clicked on the cart icon
     const trackingPrevPathHandler = () => {
         localStorage.setItem('prevPath', pathname)
@@ -70,19 +75,31 @@ const NavigationBar = () => {
         navColor = '#110f12'
         buttonColor = '#f9b826'
         buttonBgColor = '#110f12'
+    } else if (pathname === paths.home && break_899) {
+        buttonColor = '#110f12'
+        buttonBgColor = '#f9b826'
+        logoTextColor = '#f9b826'
+        mainLogo = LogoY
     } else if (pathname === paths.yourOrders || pathname === paths.manageAddresses || pathname === paths.security) {
         if (prevPath === paths.pricing || prevPath === paths.aboutUs || (prevPath === paths.buildBurger && break_899)) {
             navColor = '#110f12'
             buttonColor = '#f9b826'
             buttonBgColor = '#110f12'
+        } else if (prevPath === paths.home && break_899) {
+            mainLogo = LogoY
+            logoTextColor = '#f9b826'
+            buttonColor = '#110f12'
+            buttonBgColor = '#f9b826'
         } else if (prevPath === paths.home || prevPath === paths.buildBurger) {
             buttonColor = '#110f12'
             buttonBgColor = '#f9b826'
-        }
+        } 
     } else {
         navColor = '#f9b826'
         buttonColor = '#110f12'
         buttonBgColor = '#f9b826'
+        logoTextColor = '#110f12'
+        mainLogo = Logo
     }
 
     // to animate the nav links ( changing colors while page transitioning)
@@ -96,7 +113,7 @@ const NavigationBar = () => {
         }
     }
 
-// to animate the buttons (changing colors)
+    // to animate the buttons (changing colors)
     const animateButton = {
         animate : {
             backgroundColor : buttonBgColor,
@@ -160,10 +177,13 @@ const NavigationBar = () => {
                             onClick = {logoClickHandler}>
                             <Typography 
                                 variant = 'body1'
-                                className = {classes.logoTitle}>
+                                className = {classes.logoTitle}
+                                // dynamically setting the text color of the logo
+                                sx = {{color : logoTextColor}}>
                                 CLARISH
-                            </Typography>                       
-                            <Image src = {Logo} fluid width = {90} alt = 'logo' />                                                
+                            </Typography>  
+                            {/* dynamically setting the image depending upon the breakpoints and pathname  */}
+                            <Image src = {mainLogo} fluid width = {90} alt = 'logo' />                                                
                         </Box> 
                     </Navbar.Brand>
                     <Nav className = 'w-100'>

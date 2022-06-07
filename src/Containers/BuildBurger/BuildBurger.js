@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 
 // ------- importing from files -------------
 import { styles } from './styles'
+import { paths } from '../../identifiers/identifiers'
 import BurgerController from '../../Components/BurgerController/BurgerController'
 import DisplayBurger from '../../Components/DisplayBurger/DisplayBurger'
 import FullDialogs from '../../Components/FullDialogs/FullDialogs'
@@ -17,27 +18,22 @@ const BuildBurger = (props) => {
     // creating css breakpoints
     const break_899 = useMediaQuery('(max-width : 899px)')
 
-    // this will display the page from very top
-    useEffect(() => {
-        window.scrollTo(0, 0)
-    }, [pathname])
-
     return (
         <Container disableGutters = {break_899 && true} maxWidth = 'xl'>
             <Box className = {classes.main} sx = {{overflow : 'hidden'}}>
-                <Grid container>
+                <Grid container sx = {{overflow : 'hidden'}}>
                     <Grid item
                         xs = {12} md = {7}  
                         className = {classes.firstItem}>
                         <motion.div 
                             className = {classes.backgroundCover}
-                            initial = {{width : prevPath === '/pricing' || prevPath === '/about-us' ? '100vw' : '100%'}}
+                            initial = {{width : prevPath === paths.pricing || prevPath === paths.aboutUs ? '100vw' : '100%'}}
                             animate = {{width : '100%'}}></motion.div>
                         <Box 
+                            className = {classes.burgerContainer}
                             display = 'flex' 
                             justifyContent = 'center' 
-                            alignItems = 'center'
-                            sx = {{height : '100%'}}>
+                            alignItems = 'center'>
                             <DisplayBurger noTransition = {props.noTransition} /> {/* burger will display here */}
                         </Box>
                     </Grid>

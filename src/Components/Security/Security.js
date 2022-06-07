@@ -22,8 +22,7 @@ const Security = () => {
     // creating css breakpoints
     const break_991 = useMediaQuery('(max-width : 991px)')
 
-
-    const [isLogIn, setIsLogIn] = useState(false) // to control the login form
+    const [isLogIn, setIsLogIn] = useState(false) // to enable/disable the login form
 
     // fetching data from the redux store
     const showModal = useSelector(state => state.dialog.openUserProfModal) // this contains value to open/close modal

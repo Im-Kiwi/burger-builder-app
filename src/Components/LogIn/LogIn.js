@@ -2,13 +2,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { TextField, Container, Button, Box, Typography, Alert, AlertTitle } from "@mui/material";
 import { Spinner } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
-import { signInWithEmailAndPassword, updateEmail, updatePassword } from "firebase/auth";
+import { signInWithEmailAndPassword, updateEmail, updatePassword, deleteUser, signOut } from "firebase/auth";
+import { doc, deleteDoc, } from 'firebase/firestore';
 import { yupResolver } from '@hookform/resolvers/yup'
 import { auth } from "../../firebase-setup";
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom'
 
 //  ------------- importing from other files ----------------
+import { db } from '../../firebase-setup';
 import { dialogActions } from '../../Store/reducer/dialog';
 import { securityActions } from '../../Store/reducer/security';
 import { userFormActions } from '../../Store/reducer/userForm';
@@ -23,7 +25,9 @@ const LogIn = props => {
     const newEmailOrPass = useSelector(state => state.security.newEmailOrPass)
     const errorFlag = useSelector(state => state.userForm.errorFlag)
     const loading = useSelector(state => state.loading.loading)
-
+    const toDeleteAcc = useSelector(state => state.userForm.toDeleteAcc)
+    const userDbId = useSelector(state => state.userForm.currentUser.dbId)
+    console.log(toDeleteAcc)
 
     // creating schema for input validation
     const logInSchema = yup.object().shape({
@@ -66,14 +70,23 @@ const LogIn = props => {
         try {
             // signing in
             await signInWithEmailAndPassword(auth, data.emailAddress, data.password)
-            if (navigationIndex === 0) {
+            if (toDeleteAcc) { // to delete user account
+                console.log('deleting')
+                await deleteUser(auth.currentUser)
+                await deleteDoc(doc(db, 'users', userDbId))
+                await signOut(auth) // method to sign out the user from the firebase
+                localStorage.removeItem('token') // to remove token from local storage
+                navigate('/') // navigate to home page
+                dispatch(dialogActions.updateDelAccModal(false)) // to close modal
+                dispatch(userFormActions.updateCurrentUser({})) // resetting the current user info as user logged out
+                dispatch(userFormActions.updateDeleteAccount(false)) // once acc is deleted the value will set to false
+            } else if (navigationIndex === 0) { 
                 await updateEmail(auth.currentUser, newEmailOrPass) // to update email address
                 dispatch(securityActions.updateStartValidation(false)) // turn the validation flag to false
-
             } else if (navigationIndex === 1) {
                 await updatePassword(auth.currentUser, newEmailOrPass) // to update password
                 dispatch(securityActions.updateStartValidation(false))
-            }   
+            }
             dispatch(securityActions.updateSuccessFlag(true))  // success status to true  
             dispatch(userFormActions.updateErrorFlag(false))
             dispatch(loadingActions.updateLoading(false))

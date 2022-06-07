@@ -44,3 +44,8 @@ export const creditCard = 'Credit Card'
 export const debitCard = 'Debit Card'
 export const payPal = 'PayPal'
 export const cashOnDelivery = 'Cash on Delivery'
+
+export const user_name = 'userName'
+export const email = 'email'
+export const password = 'password'
+export const confirmPass = 'confirmPass'
