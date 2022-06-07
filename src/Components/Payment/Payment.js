@@ -1,5 +1,5 @@
 import { Image, Spinner } from 'react-bootstrap'
-import { Box, Grid, Typography, useMediaQuery } from '@mui/material'
+import { Box, Grid, Typography, useMediaQuery, Alert, AlertTitle } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { collection, addDoc, doc, deleteDoc } from 'firebase/firestore'
@@ -84,7 +84,7 @@ const Payment = () => {
             dispatch(ordersActions.updatePaymentSuccess(true)) // success payment
             dispatch(loadingActions.updateLoading(false))
         } catch (err) {
-            console.log(err)
+            console.log(err.code)
             dispatch(ordersActions.updatePaymentSuccess(false))
             dispatch(loadingActions.updateLoading(false))
         }
@@ -130,7 +130,11 @@ const Payment = () => {
                             icon = {icon} 
                             totalPrice = {totalPrice} />                        
                     </Grid>
-                    <Grid item xs = {12}>
+                    <Grid 
+                        item xs = {12} 
+                        display = 'flex'
+                        flexDirection = 'column'
+                        alignItems = 'center'>
                         <Box className = 'text-center' sx = {{mt:10}}>
                             <CustomFab 
                                 variant = 'extended' 
@@ -139,7 +143,7 @@ const Payment = () => {
                                 sx = {{opacity : paymentMethod ? 1:0.4}}>
                                 {loading ? <Spinner animation = 'border' /> : 'Click here to pay'}
                             </CustomFab>
-                        </Box>
+                        </Box>                        
                     </Grid>                     
             </Grid>
             : 

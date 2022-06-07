@@ -2,22 +2,26 @@ import { useEffect, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { Grid, List, ListItem, ListItemButton, FormControl, Select, useMediaQuery, MenuItem } from '@mui/material'
+import { Grid, List, ListItem, ListItemButton, FormControl, Select, useMediaQuery, MenuItem, Fab } from '@mui/material'
+import { CloseRounded } from '@mui/icons-material'
 import { getAuth, updateEmail, updatePassword } from 'firebase/auth'
 import { collection, getDocs, updateDoc, query, where, doc } from 'firebase/firestore'
 
 // ------- importing from other files ----------
+import { styles } from './styles'
 import { dialogActions } from '../../Store/reducer/dialog'
 import Change from './Change/Change'
 import LogIn from '../LogIn/LogIn'
 import { securityActions } from '../../Store/reducer/security'
 import { db } from '../../firebase-setup'
-import { userFormActions } from '../../Store/reducer/userForm'
+import { errorsActions } from '../../Store/reducer/errors'
+import { loadingActions } from '../../Store/reducer/loading'
 
 const Security = () => {
+    const classes = styles() // contains css properties of the elements
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const auth = getAuth()
+    const auth = getAuth() // a firebase object consist of the information of current authenticated user
 
     // creating css breakpoints
     const break_991 = useMediaQuery('(max-width : 991px)')
@@ -45,7 +49,7 @@ const Security = () => {
         dispatch(securityActions.updateConfirmPass('')) // to reset the confirm pass input tag
         dispatch(securityActions.updateStartValidation(false)) // reset the validation process
         dispatch(securityActions.updateSuccessFlag(false)) // to close the success message under log in form
-        dispatch(userFormActions.updateErrorFlag(false)) // setting the error flag to false which will remove the error msg in login form
+        dispatch(errorsActions.updateLogInError({status : false, message : ''})) // setting the error flag to false which will remove the error msg in login form
         setIsLogIn(false) // to close the re-login form
     }
 
@@ -56,7 +60,7 @@ const Security = () => {
         dispatch(securityActions.updateConfirmPass(''))
         dispatch(securityActions.updateStartValidation(false))
         dispatch(securityActions.updateSuccessFlag(false))
-        dispatch(userFormActions.updateErrorFlag(false))
+        dispatch(errorsActions.updateLogInError({status : false, message : ''}))
         setIsLogIn(false)
     }
 
@@ -79,18 +83,19 @@ const Security = () => {
         dispatch(securityActions.updateNewEmailOrPass(''))
         dispatch(securityActions.updateConfirmPass(''))
         dispatch(securityActions.updateSuccessFlag(false))
-        dispatch(userFormActions.updateErrorFlag(false)) 
+        dispatch(errorsActions.updateLogInError({status : false, message : ''})) 
     }
 
     const submitHandler = async (event, navIndex) => {
-        dispatch(securityActions.updateStartValidation(true))
-        setIsLogIn(false) 
+        dispatch(securityActions.updateStartValidation(true)) // start validation process
+        dispatch(loadingActions.updateLoading(true)) // enable the loading spinner
+        setIsLogIn(false) // initially no log in form
         event.preventDefault() // to prevent default behaviour of onSubmit event
         try {
             if (newEmailOrPass.length !== 0 && navIndex === 0) { 
                 await updateEmail(auth.currentUser, newEmailOrPass) // this will update the email address
-                dispatch(securityActions.updateNewEmailOrPass(''))
-                dispatch(securityActions.updateStartValidation(false))
+                dispatch(securityActions.updateNewEmailOrPass('')) // resetting email or pass input value
+                dispatch(securityActions.updateStartValidation(false)) 
             } else if (newEmailOrPass.length !== 0 && confirmPass === newEmailOrPass && navIndex === 1) { 
                 await updatePassword(auth.currentUser, newEmailOrPass) // this will update the password
                 dispatch(securityActions.updateNewEmailOrPass(''))
@@ -129,6 +134,7 @@ const Security = () => {
                 setIsLogIn(true) // this will open the login form to re authenticate user
             }
         }
+        dispatch(loadingActions.updateLoading(false))
     }
 
     // form will change depending upon the navigation of user
@@ -182,6 +188,13 @@ const Security = () => {
 
     return (
         <Modal centered size = 'lg' show = {showModal} onHide = {closeModalHandler}>
+            <Fab
+                size = 'small' 
+                aria-label = 'close button'
+                onClick = {closeModalHandler}
+                className = {classes.closeButton}>
+                <CloseRounded />
+            </Fab>
             <Grid container sx = {{height : 500, backgroundColor : '#f9b826'}}>
                 {!break_991 &&
                     <Grid item xs = {3} sx = {{backgroundColor : '#110f12'}}>

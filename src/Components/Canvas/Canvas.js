@@ -25,6 +25,7 @@ const Canvas = () => {
     const closeCanvasHandler = () => {
         dispatch(dialogActions.updateShowCanvas(false))
         dispatch(userFormActions.updateErrorFlag(false))
+        dispatch(userFormActions.updateResetSignUp())
     }
 
     return (

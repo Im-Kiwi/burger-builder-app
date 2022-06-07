@@ -37,11 +37,7 @@ const DisplayAddresses = (props) => {
 
     // to delete an address card
     const deleteAddressHandler = async (addressId) => {
-        try {
-            await deleteDoc(doc(db, 'addresses', addressId)) // this will delete address from the database
-        } catch (err) {
-            console.log('unable to delete')
-        }
+        await deleteDoc(doc(db, 'addresses', addressId)) // this will delete address from the database
     }
 
     // this method will help to edit address

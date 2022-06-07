@@ -40,13 +40,11 @@ const DeleteAccount = () => {
             dispatch(loadingActions.updateLoading(false)) // disable the loading spinner
             dispatch(userFormActions.updateDeleteAccount(false)) // once acc is deleted the value will set to false
         } catch (err) {
-            console.log(err.code)
             if (err.code === 'auth/requires-recent-login') {
                 setIsLogIn(true)
                 dispatch(userFormActions.updateDeleteAccount(true)) // delete acc flag set to true which help to delete acc once user re-auth successfully
             }
             dispatch(loadingActions.updateLoading(false))
-            console.log('unable to delete account')
         }
     }
 

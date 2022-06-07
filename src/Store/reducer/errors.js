@@ -1,15 +1,35 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    networkError : false
+    logInError : {
+        status : false,
+        message : ''
+    },
+    signUpError : {
+        status : false,
+        message : ''
+    },
+    paymentError : {
+        status : false,
+        message : ''
+    }
 }
 
 const errorsReducer = createSlice({
     name : 'errors',
     initialState,
     reducers : {
-        updateNetworkError (state, action) {
-            state.networkError = action.payload
+        updateLogInError (state, action) {
+            state.logInError.status = action.payload.status
+            state.logInError.message = action.payload.message
+        },
+        updateSignUpError (state, action) {
+            state.signUpError.status = action.payload.status
+            state.signUpError.message = action.payload.message
+        },
+        updatePaymentError (state, action) {
+            state.paymentError.status = action.payload.status
+            state.signUpError.message = action.payload.message
         }
     }
 })

@@ -24,11 +24,7 @@ const Cart = () => {
 
     // method to delete a cart item
     const deleteCartItemHandler = async (dataId) => {
-        try {
-            await deleteDoc(doc(db, 'cart', dataId)) // this will delete the cart item from the database
-        } catch (err) {
-            console.log('cant able to delete, please check your network connection')
-        }
+        await deleteDoc(doc(db, 'cart', dataId)) // this will delete the cart item from the database
     }
 
     return (

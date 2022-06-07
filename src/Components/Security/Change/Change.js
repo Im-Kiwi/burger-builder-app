@@ -1,5 +1,6 @@
 import { Box, Stack, Button, TextField, Typography, Alert, AlertTitle } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
+import { Spinner } from 'react-bootstrap'
 
 // ------ importing from other files ----------
 import { securityActions } from '../../../Store/reducer/security'
@@ -15,6 +16,7 @@ const Change = (props) => {
     const navigationIndex = useSelector(state => state.security.navigationIndex) // contains navigation id of the page
     const userNameExist = useSelector(state => state.security.userNameExist) // will tell whether user name exist or not
     const successFlag = useSelector(state => state.security.successFlag) // whether the request is a success or not
+    const loading = useSelector(state => state.loading.loading)
 
     // method to control the 'confirm password' input tag
     const changeConfirmPassHandler = (event) => {
@@ -100,11 +102,12 @@ const Change = (props) => {
                             backgroundColor : '#110f12',
                             fontFamily : 'Montserrat Alternates, sans-serif',
                             width : 100,
+                            height : 35,
                             borderRadius : 0,
                             "&:hover" : {
                                 backgroundColor : '#110f12'
                             }}}>
-                        confirm
+                        {loading ? <Spinner animation = 'border' size = 'sm' /> : 'confirm'}
                     </Button>
                     {/* success message, once user successfully changed their email or password or username */}
                     {successFlag &&

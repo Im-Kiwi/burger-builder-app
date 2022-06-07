@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
-import { Container, Stack, TextField, Button, Box, Typography, MenuItem } from '@mui/material'
+import { Spinner } from 'react-bootstrap'
+import { Container, Stack, TextField, Button, Box, Typography, MenuItem, Alert, AlertTitle } from '@mui/material'
 import { useForm  } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup'; 
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -14,6 +15,8 @@ import { addDoc, collection, query, where, getDocs} from 'firebase/firestore'
 import { userFormActions } from '../../Store/reducer/userForm';
 import { dialogActions } from '../../Store/reducer/dialog';
 import { user_name, email, password, confirmPass } from '../../identifiers/identifiers'
+import { loadingActions } from '../../Store/reducer/loading';
+import { errorsActions } from '../../Store/reducer/errors';
 
 const SignUp = props => {
     const dispatch = useDispatch()
@@ -21,7 +24,9 @@ const SignUp = props => {
 
     // fetching values from the redux store
     const isUserNameExist = useSelector(state => state.userForm.isUserNameExist) // tells whether user name exist or not in the database
-    const signUpForm = useSelector(state => state.userForm.signUpForm)
+    const signUpForm = useSelector(state => state.userForm.signUpForm) // contains input data by the user in signup form
+    const loading = useSelector(state => state.loading.loading) // to enable/disable the spinner
+    const signUpError = useSelector(state => state.errors.signUpError) // contains the status of error and error message for signup form
 
      // creating schema for sign up validation
     const signUpSchema = yup.object().shape({
@@ -58,7 +63,8 @@ const SignUp = props => {
 
     // sending the sign up form info to the firebase server
     const submitForm = async data => {
-
+        dispatch(loadingActions.updateLoading(true)) // enable the spinner
+        dispatch(errorsActions.updateSignUpError({status : false, message : ''}))
         // checking whether the user name already exist in the database
         const readUsers = collection(db, 'users')
         const findUser = query(readUsers, where('userName', '==', data.userName))
@@ -72,7 +78,6 @@ const SignUp = props => {
         if (userNameExist) {
             dispatch(userFormActions.updateIsUserNameExist(true))
         }
-
         try {
             // sending the sign up form information to firebase which will result in success of creating account
             const response = await createUserWithEmailAndPassword(auth, data.emailAddress, data.password)
@@ -81,19 +86,22 @@ const SignUp = props => {
                 email : response._tokenResponse.email,
                 userId : response._tokenResponse.localId
             }
-
             try {
                 // adding document in users collection in database after successfully sign up
-                // document is the information of the user
+                // document contains the information of the user
                 await addDoc(collection(db, 'users'), userData)
                 dispatch(dialogActions.updateShowCanvas(false))
+                dispatch(userFormActions.updateResetSignUp())
                 navigate(`/build-burger`)
             } catch (err) {
                 console.log(err)
+                dispatch(errorsActions.updateSignUpError({status : true, message : err.code.slice(5,err.code.length)}))
             }
         } catch (err) {
             console.log(err.message)
+            dispatch(errorsActions.updateSignUpError({status : true, message : err.code.slice(5,err.code.length)}))
         }
+        dispatch(loadingActions.updateLoading(false))
     }
 
     return (
@@ -169,9 +177,21 @@ const SignUp = props => {
                         sx = {{
                             color : '#f9b826',
                             borderRadius : 0,
+                            width : 100,
+                            height : 35,
                             fontFamily : 'Montserrat Alternates, sans-serif'}}>
-                        Sign Up
+                        {loading ? <Spinner animation = 'border' size = 'sm'/> : 'Sign Up' }
                     </Button>
+                    {signUpError.status &&
+                        <Alert 
+                            severity='error' 
+                            variant='filled' 
+                            color = 'error'
+                            sx = {{mt:2}}>
+                            <AlertTitle>Something's wrong :(</AlertTitle>
+                            {signUpError.message}
+                        </Alert>
+                    }
                 </form>            
             </Box>
         </Container>

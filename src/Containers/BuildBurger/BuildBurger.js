@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { Box, Grid, Container, useMediaQuery } from '@mui/material'
 import { Outlet, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'

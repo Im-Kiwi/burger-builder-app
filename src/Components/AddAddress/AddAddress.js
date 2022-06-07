@@ -1,22 +1,26 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { addDoc, collection, doc, updateDoc } from 'firebase/firestore'
-import { Stack, Box, Paper, TextField, MenuItem, IconButton, FormControl, FormLabel, Radio, RadioGroup, FormControlLabel  } from '@mui/material'
-import { Backdrop } from '@mui/material'
+import { Stack, Box, Paper, TextField, MenuItem, IconButton, FormControl, FormLabel, Radio, RadioGroup, FormControlLabel, Button  } from '@mui/material'
+import { Backdrop, useMediaQuery } from '@mui/material'
 import { CloseRounded } from '@mui/icons-material'
 import { Modal } from 'react-bootstrap'
 import { v4 as uniqueId } from 'uuid'
 
 // -------- importing from other files -------------
+import { styles } from './styles.js'
 import { db } from '../../firebase-setup'
 import { philippinesStates, indianStates } from '../../Places/places'
-import { CustomButton } from './styles.js'
 import { dialogActions } from '../../Store/reducer/dialog'
 import { deliveryAddressActions } from '../../Store/reducer/deliveryAddress'
 import { firstName, lastName, phoneNumber, address, country, state, city, pinCode, addressType } from '../../identifiers/identifiers'
 
 const AddAddress = () => {
     const dispatch = useDispatch()
+    const classes = styles()
+
+    // creating css breakpoints
+    const break_991 = useMediaQuery('(max-width : 991px)')
 
     // fetching data from redux store
     const userId = useSelector(state => state.userForm.currentUser.userId) // contains id of the user
@@ -82,7 +86,6 @@ const AddAddress = () => {
                 closeAddressFormHandler() // to close the address form once user save it
             }
         } catch(err) {
-            console.log('Some error! Please try again later')
             closeAddressFormHandler()
         }
     }
@@ -120,27 +123,16 @@ const AddAddress = () => {
                 show = {openModal} 
                 onHide = {closeAddressFormHandler}>
                 <Box style = {{width : 'inherit'}}>
-                    <Paper                         
-                        sx = {{
-                            padding : 5, 
-                            backgroundColor : '#f9a620',                             
-                            border : 'solid 2px #110f12', 
-                            borderRadius : 0}} >
+                    <Paper className = {classes.formContainer}>
                         <IconButton 
-                            sx = {{
-                                float : 'right', 
-                                position : 'relative', 
-                                bottom : 25, 
-                                left : 20}} 
-                            className = 'text-dark'
+                            className = {[classes.closeButton, 'text-dark'].join(' ')}                            
                             onClick = {closeAddressFormHandler} >
                             <CloseRounded />
                         </IconButton>
                         <form onSubmit = {(event) => addressSubmitHandler(event)}>
                             <Stack direction = 'column'>
-                                <Stack direction = 'row'>
-                                    <TextField variant='filled' className = 'noInputBorder' 
-                                        sx = {{mr : 2}} 
+                                <Stack direction = {break_991 ? 'column' : 'row'} spacing = {2}>
+                                    <TextField variant='filled' 
                                         size = 'small'
                                         color = 'blackish' 
                                         label = {firstName}
@@ -150,7 +142,6 @@ const AddAddress = () => {
                                         helperText = {validationFlag && addressForm.firstName.length === 0 ? 'Mention first name' : ''} />
                                     <TextField 
                                         variant='filled' 
-                                        className = 'noInputBorder' 
                                         color = 'blackish' 
                                         label = {lastName} 
                                         size = 'small'
@@ -185,8 +176,11 @@ const AddAddress = () => {
                                     value = {addressForm.address}
                                     error = {validationFlag && addressForm.address.length === 0 ? true : false}
                                     helperText = {validationFlag && addressForm.address.length === 0 ? 'Mention address' : ''} />
-                                <Stack direction = 'row' sx = {{mt : 2}}>
-                                    <Box sx = {{width : 200, mr : 2}}>
+                                <Stack 
+                                    direction = {break_991 ? 'column' : 'row'} 
+                                    sx = {{mt : 2}}
+                                    spacing = {2}>
+                                    <Box sx = {{width : 200}}>
                                         <TextField 
                                             fullWidth select 
                                             variant='filled'  
@@ -224,7 +218,12 @@ const AddAddress = () => {
                                             }}>
                                             {statesOfCountry.map(state => {
                                                 return (
-                                                    <MenuItem sx = {{height : 25}} key = {uniqueId()} value = {state}>{state}</MenuItem>
+                                                    <MenuItem 
+                                                        key = {uniqueId()} 
+                                                        sx = {{height : 25}} 
+                                                        value = {state}>
+                                                        {state}
+                                                    </MenuItem>
                                                 )
                                             })}    
                                         </TextField>
@@ -277,13 +276,13 @@ const AddAddress = () => {
                                     </RadioGroup>
                                 </FormControl>
                             </Stack>                        
-                            <CustomButton 
+                            <Button
                                 sx = {{mt : 2, borderRadius : 0, color : '#f9b826'}}
                                 color = 'blackish' 
                                 variant = 'contained' 
                                 type = 'submit'>
                                 <strong>Save</strong>
-                            </CustomButton>
+                            </Button>
                         </form>
                     </Paper>
                 </Box>

@@ -15,19 +15,19 @@ import { dialogActions } from '../../Store/reducer/dialog';
 import { securityActions } from '../../Store/reducer/security';
 import { userFormActions } from '../../Store/reducer/userForm';
 import { loadingActions } from '../../Store/reducer/loading';
+import { errorsActions } from '../../Store/reducer/errors';
 
 const LogIn = props => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
     // fetching values from redux store
-    const navigationIndex = useSelector(state => state.security.navigationIndex) 
-    const newEmailOrPass = useSelector(state => state.security.newEmailOrPass)
-    const errorFlag = useSelector(state => state.userForm.errorFlag)
-    const loading = useSelector(state => state.loading.loading)
-    const toDeleteAcc = useSelector(state => state.userForm.toDeleteAcc)
-    const userDbId = useSelector(state => state.userForm.currentUser.dbId)
-    console.log(toDeleteAcc)
+    const navigationIndex = useSelector(state => state.security.navigationIndex) // contains nav id to navigate (this is of Security component)
+    const newEmailOrPass = useSelector(state => state.security.newEmailOrPass) // contains the input for new email and pass input element
+    const logInError = useSelector(state => state.errors.logInError) // sets errorFlag true if error occurs while logging in
+    const loading = useSelector(state => state.loading.loading) // to enable/disable the spinner
+    const toDeleteAcc = useSelector(state => state.userForm.toDeleteAcc) // if true will lead to deleting account
+    const userDbId = useSelector(state => state.userForm.currentUser.dbId) // user's firebase database id
 
     // creating schema for input validation
     const logInSchema = yup.object().shape({
@@ -43,7 +43,7 @@ const LogIn = props => {
     // method to click the input element 
     // this will remove the error message which will occur due to wrong ceredential error 
     const clickFormHandler = () => {
-        dispatch(userFormActions.updateErrorFlag(false))
+        dispatch(errorsActions.updateLogInError({status : false, message : ''}))
     }
 
     // this method will make user to log in
@@ -53,13 +53,13 @@ const LogIn = props => {
             await signInWithEmailAndPassword(auth, data.emailAddress, data.password)
             dispatch(loadingActions.updateLoading(false)) // disable the loading spinner
             dispatch(dialogActions.updateShowCanvas(false)) // the log in side drawer will close
-            dispatch(userFormActions.updateErrorFlag(false)) // set the errorFlag to false
+            dispatch(errorsActions.updateLogInError({status : false, message : ''})) // set the errorFlag to false
             navigate(`/build-burger`)
 
         } catch(err) {
-            console.log('login failed!')
+            console.log(err.code)
             dispatch(securityActions.updateSuccessFlag(false)) // if fail to login then success flag will be false
-            dispatch(userFormActions.updateErrorFlag(true)) // set the error flag to true
+            dispatch(errorsActions.updateLogInError({status : true, message : err.code.slice(5,err.code.length)})) // set the error flag to true
             dispatch(loadingActions.updateLoading(false)) // disable the loading spinner
         }
     }
@@ -88,11 +88,11 @@ const LogIn = props => {
                 dispatch(securityActions.updateStartValidation(false))
             }
             dispatch(securityActions.updateSuccessFlag(true))  // success status to true  
-            dispatch(userFormActions.updateErrorFlag(false))
+            dispatch(errorsActions.updateLogInError({status : false, message : ''}))
             dispatch(loadingActions.updateLoading(false))
         } catch(err) {
             dispatch(securityActions.updateSuccessFlag(false)) 
-            dispatch(userFormActions.updateErrorFlag(true))
+            dispatch(errorsActions.updateLogInError({status : true, message : err.code.slice(5,err.code.length)}))
             dispatch(loadingActions.updateLoading(false))
         }
     }
@@ -149,12 +149,12 @@ const LogIn = props => {
                                 <Spinner animation='border' size = 'sm' /> : 
                                 'Log In' }
                         </Button>
-                        {errorFlag &&
+                        {logInError.status &&
                             <Alert severity = 'error' color = 'error' variant = 'filled'>
                                 <AlertTitle>
-                                    <strong>Wrong ceredentials</strong>
+                                    <strong>Something wrong :(</strong>
                                 </AlertTitle>
-                                <strong>Please mention correct info</strong>
+                                <strong>{logInError.message}</strong>
                             </Alert>
                         }
                     </form>
@@ -204,12 +204,12 @@ const LogIn = props => {
                             <Spinner animation='border' size = 'sm' /> : 
                             'Log In' }
                     </Button>
-                    {errorFlag &&
+                    {logInError.status &&
                         <Alert severity = 'error' color = 'error' variant = 'filled'>
                             <AlertTitle>
-                                <strong>Wrong ceredentials</strong>
+                                <strong>Something wrong :(</strong>
                             </AlertTitle>
-                            <strong>Please mention correct info</strong>
+                            <strong>{logInError.message}</strong>
                         </Alert>
                     }
                 </form>

@@ -90,12 +90,8 @@ const BurgerController = (props) => {
             ...ingredients,
             userId
         }
-        try {
-            await addDoc(collection(db, 'cart'), cartItem)  // will add the cart items to the database
-            resetHandler()
-        } catch (err) {
-            console.log('cant add to the cart')
-        }
+        await addDoc(collection(db, 'cart'), cartItem)  // will add the cart items to the database
+        resetHandler()
     }
 
     return (

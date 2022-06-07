@@ -30,6 +30,12 @@ const userFormReducer = createSlice({
         updateConfirmPass (state, action) {
             state.signUpForm.confirmPass = action.payload
         },
+        updateResetSignUp (state, action) {
+            state.signUpForm.userName = ''
+            state.signUpForm.emailAddress = ''
+            state.signUpForm.password = ''
+            state.signUpForm.confirmPass = ''
+        },
         updateIsSignUpForm (state, action) {
             state.isSignUpForm = action.payload
         },
