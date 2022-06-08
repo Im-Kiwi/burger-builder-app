@@ -17,6 +17,7 @@ const Change = (props) => {
     const userNameExist = useSelector(state => state.security.userNameExist) // will tell whether user name exist or not
     const successFlag = useSelector(state => state.security.successFlag) // whether the request is a success or not
     const loading = useSelector(state => state.loading.loading)
+    const securityError = useSelector(state => state.errors.securityError) // info about error during changing email, pass and userName
 
     // method to control the 'confirm password' input tag
     const changeConfirmPassHandler = (event) => {
@@ -114,6 +115,12 @@ const Change = (props) => {
                         <Alert severity = 'success' color = 'success' variant = 'outlined' >
                             <AlertTitle>Success</AlertTitle>
                             {props.successMsg}
+                        </Alert>
+                    }
+                    {securityError.status &&
+                        <Alert severity='error' variant = 'filled' color = 'error'>
+                            <AlertTitle>Something wrong :(</AlertTitle>
+                            {securityError.message}
                         </Alert>
                     }
                 </Stack>

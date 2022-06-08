@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { Grid, List, ListItem, ListItemButton, FormControl, Select, useMediaQuery, MenuItem, Fab } from '@mui/material'
+import { Grid, List, ListItem, ListItemButton, FormControl, Select, useMediaQuery, MenuItem, Fab, Alert, AlertTitle } from '@mui/material'
 import { CloseRounded } from '@mui/icons-material'
 import { getAuth, updateEmail, updatePassword } from 'firebase/auth'
 import { collection, getDocs, updateDoc, query, where, doc } from 'firebase/firestore'
@@ -50,6 +50,7 @@ const Security = () => {
         dispatch(securityActions.updateStartValidation(false)) // reset the validation process
         dispatch(securityActions.updateSuccessFlag(false)) // to close the success message under log in form
         dispatch(errorsActions.updateLogInError({status : false, message : ''})) // setting the error flag to false which will remove the error msg in login form
+        dispatch(errorsActions.updateSecurityError({status : false, message : ''}))        
         setIsLogIn(false) // to close the re-login form
     }
 
@@ -68,10 +69,12 @@ const Security = () => {
     const changeHandler = (event) => {
         dispatch(securityActions.updateSuccessFlag(false))
         if (navigationIndex === 2) {
-            dispatch(securityActions.updateNewUserName(event.target.value))
+            dispatch(securityActions.updateNewUserName(event.target.value.trim()))
         } else {
-            dispatch(securityActions.updateNewEmailOrPass(event.target.value))
+            dispatch(securityActions.updateNewEmailOrPass(event.target.value.trim()))
         }
+        dispatch(errorsActions.updateLogInError({status : false, message : ''})) // setting the error flag to false which will remove the error msg in login form
+        dispatch(errorsActions.updateSecurityError({status : false, message : ''}))        
     }
 
     // to close the modal
@@ -84,11 +87,13 @@ const Security = () => {
         dispatch(securityActions.updateConfirmPass(''))
         dispatch(securityActions.updateSuccessFlag(false))
         dispatch(errorsActions.updateLogInError({status : false, message : ''})) 
+        dispatch(errorsActions.updateSecurityError({status : false, message : ''}))        
     }
 
     const submitHandler = async (event, navIndex) => {
         dispatch(securityActions.updateStartValidation(true)) // start validation process
         dispatch(loadingActions.updateLoading(true)) // enable the loading spinner
+        dispatch(errorsActions.updateSecurityError({status : false, message : ''}))        
         setIsLogIn(false) // initially no log in form
         event.preventDefault() // to prevent default behaviour of onSubmit event
         try {
@@ -128,10 +133,13 @@ const Security = () => {
             }
             
         } catch (err) {
+            console.log(err.code.slice(5, err.code.length))
             dispatch(securityActions.updateSuccessFlag(false))
+            dispatch(errorsActions.updateSecurityError({status : true, message : err.code.slice(5, err.code.length)}))
             if (err.code === 'auth/requires-recent-login') {
                 setIsLogIn(true) // this will open the login form to re authenticate user
             }
+
         }
         dispatch(loadingActions.updateLoading(false))
     }

@@ -34,13 +34,13 @@
   - you will get all the values for the below environmental variables by connecting this application to the firebase, follow the instructions given in the firebase official site.
 
 ```javascript
-REACT_APP_FIREBASE_API_KEY='your api key'
-REACT_APP_AUTH_DOMAIN='<here>'
-REACT_APP_PROJECT_ID= '<here>'
-REACT_APP_STORAGE_BUCKET= '<here>'
-REACT_APP_MESSAGING_SENDER_ID= '<here>'
-REACT_APP_APP_ID=1:283702489631:web: '<here>'
-REACT_APP_MEASUREMENT_ID='<here>'
+REACT_APP_FIREBASE_API_KEY = "your api key";
+REACT_APP_AUTH_DOMAIN = "<here>";
+REACT_APP_PROJECT_ID = "<here>";
+REACT_APP_STORAGE_BUCKET = "<here>";
+REACT_APP_MESSAGING_SENDER_ID = "<here>";
+REACT_APP_APP_ID = "<here>";
+REACT_APP_MEASUREMENT_ID = "<here>";
 ```
 
 # Getting Started with Create React App

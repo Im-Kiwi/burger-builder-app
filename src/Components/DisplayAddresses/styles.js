@@ -6,11 +6,6 @@ export const addressBox = makeStyles({
     main : {
         overflowY : 'auto'
     },
-    transitionContainer : {
-        height : 'inherit', 
-        width : '100%', 
-        padding : 10
-    },
     addressBox : {
         color : 'inherit', 
         cursor : 'pointer',
@@ -26,6 +21,11 @@ export const addressBox = makeStyles({
         color : '#f9a620',
         width : 340,
         height : 200,
+    },
+    transitionContainer : {
+        height : 'inherit', 
+        width : '100%', 
+        padding : 10
     },
     clickedAddress : {
         color : '#110f12',

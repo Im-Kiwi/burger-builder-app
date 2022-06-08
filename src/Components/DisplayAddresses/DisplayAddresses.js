@@ -158,7 +158,7 @@ const DisplayAddresses = (props) => {
                                             zip code: {address.pinCode} 
                                         </Typography>
                                     </Box>
-                                    <AnimatePresence>
+                                    <AnimatePresence style = {{position : 'relative'}}>
                                         <Box
                                             component = {motion.div} 
                                             //below animate is for mobile version, user can click on address card to see edit and delete button                                            

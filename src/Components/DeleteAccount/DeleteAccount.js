@@ -30,8 +30,8 @@ const DeleteAccount = () => {
         setIsLogIn(false)
         dispatch(loadingActions.updateLoading(true)) // enable the loading spinner
         try {
-            await deleteUser(auth.currentUser)
             await deleteDoc(doc(db, 'users', userDbId))
+            await deleteUser(auth.currentUser)
             await signOut(auth) // method to sign out the user from the firebase
             localStorage.removeItem('token') // to remove token from local storage
             navigate('/') // navigate to home page
@@ -40,6 +40,7 @@ const DeleteAccount = () => {
             dispatch(loadingActions.updateLoading(false)) // disable the loading spinner
             dispatch(userFormActions.updateDeleteAccount(false)) // once acc is deleted the value will set to false
         } catch (err) {
+            console.log(err)
             if (err.code === 'auth/requires-recent-login') {
                 setIsLogIn(true)
                 dispatch(userFormActions.updateDeleteAccount(true)) // delete acc flag set to true which help to delete acc once user re-auth successfully

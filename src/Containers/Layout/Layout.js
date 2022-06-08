@@ -112,7 +112,7 @@ const Layout = () => {
                 // sorting orders according to the order place time
                 const sortedOrders = [...ordersArr].sort((a,b) => b.orderedOn - a.orderedOn)
                 dispatch(ordersActions.updateOrders(sortedOrders))
-            })            
+            }) 
         }
     }, [userId])
 

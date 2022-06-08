@@ -72,8 +72,8 @@ const LogIn = props => {
             await signInWithEmailAndPassword(auth, data.emailAddress, data.password)
             if (toDeleteAcc) { // to delete user account
                 console.log('deleting')
-                await deleteUser(auth.currentUser)
                 await deleteDoc(doc(db, 'users', userDbId))
+                await deleteUser(auth.currentUser)
                 await signOut(auth) // method to sign out the user from the firebase
                 localStorage.removeItem('token') // to remove token from local storage
                 navigate('/') // navigate to home page

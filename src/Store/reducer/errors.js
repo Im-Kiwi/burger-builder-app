@@ -12,6 +12,10 @@ const initialState = {
     paymentError : {
         status : false,
         message : ''
+    },
+    securityError : {
+        status : false,
+        message : ''
     }
 }
 
@@ -30,6 +34,10 @@ const errorsReducer = createSlice({
         updatePaymentError (state, action) {
             state.paymentError.status = action.payload.status
             state.signUpError.message = action.payload.message
+        },
+        updateSecurityError (state, action) {
+            state.securityError.status = action.payload.status
+            state.securityError.message = action.payload.message
         }
     }
 })

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Modal } from 'react-bootstrap'
+import { Modal, Spinner } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Box, Grid, Divider, Typography, Stack, Fab, useMediaQuery } from '@mui/material'
@@ -12,6 +12,7 @@ import { faPesoSign, faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons
 // ----------- importing from other files --------------
 import { styles } from './styles'
 import { dialogActions } from '../../Store/reducer/dialog'
+import { loadingActions } from '../../Store/reducer/loading'
 import OrderItem from '../OrderItem/OrderItem'
 import { db } from '../../firebase-setup'
 import { onTheWay, delivered, dispatching } from '../../identifiers/identifiers'
@@ -27,8 +28,9 @@ const YourOrders = () => {
     const break_441 = useMediaQuery('(max-width : 441px)')
 
     // fetching value from redux store
-    const orders = useSelector(state => state.orders.orders)
-    const showModal = useSelector(state => state.dialog.openUserProfModal)
+    const orders = useSelector(state => state.orders.orders) // contains list or orders placed by user
+    const showModal = useSelector(state => state.dialog.openUserProfModal) // to show modal
+    const loading = useSelector(state => state.loading.loading) // to enable/disable loading spinner
 
     // this will stay the modal open even when user reload the page
     useEffect(() => {
@@ -37,6 +39,7 @@ const YourOrders = () => {
 
     // to change the order status
     useEffect(() => {
+        dispatch(loadingActions.updateLoading(true))
         const currentTime = new Date().getTime()
         orders.forEach(order => {
             if (order.status !== 'delivered') {
@@ -48,9 +51,10 @@ const YourOrders = () => {
                     } else if (currentTime >= deliverTime) {
                         await updateDoc(doc(db, 'orders', order.id), {status : delivered}) // updating the status in database
                     }                    
-                })();            
+                })();  
             }
         })
+        dispatch(loadingActions.updateLoading(false))          
     }, [orders])
 
     // to deleting the orders from database which are older and delivered
@@ -233,9 +237,23 @@ const YourOrders = () => {
                 <CloseRounded />
             </Fab>
             <Box className = {classes.orders}>
-                <Box sx = {{mt:2}}>
-                    {displayOrders}
-                </Box>
+                {orders.length === 0 ?
+                    <Box 
+                        display = 'flex' 
+                        alignItems = 'center' 
+                        justifyContent = 'center'
+                        sx = {{height : '100%', textAlign : 'center'}}>
+                        <Typography 
+                            variant = 'h3'
+                            sx = {{fontFamily : 'Passion One, cursive'}}>
+                            No orders placed
+                        </Typography>
+                    </Box>
+                :
+                    <Box sx = {{mt:2}}>
+                        {loading ? <Spinner animation = 'border' /> : displayOrders}                        
+                    </Box>
+                }
             </Box>
         </Modal>
     )

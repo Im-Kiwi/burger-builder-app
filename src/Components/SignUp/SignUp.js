@@ -4,7 +4,7 @@ import { Spinner } from 'react-bootstrap'
 import { Container, TextField, Button, Box, Typography, Alert, AlertTitle } from '@mui/material'
 import { useForm  } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup'; 
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, deleteUser } from 'firebase/auth';
 import { auth } from '../../firebase-setup';
 import * as yup from 'yup';
 import { db } from '../../firebase-setup'
@@ -64,40 +64,44 @@ const SignUp = props => {
     const submitForm = async data => {
         dispatch(loadingActions.updateLoading(true)) // enable the spinner
         dispatch(errorsActions.updateSignUpError({status : false, message : ''}))
-        // checking whether the user name already exist in the database
-        const readUsers = collection(db, 'users')
-        const findUser = query(readUsers, where('userName', '==', data.userName))
-        const fetchData = await getDocs(findUser)
-        let userNameExist = false
-        fetchData.forEach((doc) => {
-            if (doc.data()) {
-                userNameExist = true
-            }
-        })
-        if (userNameExist) {
-            dispatch(userFormActions.updateIsUserNameExist(true))
-        }
+        
         try {
             // sending the sign up form information to firebase which will result in success of creating account
             const response = await createUserWithEmailAndPassword(auth, data.emailAddress, data.password)
-            const userData = {
-                userName : data.userName,
-                email : response._tokenResponse.email,
-                userId : response._tokenResponse.localId
-            }
-            try {
-                // adding document in users collection in database after successfully sign up
-                // document contains the information of the user
-                await addDoc(collection(db, 'users'), userData)
-                dispatch(dialogActions.updateShowCanvas(false))
-                dispatch(userFormActions.updateResetSignUp())
-                navigate(`/build-burger`)
-            } catch (err) {
-                console.log(err)
-                dispatch(errorsActions.updateSignUpError({status : true, message : err.code.slice(5,err.code.length)}))
+            // checking whether the user name already exist in the database
+            const readUsers = collection(db, 'users')
+            const findUser = query(readUsers, where('userName', '==', data.userName))
+            const fetchData = await getDocs(findUser)
+            let userNameExist = false
+            fetchData.forEach((doc) => {
+                if (doc.data()) {
+                    userNameExist = true
+                }
+            })
+            if (userNameExist) {
+                dispatch(userFormActions.updateIsUserNameExist(true))
+                await deleteUser(auth.currentUser)
+            } else {
+                dispatch(userFormActions.updateIsUserNameExist(false))
+                const userData = {
+                    userName : data.userName,
+                    email : response._tokenResponse.email,
+                    userId : response._tokenResponse.localId
+                }
+                try {
+                    // adding document in users collection in database after successfully sign up
+                    // document contains the information of the user
+                    await addDoc(collection(db, 'users'), userData)
+                    dispatch(dialogActions.updateShowCanvas(false))
+                    dispatch(userFormActions.updateResetSignUp())
+                    navigate(`/build-burger`)
+                } catch (err) {
+                    console.log(err.code)
+                    dispatch(errorsActions.updateSignUpError({status : true, message : err.code.slice(5,err.code.length)}))
+                }
             }
         } catch (err) {
-            console.log(err.message)
+            console.log(err.code)
             dispatch(errorsActions.updateSignUpError({status : true, message : err.code.slice(5,err.code.length)}))
         }
         dispatch(loadingActions.updateLoading(false))
