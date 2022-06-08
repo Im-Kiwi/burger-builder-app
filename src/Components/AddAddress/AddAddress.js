@@ -46,7 +46,7 @@ const AddAddress = () => {
             dispatch(deliveryAddressActions.updateAddressForm({label: addressType, value : resultantAddress.addressType}))
             dispatch(deliveryAddressActions.updateAddressForm({label: pinCode, value : resultantAddress.pinCode}))
         }
-    }, [editZone.flag])
+    }, [editZone.flag, dispatch, editZone.id, addressStore])
 
     // this method will send data to the database
     const addressSubmitHandler = async(event) => {

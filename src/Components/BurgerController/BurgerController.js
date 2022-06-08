@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from  'react-router-dom'
 import { Typography, Stack, Box, Checkbox, Button, useMediaQuery } from '@mui/material'
@@ -40,7 +40,7 @@ const BurgerController = (props) => {
             const getBasePrice = await getDoc(basePriceRef)
             dispatch(basePriceActions.updateBasePrice({...getBasePrice.data()}))
         })();
-    }, [])
+    }, [dispatch])
 
     // method to add slices on the burger
     const addIngredient = (ingName) => {

@@ -12,7 +12,7 @@ import { mainColors } from './theme/mui-theme'
 function App() {
 
   const break_899 = useMediaQuery('(max-width : 899px)')
-
+  console.log(process.env)
   return (
     <Router>
       <div className="App">

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Box, Stack, Typography, IconButton, useMediaQuery } from '@mui/material'
+import { Box, Stack, Typography, IconButton } from '@mui/material'
 import { Add, Delete, Edit } from '@mui/icons-material'
 import { doc, deleteDoc } from 'firebase/firestore'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -20,11 +20,8 @@ const DisplayAddresses = (props) => {
 
     const addressStore = useSelector(state => state.deliveryAddresses.addressStore)
     const [selectedAddressId, setSelectedAddressId] = useState(null) // helps to re-render the component after value get stores in local storage
-     // the value by default stores as a string in local storage
-    let selectAddress
     // method to select an address from bunch of addresses
     const selectAddressHandler = (address, id) => {
-        selectAddress = id
         localStorage.setItem('id', id)
         const addressId = parseInt(localStorage.getItem('id'))
         setSelectedAddressId(addressId)

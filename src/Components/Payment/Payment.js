@@ -1,5 +1,5 @@
 import { Image, Spinner } from 'react-bootstrap'
-import { Box, Grid, Typography, useMediaQuery, Alert, AlertTitle } from '@mui/material'
+import { Box, Grid, Typography, useMediaQuery } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { collection, addDoc, doc, deleteDoc } from 'firebase/firestore'

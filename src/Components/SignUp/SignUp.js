@@ -1,8 +1,7 @@
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import { Spinner } from 'react-bootstrap'
-import { Container, Stack, TextField, Button, Box, Typography, MenuItem, Alert, AlertTitle } from '@mui/material'
+import { Container, TextField, Button, Box, Typography, Alert, AlertTitle } from '@mui/material'
 import { useForm  } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup'; 
 import { createUserWithEmailAndPassword } from 'firebase/auth';

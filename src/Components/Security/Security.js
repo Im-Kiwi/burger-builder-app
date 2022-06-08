@@ -40,7 +40,7 @@ const Security = () => {
     // to make sure when user reloads the page the modal stays open
     useEffect(() => {
         dispatch(dialogActions.updateUserProfModal(true))
-    }, [])
+    }, [dispatch])
 
     // to handle the click event on list item and also handle the change event in select tag
     const clickListHandler = (index) => {
@@ -120,7 +120,6 @@ const Security = () => {
                         dispatch(securityActions.updateStartValidation(false))
                         dispatch(securityActions.updateSuccessFlag(true))
                     } catch (err) {
-                        console.log('unable to update')
                         dispatch(securityActions.updateSuccessFlag(false))
                     }
                 } else {
@@ -184,6 +183,9 @@ const Security = () => {
                     successMsg = 'Your user name changed successfully'
                 />
             )
+            break;
+        default:
+            break;
     }
 
     return (
