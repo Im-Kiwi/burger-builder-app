@@ -175,7 +175,8 @@ const Pricing = (props) => {
                                                     flexDirection = 'row' 
                                                     justifyContent = 'flex-start'
                                                     alignItems = 'center'
-                                                    gap = {1}>
+                                                    gap = {1}
+                                                    sx = {{ml:2}}>
                                                     <Image 
                                                         src = {item.img} 
                                                         fluid 
@@ -185,7 +186,11 @@ const Pricing = (props) => {
                                                         <strong>{item.name}</strong>
                                                     </Typography>
                                                 </Grid>                                    
-                                                <Grid item display = 'flex' justifyContent = 'center'>
+                                                <Grid 
+                                                    item 
+                                                    display = 'flex' 
+                                                    justifyContent = 'center'
+                                                    sx = {{mr:2}}>
                                                     <Typography sx = {{fontSize : '1.1rem' ,fontFamily : 'Concert One, cursive'}}>
                                                         {item.price}
                                                     </Typography>                                                    
